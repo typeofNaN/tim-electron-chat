@@ -1,0 +1,63 @@
+{
+  "appId": "com.electron.desktop",
+  "productName": "TIM Electron Chat",
+  "asar": true,
+  "copyright": "Copyright © 2022 electron",
+  "directories": {
+    "output": "release"
+  },
+  "files": [
+    "dist",
+    "dist-electron"
+  ],
+  "mac": {
+    "artifactName": "${productName}_${version}.${ext}",
+    "target": [
+      "dmg"
+    ]
+  },
+  "win": {
+    "target": [
+      "nsis"
+    ],
+    "icon": "./electron-build/logo.ico"
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true,
+    "deleteAppDataOnUninstall": false,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "TIM Electron Chat",
+    "artifactName": "${productName}_${version}.${ext}",
+    "installerIcon": "./electron-build/logo.ico",
+    "uninstallerIcon": "./electron-build/logo.ico",
+    "installerHeader": "./electron-build/logo.ico",
+    "installerHeaderIcon": "./electron-build/favicon.ico"
+  },
+  "publish": [
+    {
+      "provider": "generic",
+      "url": "http://127.0.0.1:8080"
+    }
+  ],
+  "releaseInfo": {
+    "releaseNotes": "版本更新"
+  },
+  "extraFiles": [
+    {
+      "from": "./node_modules/im_electron_sdk/lib/",
+      "to": "./Resources",
+      "filter": [
+        "**/*"
+      ]
+    }
+  ],
+  "extraResources": [
+    {
+      "from": "./electron-build",
+      "to": "./electron-build"
+    }
+  ]
+}

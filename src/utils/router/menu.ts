@@ -1,0 +1,110 @@
+import { useIconRender } from '@/composables'
+import { $t } from '@/locales'
+
+/**
+ * @description 将权限路由转换成菜单
+ * @param { AuthRoute.Route[] } routes - 路由
+ */
+export function transformAuthRouteToMenu(routes: AuthRoute.Route[]): App.GlobalMenuOption[] {
+  const globalMenu: App.GlobalMenuOption[] = []
+  routes.forEach(route => {
+    const { name, path, meta } = route
+    const routeName = name as string
+    let menuChildren: App.GlobalMenuOption[] | undefined
+    if (route.children && route.children.length > 0) {
+      menuChildren = transformAuthRouteToMenu(route.children)
+    }
+    const menuItem: App.GlobalMenuOption = addPartialProps({
+      menu: {
+        key: routeName,
+        label: meta.title,
+        routeName,
+        routePath: path,
+        i18nTitle: meta.i18nTitle
+      },
+      icon: meta.icon,
+      localIcon: meta.localIcon,
+      children: menuChildren
+    })
+
+    if (!hideInMenu(route)) {
+      globalMenu.push(menuItem)
+    }
+  })
+
+  return globalMenu
+}
+
+/**
+ * @description 翻译菜单
+ * @param { App.GlobalMenuOption[] } menus
+ * @returns
+ */
+export function translateMenuLabel(menus: App.GlobalMenuOption[]): App.GlobalMenuOption[] {
+  const globalMenu: App.GlobalMenuOption[] = []
+  menus.forEach(menu => {
+    let menuChildren: App.GlobalMenuOption[] | undefined
+    if (menu.children && menu.children.length > 0) {
+      menuChildren = translateMenuLabel(menu.children)
+    }
+    const menuItem: App.GlobalMenuOption = {
+      ...menu,
+      children: menuChildren,
+      label: menu.i18nTitle ? $t(menu.i18nTitle) : menu.label
+    }
+    globalMenu.push(menuItem)
+  })
+  return globalMenu
+}
+
+/**
+ * @description 获取当前路由所在菜单数据的paths
+ * @param { string } activeKey - 当前路由的key
+ * @param { App.GlobalMenuOption[] } menus - 菜单数据
+ */
+export function getActiveKeyPathsOfMenus(activeKey: string, menus: App.GlobalMenuOption[]) {
+  return menus.map(menu => getActiveKeyPathsOfMenu(activeKey, menu)).flat(1)
+}
+
+function getActiveKeyPathsOfMenu(activeKey: string, menu: App.GlobalMenuOption) {
+  const keys: string[] = []
+  if (activeKey.startsWith(menu.routeName)) {
+    keys.push(menu.routeName)
+  }
+  if (menu.children) {
+    keys.push(...menu.children.map(item => getActiveKeyPathsOfMenu(activeKey, item as App.GlobalMenuOption)).flat(1))
+  }
+  return keys
+}
+
+/** 路由不转换菜单 */
+function hideInMenu(route: AuthRoute.Route) {
+  return Boolean(route.meta.hide)
+}
+
+/** 给菜单添加可选属性 */
+function addPartialProps(config: {
+  menu: App.GlobalMenuOption
+  icon?: string
+  localIcon?: string
+  children?: App.GlobalMenuOption[]
+}) {
+  const { iconRender } = useIconRender()
+
+  const item = { ...config.menu }
+
+  const { icon, localIcon, children } = config
+
+  if (localIcon) {
+    Object.assign(item, { icon: iconRender({ localIcon }) })
+  }
+
+  if (icon) {
+    Object.assign(item, { icon: iconRender({ icon }) })
+  }
+
+  if (children) {
+    Object.assign(item, { children })
+  }
+  return item
+}
