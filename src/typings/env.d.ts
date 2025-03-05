@@ -10,8 +10,6 @@ type ServiceEnvType = 'dev' | 'test' | 'prod'
 interface ServiceEnvConfig {
   /** 请求地址 */
   url: string
-  /** IM SDK APP ID */
-  imSdkAppId: number
 }
 
 interface ServiceEnvConfigWithProxyPattern extends ServiceEnvConfig {

@@ -6,7 +6,7 @@
 
 ## Usage（快速上手）
 
-先去腾讯云官网，注册申请TIM，将imSdkAppId复制，填入 `.env-config.ts` 文件的imSdkAppId配置项中。
+先去腾讯云官网，注册申请TIM，将imSdkAppId复制，填入 `.env.xxx` 文件的 VITE_IM_SDK_APP_ID 配置项中。
 
 开发环境：
 

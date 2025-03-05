@@ -5,19 +5,12 @@ import Log from 'electron-log'
 
 import { ipcEventHandle, windowEventHandle } from './event'
 import { createTray } from './tray'
-import { getServiceEnvConfig } from '../.env-config'
 import checkForUpdates from './updater'
 
 Log.transports.file.level = 'debug'
 Log.transports.console.level = 'debug'
 Log.transports.file.fileName = 'log.log'
 Log.transports.file.maxSize = 1048576
-
-const TimMain = require('im_electron_sdk/dist/main')
-
-new TimMain({
-  sdkappid: getServiceEnvConfig(process.env as ImportMetaEnv).imSdkAppId
-})
 
 const createWindow = () => {
   const win = new BrowserWindow({

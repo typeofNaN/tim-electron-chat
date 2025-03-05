@@ -17,6 +17,12 @@ import packageJson from '../package.json'
 
 // 窗口事件处理
 export const windowEventHandle = (win: Electron.BrowserWindow) => {
+  // 启动IM
+  ipcMain.once('setupIM', (event, sdkappid) => {
+    const TimMain = require('im_electron_sdk/dist/main')
+    new TimMain({ sdkappid })
+  })
+
   // 窗口准备好时显示
   win.on('ready-to-show', () => {
     win.show()

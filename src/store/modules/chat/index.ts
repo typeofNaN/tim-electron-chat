@@ -111,6 +111,7 @@ export const useChatStore = defineStore('chat-store', {
      * @description 初始化IM实例
      */
     initIM() {
+      ipcRenderer.send('setupIM', Number(import.meta.env.VITE_IM_SDK_APP_ID))
       this.imInstance = new TimRender()
       this.imInstance.TIMInit()
     },
