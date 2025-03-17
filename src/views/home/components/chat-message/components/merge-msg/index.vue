@@ -31,6 +31,7 @@ const props = defineProps<Props>()
 
 interface Emits {
   (e: 'forwardMsg', msg: any): void
+  (e: 'quoteMsg', msg: any): void
 }
 const emit = defineEmits<Emits>()
 
@@ -45,7 +46,7 @@ const {
   handleContextMenu,
   handleDropdown,
   hideDropdown
-} = useMsgDropdown(props.msg, { forwardMsg })
+} = useMsgDropdown(props.msg, { forwardMsg, quoteMsg })
 
 function handleClick() {
   mergeMsgModalRef.value.handleDownload(props.msg)
@@ -53,5 +54,18 @@ function handleClick() {
 
 function forwardMsg() {
   emit('forwardMsg', props.msg)
+}
+
+function quoteMsg() {
+  const { msg } = props
+  emit('quoteMsg', {
+    messageId: msg.message_msg_id,
+    abstract: msg.message_elem_array[0].merge_elem_title,
+    sender: msg.message_sender,
+    type: 'merger',
+    timestamp: msg.message_server_time || msg.message_client_time,
+    sequence: msg.message_seq,
+    nickname: msg.message_sender_profile.user_profile_friend_remark || msg.message_sender_profile.user_profile_nick_name
+  })
 }
 </script>

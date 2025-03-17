@@ -3,7 +3,7 @@
     <n-tooltip trigger="hover">
       <template #trigger>
         <n-upload :show-file-list="false" :accept="AcceptVideoFileType.join(',')" class="select-media flex-center"
-          @change="uploadFileChange">
+          :disabled="props.disabled" @change="uploadFileChange">
           <icon-material-symbols:video-library-outline />
         </n-upload>
       </template>
@@ -23,6 +23,11 @@ import { useChatStore } from '@/store'
 import { getFileExt } from '@/utils/common/file'
 
 const { ipcRenderer } = require('electron')
+
+interface Props {
+  disabled: boolean
+}
+const props = defineProps<Props>()
 
 const chatStore = useChatStore()
 

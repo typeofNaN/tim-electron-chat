@@ -8,6 +8,7 @@ import FileMsg from './file-msg/index.vue'
 import LocationMsg from './location-msg/index.vue'
 import VideoMsg from './video-msg/index.vue'
 import MergeMsg from './merge-msg/index.vue'
+import QuoteMsg from './quote-msg/index.vue'
 
 export {
   RevokeMsg,
@@ -19,5 +20,6 @@ export {
   FileMsg,
   LocationMsg,
   VideoMsg,
-  MergeMsg
+  MergeMsg,
+  QuoteMsg
 }

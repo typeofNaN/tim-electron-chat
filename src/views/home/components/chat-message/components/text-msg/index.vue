@@ -20,6 +20,8 @@ const props = defineProps<Props>()
 
 interface Emits {
   (e: 'forwardMsg', msg: any): void
+  (e: 'editMsg', msg: any): void
+  (e: 'quoteMsg', msg: any): void
 }
 const emit = defineEmits<Emits>()
 
@@ -32,9 +34,39 @@ const {
   handleContextMenu,
   handleDropdown,
   hideDropdown
-} = useMsgDropdown(props.msg, { forwardMsg })
+} = useMsgDropdown(props.msg, { forwardMsg, editMsg, quoteMsg })
 
 function forwardMsg() {
   emit('forwardMsg', props.msg)
 }
+
+function editMsg() {
+  emit('editMsg', props.msg)
+}
+
+function quoteMsg() {
+  const { msg } = props
+  emit('quoteMsg', {
+    messageId: msg.message_msg_id,
+    abstract: msg.message_elem_array[0].text_elem_content,
+    sender: msg.message_sender,
+    type: 'text',
+    timestamp: msg.message_server_time || msg.message_client_time,
+    sequence: msg.message_seq,
+    nickname: msg.message_sender_profile.user_profile_friend_remark || msg.message_sender_profile.user_profile_nick_name
+  })
+}
+// {
+//     "quoteContent": {
+//     "messageId": "消息id",
+//     "abstract": "引用消息摘要",
+//     "sender": "发送者 imUserId",
+//     "type": "消息类型",
+//     "timestamp": "时间戳 秒",
+//     "sequence": "消息序列号",
+//     "imageUrl": "",
+//     "imageWidth": 100,
+//     "imageHeight": 100,
+//     "mimeType": "文件类型，有才传"
+// }
 </script>

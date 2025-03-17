@@ -1,24 +1,31 @@
 <template>
-  <div class="flex items-center px-16px py-10px w-260px h-80px b-rd-4px text-gray-900 cursor-pointer"
-    :class="[isMyMsg ? 'bg-#95ec69' : 'bg-gray-100 dark:text-gray-100 dark:bg-gray-800']" @click="handleClick"
-    @contextmenu="handleContextMenu($event)">
-    <div class="w-[calc(100%-40px)] pr-10px">
-      <n-ellipsis class="text-14px w-full">
-        <template v-if="fileIcon === 'file-music'">
-          <audio v-show="false" ref="audioRef" />
-          <icon-icon-park-outline:volume-notice v-if="isPlaying" />
-        </template>
-        {{ props.msg.message_elem_array[0].file_elem_file_name }}
-      </n-ellipsis>
-      <div class="text-12px">
-        {{ fileSize }}
+  <div class="w-260px b-rd-4px overflow-hidden">
+    <div class="flex items-center px-16px py-10px w-260px h-80px b-rd-4px text-gray-900 cursor-pointer"
+      :class="[isMyMsg ? 'bg-#95ec69' : 'bg-gray-100 dark:text-gray-100 dark:bg-gray-800']" @click="handleClick"
+      @contextmenu="handleContextMenu($event)">
+      <div class="w-[calc(100%-40px)] pr-10px">
+        <n-ellipsis class="text-14px w-full">
+          <template v-if="fileIcon === 'file-music'">
+            <audio v-show="false" ref="audioRef" />
+            <icon-icon-park-outline:volume-notice v-if="isPlaying" />
+          </template>
+          {{ props.msg.message_elem_array[0].file_elem_file_name }}
+        </n-ellipsis>
+        <div class="text-12px">
+          {{ fileSize }}
+        </div>
       </div>
+      <div class="flex-center w-40px h-40px">
+        <svg-icon :local-icon="fileIcon" class="text-30px" />
+      </div>
+      <n-dropdown :show="dropdownVisible" size="small" :options="dropdownOptions" placement="bottom-start"
+        :x="dropdownX" :y="dropdownY" @clickoutside="hideDropdown" @select="handleDropdown" />
     </div>
-    <div class="flex-center w-40px h-40px">
-      <svg-icon :local-icon="fileIcon" class="text-30px" />
+    <div v-if="msg.message_cloud_custom_str && msg.message_cloud_custom_str.editContent"
+      class="py-4px px-10px mt-.5px text-gray-900"
+      :class="[isMyMsg ? 'bg-#95ec69' : 'bg-gray-100 dark:text-gray-100 dark:bg-gray-800']">
+      {{ msg.message_cloud_custom_str.editContent.text }}
     </div>
-    <n-dropdown :show="dropdownVisible" size="small" :options="dropdownOptions" placement="bottom-start" :x="dropdownX"
-      :y="dropdownY" @clickoutside="hideDropdown" @select="handleDropdown" />
   </div>
 </template>
 
@@ -37,6 +44,8 @@ const props = defineProps<Props>()
 
 interface Emits {
   (e: 'forwardMsg', msg: any): void
+  (e: 'editMsg', msg: any): void
+  (e: 'quoteMsg', msg: any): void
 }
 const emit = defineEmits<Emits>()
 
@@ -71,7 +80,7 @@ const {
   handleContextMenu,
   handleDropdown,
   hideDropdown
-} = useMsgDropdown(props.msg, { forwardMsg })
+} = useMsgDropdown(props.msg, { forwardMsg, editMsg, quoteMsg })
 
 const audioRef = ref<HTMLAudioElement>()
 const isPlaying = ref(false)
@@ -110,5 +119,22 @@ function handleClick() {
 
 function forwardMsg() {
   emit('forwardMsg', props.msg)
+}
+
+function editMsg() {
+  emit('editMsg', props.msg)
+}
+
+function quoteMsg() {
+  const { msg } = props
+  emit('quoteMsg', {
+    messageId: msg.message_msg_id,
+    sender: msg.message_sender,
+    type: 'file',
+    timestamp: msg.message_server_time || msg.message_client_time,
+    sequence: msg.message_seq,
+    nickname: msg.message_sender_profile.user_profile_friend_remark || msg.message_sender_profile.user_profile_nick_name,
+    mimeType: fileIconMap[fileExt.value as keyof typeof fileIconMap] || ''
+  })
 }
 </script>

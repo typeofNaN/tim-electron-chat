@@ -2,7 +2,8 @@
   <div class="flex-center mr-10px w-30px h-30px text-20px text-gray-500 dark:text-gray-300 cursor-pointer">
     <n-tooltip trigger="hover">
       <template #trigger>
-        <n-upload :show-file-list="false" accept="*" class="select-media flex-center" @change="uploadFileChange">
+        <n-upload :show-file-list="false" accept="*" class="select-media flex-center" :disabled="props.disabled"
+          @change="uploadFileChange">
           <icon-material-symbols:drive-file-move-outline />
         </n-upload>
       </template>
@@ -18,6 +19,11 @@ import { v4 as uuidV4 } from 'uuid'
 import { MsgTypeEnum } from '@/constants/msg'
 import { $t } from '@/locales'
 import { useChatStore } from '@/store'
+
+interface Props {
+  disabled: boolean
+}
+const props = defineProps<Props>()
 
 const chatStore = useChatStore()
 

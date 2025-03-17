@@ -9,7 +9,7 @@
     <div id="chat-box-container" class="relative h-[calc(100%-50px)] bg-#fff dark:bg-#000 overflow-hidden">
       <n-split direction="vertical" :default-size="0.72" :max="0.8" :min="0.3" :resize-trigger-size="2">
         <template #1>
-          <ChatMessage @forwardMsg="handleForwardMsg" />
+          <ChatMessage @forwardMsg="handleForwardMsg" @editMsg="editMsg" @quoteMsg="quoteMsg" />
         </template>
         <template #2>
           <div class="relative h-full">
@@ -19,9 +19,9 @@
               <div class="h-40px bg-#f9f9f9 dark:bg-#1a1a1a flex justify-between items-center px-10px">
                 <div class="flex items-center">
                   <Emojis @choose-emojis="emojisClick" />
-                  <SendImage />
-                  <SendVideo />
-                  <SendFile />
+                  <SendImage :disabled="sendMode !== 'normal'" />
+                  <SendVideo :disabled="sendMode !== 'normal'" />
+                  <SendFile :disabled="sendMode !== 'normal'" />
                   <div
                     class="flex-center mr-10px w-30px h-30px text-20px text-gray-500 dark:text-gray-300 cursor-pointer">
                     <n-tooltip trigger="hover">
@@ -29,6 +29,16 @@
                         <icon-ri:chat-history-line />
                       </template>
                       {{ $t('chat.chatHistory') }}
+                    </n-tooltip>
+                  </div>
+                  <div v-show="sendMode === 'edit'"
+                    class="flex-center mr-10px w-30px h-30px text-20px text-gray-500 dark:text-gray-300 cursor-pointer"
+                    @click="exitEditMode">
+                    <n-tooltip trigger="hover">
+                      <template #trigger>
+                        <icon-ic:sharp-edit-off />
+                      </template>
+                      {{ $t('chat.exitEditMode') }}
                     </n-tooltip>
                   </div>
                 </div>
@@ -61,7 +71,9 @@
                   <n-dropdown :show="dropdownVisible" size="small" :options="dropdownOptions" placement="bottom-start"
                     :x="dropdownX" :y="dropdownY" @clickoutside="hideDropdown" @select="handleDropdown" />
                 </n-scrollbar>
-                <div class="flex justify-end items-center h-40px">
+                <div class="flex items-center h-40px"
+                  :class="[sendMode === 'quote' ? 'justify-between' : 'justify-end']">
+                  <QuoteMsg v-if="sendMode === 'quote'" :msg="currentQuoteMsg" isQuoteMode @exit="exitQuoteMode" />
                   <n-button type="primary" strong secondary @click="sendMsg">
                     <template #icon>
                       <icon-tabler:send class="text-16px" />
@@ -81,6 +93,7 @@
 
 <script lang="ts" setup>
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { cloneDeep } from 'lodash-es'
 
 import { ConvTypeEnum } from '@/constants/conv'
 import { MsgTypeEnum } from '@/constants/msg'
@@ -95,7 +108,10 @@ import Emojis from './components/emojis/index.vue'
 import SendImage from './components/send-image/index.vue'
 import SendVideo from './components/send-video/index.vue'
 import SendFile from './components/send-file/index.vue'
+import QuoteMsg from '../chat-message/components/quote-msg/index.vue'
 import ForwardToFriend from '../forward-to-friend/index.vue'
+
+type SendMode = 'normal' | 'edit' | 'quote'
 
 const { ipcRenderer } = require('electron')
 
@@ -106,10 +122,17 @@ const chatInputTextarea = ref()
 const forwardToFriendRef = ref()
 let range: Range | null = null
 
+const sendMode = ref<SendMode>('normal')
+
+let currentEditMsg: any = null
+const currentQuoteMsg = ref<any>(null)
+
 watch(
   () => chatStore.currentConvUserID,
   () => {
     nextTick(() => {
+      exitEditMode()
+      exitQuoteMode()
       chatInputTextarea.value.innerHTML = ''
       chatInputTextarea.value.focus()
     })
@@ -232,82 +255,124 @@ async function sendMsg() {
   if (!chatInputTextarea.value.innerHTML) {
     return
   }
-  const htmlContent = chatInputTextarea.value.innerHTML
-  const contentArray = []
-  let currentText = ''
-  let currentTag = ''
-  let inTag = false
 
-  for (let i = 0; i < htmlContent.length; i++) {
-    if (htmlContent[i] === '<') {
+  switch (sendMode.value) {
+    case 'edit': {
+      currentEditMsg.message_cloud_custom_str = currentEditMsg.message_cloud_custom_str
+        ? JSON.parse(currentEditMsg.message_cloud_custom_str)
+        : {}
+      currentEditMsg.message_cloud_custom_str.editContent = {
+        count: 1,
+        text: chatInputTextarea.value.innerHTML
+      }
+      currentEditMsg.message_cloud_custom_str = currentEditMsg.message_cloud_custom_str
+        ? JSON.stringify(currentEditMsg.message_cloud_custom_str)
+        : ''
+      if (currentEditMsg.message_elem_array[0].elem_type === MsgTypeEnum.TEXT) {
+        currentEditMsg.message_elem_array[0].text_elem_content = chatInputTextarea.value.innerHTML
+      }
+      await chatStore.updateMsg(currentEditMsg)
+      currentEditMsg = null
+      break
+    }
+    case 'quote': {
+      chatStore.sendMsg(
+        chatStore.currentConv.conv_id,
+        chatStore.currentConv.conv_type,
+        {
+          message_cloud_custom_str: JSON.stringify({ quoteContent: currentQuoteMsg.value }),
+          message_elem_array: [
+            {
+              elem_type: MsgTypeEnum.TEXT,
+              text_elem_content: chatInputTextarea.value.innerHTML
+            }
+          ]
+        }
+      )
+      currentQuoteMsg.value = null
+      break
+    }
+    default: {
+      const htmlContent = chatInputTextarea.value.innerHTML
+      const contentArray = []
+      let currentText = ''
+      let currentTag = ''
+      let inTag = false
+
+      for (let i = 0; i < htmlContent.length; i++) {
+        if (htmlContent[i] === '<') {
+          if (currentText) {
+            contentArray.push({
+              type: 'text',
+              content: currentText
+            })
+            currentText = ''
+          }
+          inTag = true
+          currentTag += htmlContent[i]
+        } else if (htmlContent[i] === '>') {
+          inTag = false
+          currentTag += htmlContent[i]
+
+          // Parse img tag
+          if (currentTag.startsWith('<img')) {
+            const srcMatch = currentTag.match(/data-file-path="([^"]*)"/)
+            if (srcMatch) {
+              contentArray.push({
+                type: 'image',
+                content: srcMatch[1]
+              })
+            }
+          }
+          currentTag = ''
+        } else if (inTag) {
+          currentTag += htmlContent[i]
+        } else {
+          currentText += htmlContent[i]
+        }
+      }
+
       if (currentText) {
         contentArray.push({
           type: 'text',
           content: currentText
         })
-        currentText = ''
       }
-      inTag = true
-      currentTag += htmlContent[i]
-    } else if (htmlContent[i] === '>') {
-      inTag = false
-      currentTag += htmlContent[i]
 
-      // Parse img tag
-      if (currentTag.startsWith('<img')) {
-        const srcMatch = currentTag.match(/data-file-path="([^"]*)"/)
-        if (srcMatch) {
-          contentArray.push({
-            type: 'image',
-            content: srcMatch[1]
-          })
+      console.log('Content array:', contentArray)
+      contentArray.forEach(async item => {
+        if (item.type === 'text') {
+          chatStore.sendMsg(
+            chatStore.currentConv.conv_id,
+            chatStore.currentConv.conv_type,
+            {
+              message_elem_array: [
+                {
+                  elem_type: MsgTypeEnum.TEXT,
+                  text_elem_content: item.content
+                }
+              ]
+            }
+          )
+        } else if (item.type === 'image') {
+          chatStore.sendMsg(
+            chatStore.currentConv.conv_id,
+            chatStore.currentConv.conv_type,
+            {
+              message_elem_array: [
+                {
+                  elem_type: MsgTypeEnum.IMAGE,
+                  image_elem_orig_path: item.content
+                }
+              ]
+            }
+          )
         }
-      }
-      currentTag = ''
-    } else if (inTag) {
-      currentTag += htmlContent[i]
-    } else {
-      currentText += htmlContent[i]
+      })
+      break
     }
   }
-
-  if (currentText) {
-    contentArray.push({
-      type: 'text',
-      content: currentText
-    })
-  }
-
-  console.log('Content array:', contentArray)
-  contentArray.forEach(async item => {
-    if (item.type === 'text') {
-      chatStore.sendMsg(
-        chatStore.currentConv.conv_id,
-        chatStore.currentConv.conv_type,
-        {
-          message_elem_array: [
-            {
-              elem_type: MsgTypeEnum.TEXT,
-              text_elem_content: item.content
-            }
-          ]
-        }
-      )
-    } else if (item.type === 'image') {
-      chatStore.sendMsg(
-        chatStore.currentConv.conv_id,
-        chatStore.currentConv.conv_type,
-        {
-          message_elem_array: [
-            {
-              elem_type: MsgTypeEnum.IMAGE,
-              image_elem_orig_path: item.content
-            }
-          ]
-        }
-      )
-    }
-  })
+  sendMode.value = 'normal'
   chatInputTextarea.value.innerHTML = ''
 }
 
@@ -321,6 +386,40 @@ function handleForwardByItem(data: any) {
 
 function handleForwardMsg(data: any) {
   forwardToFriendRef.value.openChooseFriendModal(data)
+}
+
+function editMsg(data: any) {
+  // 如果在引用模式，则退出编辑模式
+  sendMode.value === 'quote' && exitQuoteMode()
+  sendMode.value = 'edit'
+  currentEditMsg = cloneDeep(data)
+  chatInputTextarea.value.innerHTML = ''
+  switch (data.message_elem_array[0].elem_type) {
+    case MsgTypeEnum.TEXT: {
+      chatInputTextarea.value.innerHTML = data.message_elem_array[0].text_elem_content
+      break
+    }
+    default: {
+      break
+    }
+  }
+}
+
+function exitEditMode() {
+  sendMode.value = 'normal'
+  currentEditMsg = null
+}
+
+function quoteMsg(data: any) {
+  // 如果在编辑模式，则退出编辑模式
+  sendMode.value === 'edit' && exitEditMode()
+  sendMode.value = 'quote'
+  currentQuoteMsg.value = cloneDeep(data)
+}
+
+function exitQuoteMode() {
+  sendMode.value = 'normal'
+  currentQuoteMsg.value = null
 }
 
 const { copyText } = useClipboard()

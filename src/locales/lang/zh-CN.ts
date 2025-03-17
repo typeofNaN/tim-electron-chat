@@ -49,6 +49,7 @@ const locale: I18nType.Schema = {
     sendVideo: '发送视频',
     sendFile: '发送文件',
     chatHistory: '聊天记录',
+    exitEditMode: '退出编辑模式',
     videoChat: '视频聊天',
     voiceCall: '语音通话',
     search: {
@@ -56,7 +57,8 @@ const locale: I18nType.Schema = {
       contacts: '联系人',
       group: '群组',
       message: '消息'
-    }
+    },
+    edited: '已编辑'
   },
   msgPlaceholders: {
     image: '[图片]',
@@ -66,7 +68,9 @@ const locale: I18nType.Schema = {
     file: '[文件]',
     location: '[位置]',
     video: '[视频]',
-    friendApply: '[好友申请]'
+    friendApply: '[好友申请]',
+    chatHistory: '[聊天记录]',
+    personalCenter: '[个人中心]'
   },
   msgNotification: {
     sendAMessageToYou: '给你发了一条消息',
@@ -379,7 +383,9 @@ const locale: I18nType.Schema = {
         multiSelect: '多选',
         delete: '删除',
         revoke: '撤回',
-        forwardToFriend: '转发给好友'
+        forwardToFriend: '转发给好友',
+        edit: '编辑',
+        quote: '引用'
       },
       chatSetting: {
         chatHistory: '聊天记录',

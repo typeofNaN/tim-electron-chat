@@ -39,28 +39,39 @@
             <div class="text-12px text-gray-400 lh-[1] select-none">
               {{ formatterTime(new Date((item.message_server_time || item.message_client_time) * 1000)) }}
             </div>
-            <svg-icon :icon="item.message_is_read ? 'solar:unread-outline' : 'hugeicons:check-unread-03'"
+            <svg-icon
+              v-if="item.message_sender === chatStore.myInfo.user_profile_identifier && item.message_conv_type === ConvTypeEnum.C2C"
+              :icon="item.message_is_peer_read ? 'solar:check-read-linear' : 'solar:unread-outline'"
               class="color-#999 text-16px" />
+            <div v-if="item.message_cloud_custom_str && item.message_cloud_custom_str.editContent"
+              class="text-12px text-gray-400 lh-[1] select-none">
+              {{ $t('chat.edited') }}
+            </div>
           </div>
           <div
             :class="['flex', 'gap-10px', 'items-center', item.message_sender === chatStore.myInfo.user_profile_identifier && 'flex-row-reverse']">
             <TextMsg v-if="item.message_elem_array[0]?.elem_type === MsgTypeEnum.TEXT" :msg="item"
-              @forwardMsg="forwardMsg" />
+              @forwardMsg="forwardMsg" @editMsg="editMsg" @quoteMsg="quoteMsg" />
             <ImageMsg v-else-if="item.message_elem_array[0]?.elem_type === MsgTypeEnum.IMAGE" :msg="item"
-              @forwardMsg="forwardMsg" />
+              @forwardMsg="forwardMsg" @editMsg="editMsg" @quoteMsg="quoteMsg" />
             <SoundMsg v-else-if="item.message_elem_array[0]?.elem_type === MsgTypeEnum.SOUND" :msg="item"
-              @forwardMsg="forwardMsg" />
+              @forwardMsg="forwardMsg" @editMsg="editMsg" @quoteMsg="quoteMsg" />
             <CustomMsg v-else-if="item.message_elem_array[0]?.elem_type === MsgTypeEnum.CUSTOM" :msg="item"
-              @forwardMsg="forwardMsg" />
+              @forwardMsg="forwardMsg" @quoteMsg="quoteMsg" />
             <FileMsg v-else-if="item.message_elem_array[0]?.elem_type === MsgTypeEnum.FILE" :msg="item"
-              @forwardMsg="forwardMsg" />
+              @forwardMsg="forwardMsg" @editMsg="editMsg" @quoteMsg="quoteMsg" />
             <LocationMsg v-else-if="item.message_elem_array[0]?.elem_type === MsgTypeEnum.LOCATION" :msg="item"
-              @forwardMsg="forwardMsg" />
+              @forwardMsg="forwardMsg" @quoteMsg="quoteMsg" />
             <VideoMsg v-else-if="item.message_elem_array[0]?.elem_type === MsgTypeEnum.VIDEO" :msg="item"
-              @forwardMsg="forwardMsg" />
+              @forwardMsg="forwardMsg" @editMsg="editMsg" @quoteMsg="quoteMsg" />
             <MergeMsg v-else-if="item.message_elem_array[0]?.elem_type === MsgTypeEnum.MERGE" :msg="item"
-              @forwardMsg="forwardMsg" />
+              @forwardMsg="forwardMsg" @quoteMsg="quoteMsg" />
             <icon-ic:sharp-error v-if="item.message_server_time === 0" class="color-red text-18px" />
+          </div>
+          <div v-if="item.message_cloud_custom_str && item.message_cloud_custom_str.quoteContent" class="flex mt-6px"
+            :class="[item.message_sender === chatStore.myInfo.user_profile_identifier && 'flex-row-reverse']">
+            <QuoteMsg :msg="item.message_cloud_custom_str.quoteContent"
+              @click="toOriginMsg(item.message_cloud_custom_str.quoteContent.messageId)" />
           </div>
         </div>
       </template>
@@ -86,11 +97,14 @@ import {
   FileMsg,
   LocationMsg,
   VideoMsg,
-  MergeMsg
+  MergeMsg,
+  QuoteMsg
 } from './components'
 
 interface Emits {
   (e: 'forwardMsg', msg: any): void
+  (e: 'editMsg', msg: any): void
+  (e: 'quoteMsg', msg: any): void
 }
 const emit = defineEmits<Emits>()
 
@@ -154,6 +168,13 @@ async function loadMoreMsg() {
   }
 }
 
+function toOriginMsg(msgId: string) {
+  scrollbarRef.value.scrollTo({
+    el: document.getElementById(msgId),
+    behavior: 'smooth'
+  })
+}
+
 function scrollToBottom() {
   // export interface ScrollTo {
   //   (x: number, y: number): void;
@@ -199,5 +220,13 @@ function checkMsg(data: any) {
 
 function forwardMsg(data: any) {
   emit('forwardMsg', data)
+}
+
+function editMsg(data: any) {
+  emit('editMsg', data)
+}
+
+function quoteMsg(data: any) {
+  emit('quoteMsg', data)
 }
 </script>

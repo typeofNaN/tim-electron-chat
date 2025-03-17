@@ -13,14 +13,16 @@ const { ipcRenderer } = require('electron')
  * 下拉菜单选项的key类型
  */
 type DropdownKey =
-  | 'download'  // 下载
-  | 'mutedPlay' // 静音播放
-  | 'copy'      // 复制
-  | 'speak' // 朗读
-  | 'forward'   // 转发
+  | 'download'    // 下载
+  | 'mutedPlay'   // 静音播放
+  | 'copy'        // 复制
+  | 'speak'       // 朗读
+  | 'forward'     // 转发
   | 'multiSelect' // 多选
-  | 'delete'    // 删除
-  | 'revoke'  // 撤回
+  | 'quote'       // 引用
+  | 'edit'        // 编辑
+  | 'delete'      // 删除
+  | 'revoke'      // 撤回
 
 /**
  * 扩展naive-ui的DropdownOption类型,添加key字段
@@ -116,6 +118,39 @@ export default function useMsgDropdown(msg: any, cbOptions?: any) {
       label: $t('page.chat.msg.multiSelect'),
       key: 'multiSelect',
       icon: iconRender({ icon: 'ic:outline-checklist' })
+    },
+    {
+      label: $t('page.chat.msg.quote'),
+      key: 'quote',
+      icon: iconRender({ icon: 'bxs:quote-alt-right' }),
+      show: [
+        MsgTypeEnum.TEXT,
+        MsgTypeEnum.IMAGE,
+        MsgTypeEnum.SOUND,
+        MsgTypeEnum.FILE,
+        MsgTypeEnum.VIDEO,
+        MsgTypeEnum.MERGE,
+        MsgTypeEnum.LOCATION,
+      ].includes(msgType.value) ||
+        (
+          msgType.value === MsgTypeEnum.CUSTOM &&
+          ['personal_card', 'note', 'post'].includes(msg.message_elem_array[0].custom_elem_data.subtype)
+        )
+    },
+    {
+      label: $t('page.chat.msg.edit'),
+      key: 'edit',
+      icon: iconRender({ icon: 'ic-round-edit' }),
+      show: isMyMsg.value &&
+        (dropdownVisibleTime.value - msg.message_server_time) <= 60 * 15 &&
+        !msg.message_cloud_custom_str.editContent &&
+        [
+          MsgTypeEnum.TEXT,
+          MsgTypeEnum.IMAGE,
+          MsgTypeEnum.SOUND,
+          MsgTypeEnum.FILE,
+          MsgTypeEnum.VIDEO
+        ].includes(msgType.value)
     },
     {
       type: 'divider',
@@ -233,13 +268,25 @@ export default function useMsgDropdown(msg: any, cbOptions?: any) {
     [
       'forward',
       () => {
-        cbOptions.forwardMsg()
+        cbOptions?.forwardMsg()
       }
     ],
     [
       'multiSelect',
       () => {
         chatStore.setIsMultiSelect(true)
+      }
+    ],
+    [
+      'quote',
+      () => {
+        cbOptions?.quoteMsg()
+      }
+    ],
+    [
+      'edit',
+      () => {
+        cbOptions?.editMsg()
       }
     ],
     [

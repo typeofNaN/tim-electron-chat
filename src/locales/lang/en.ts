@@ -49,6 +49,7 @@ const locale: I18nType.Schema = {
     sendVideo: 'Send Video',
     sendFile: 'Send File',
     chatHistory: 'Chat History',
+    exitEditMode: 'Exit Edit Mode',
     videoChat: 'Video Chat',
     voiceCall: 'Voice Call',
     search: {
@@ -56,7 +57,8 @@ const locale: I18nType.Schema = {
       contacts: 'Contacts',
       group: 'Group',
       message: 'Message'
-    }
+    },
+    edited: 'Edited'
   },
   msgPlaceholders: {
     image: '[Image]',
@@ -66,7 +68,9 @@ const locale: I18nType.Schema = {
     file: '[File]',
     location: '[Location]',
     video: '[Video]',
-    friendApply: '[Friend Apply]'
+    friendApply: '[Friend Apply]',
+    chatHistory: '[Chat History]',
+    personalCenter: '[Personal Center]'
   },
   msgNotification: {
     sendAMessageToYou: 'Send A Message To You',
@@ -379,7 +383,9 @@ const locale: I18nType.Schema = {
         multiSelect: 'Multi Select',
         delete: 'Delete',
         revoke: 'Revoke',
-        forwardToFriend: 'Forward To Friend'
+        forwardToFriend: 'Forward To Friend',
+        edit: 'Edit',
+        quote: 'Quote'
       },
       chatSetting: {
         chatHistory: 'Chat History',

@@ -357,6 +357,7 @@ declare namespace I18nType {
       sendVideo: string
       sendFile: string
       chatHistory: string
+      exitEditMode: string
       videoChat: string
       voiceCall: string
       search: {
@@ -365,6 +366,7 @@ declare namespace I18nType {
         group: string
         message: string
       }
+      edited: string
     }
     msgPlaceholders: {
       image: string
@@ -375,6 +377,8 @@ declare namespace I18nType {
       location: string
       video: string
       friendApply: string
+      chatHistory: string
+      personalCenter: string
     }
     msgNotification: {
       sendAMessageToYou: string
@@ -688,6 +692,8 @@ declare namespace I18nType {
           delete: string
           revoke: string
           forwardToFriend: string
+          edit: string
+          quote: string
         }
         chatSetting: {
           chatHistory: string

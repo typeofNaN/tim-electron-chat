@@ -1,9 +1,16 @@
 <template>
-  <div class="flex items-center px-10px w-400px h-70px b-rd-4px cursor-pointer"
-    :class="[isMyMsg ? 'bg-#95ec69' : 'bg-gray-100 dark:bg-gray-800']" @contextmenu="handleContextMenu($event)">
-    <audio :src="audioPath" controls controlslist="nodownload noplaybackrate" class="w-full" />
-    <n-dropdown :show="dropdownVisible" size="small" :options="dropdownOptions" placement="bottom-start" :x="dropdownX"
-      :y="dropdownY" @clickoutside="hideDropdown" @select="handleDropdown" />
+  <div class="b-rd-4px overflow-hidden w-400px">
+    <div class="flex items-center px-10px w-400px h-70px b-rd-4px cursor-pointer"
+      :class="[isMyMsg ? 'bg-#95ec69' : 'bg-gray-100 dark:bg-gray-800']" @contextmenu="handleContextMenu($event)">
+      <audio :src="audioPath" controls controlslist="nodownload noplaybackrate" class="w-full" />
+      <n-dropdown :show="dropdownVisible" size="small" :options="dropdownOptions" placement="bottom-start"
+        :x="dropdownX" :y="dropdownY" @clickoutside="hideDropdown" @select="handleDropdown" />
+    </div>
+    <div v-if="msg.message_cloud_custom_str && msg.message_cloud_custom_str.editContent"
+      class="py-4px px-10px mt-.5px text-gray-900"
+      :class="[isMyMsg ? 'bg-#95ec69' : 'bg-gray-100 dark:text-gray-100 dark:bg-gray-800']">
+      {{ msg.message_cloud_custom_str.editContent.text }}
+    </div>
   </div>
 </template>
 
@@ -20,6 +27,8 @@ const props = defineProps<Props>()
 
 interface Emits {
   (e: 'forwardMsg', msg: any): void
+  (e: 'editMsg', msg: any): void
+  (e: 'quoteMsg', msg: any): void
 }
 const emit = defineEmits<Emits>()
 
@@ -32,7 +41,7 @@ const {
   handleContextMenu,
   handleDropdown,
   hideDropdown
-} = useMsgDropdown(props.msg, { forwardMsg })
+} = useMsgDropdown(props.msg, { forwardMsg, editMsg, quoteMsg })
 
 const audioPath = computed(() => {
   return props.msg.message_elem_array[0].sound_elem_file_path || props.msg.message_elem_array[0].sound_elem_url
@@ -40,5 +49,21 @@ const audioPath = computed(() => {
 
 function forwardMsg() {
   emit('forwardMsg', props.msg)
+}
+
+function editMsg() {
+  emit('editMsg', props.msg)
+}
+
+function quoteMsg() {
+  const { msg } = props
+  emit('quoteMsg', {
+    messageId: msg.message_msg_id,
+    sender: msg.message_sender,
+    type: 'audio',
+    timestamp: msg.message_server_time || msg.message_client_time,
+    sequence: msg.message_seq,
+    nickname: msg.message_sender_profile.user_profile_friend_remark || msg.message_sender_profile.user_profile_nick_name
+  })
 }
 </script>

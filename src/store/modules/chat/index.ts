@@ -420,6 +420,9 @@ export const useChatStore = defineStore('chat-store', {
               item.message_elem_array[0].custom_elem_data.data = JSON.parse(item.message_elem_array[0].custom_elem_data.data)
             }
           }
+          if (item.message_cloud_custom_str) {
+            item.message_cloud_custom_str = JSON.parse(item.message_cloud_custom_str)
+          }
           return item
         })
         .filter((item: any) => {
@@ -501,7 +504,11 @@ export const useChatStore = defineStore('chat-store', {
                   this.msgList[index] = JSON.parse(sendMsgRes[0].json_param)
                 }
               } else {
-                this.msgList.push(JSON.parse(sendMsgRes[0].json_param))
+                const msg = JSON.parse(sendMsgRes[0].json_param)
+                msg.message_cloud_custom_str = msg.message_cloud_custom_str
+                  ? JSON.parse(msg.message_cloud_custom_str)
+                  : ''
+                this.msgList.push(msg)
               }
             } else {
               window.$message?.error(sendMsgRes[0].desc)
@@ -526,8 +533,34 @@ export const useChatStore = defineStore('chat-store', {
         user_data: this.userData
       })
     },
+    /**
+     * @description 发送本地消息
+     * @param { any } data 本地消息数据
+     */
     pushLocalMsg(data: any) {
       this.msgList.push(data)
+    },
+    /**
+     * @description 修改消息
+     * @param { any } data 消息数据
+     */
+    async updateMsg(data: any) {
+      const { code, json_param } = await this.imInstance.TIMMsgModifyMessage({
+        params: data,
+        user_data: this.userData
+      })
+      console.log('updateMsg', code, json_param)
+    },
+    /**
+     * @description 设置本地消息自定义数据
+     * @param { any } data 消息数据
+     */
+    async setMsgLocalCustomData(data: any) {
+      const { code, json_param } = await this.imInstance.TIMMsgSetLocalCustomData({
+        json_msg_param: data,
+        user_data: this.userData
+      })
+      console.log('setMsgCustomData', code, json_param)
     },
     /**
      * @description 下载合并消息
@@ -846,6 +879,24 @@ export const useChatStore = defineStore('chat-store', {
       this.imInstance.TIMSetMsgRevokeCallback({
         user_data: this.userData,
         callback: async () => {
+          await this.getConvMsgList(this.currentConv)
+        }
+      })
+
+      // 消息被云端已读的回调
+      this.imInstance.TIMSetMsgReadedReceiptCallback({
+        user_data: this.userData,
+        callback: async (data: any) => {
+          console.log('消息被云端已读', data)
+          await this.getConvMsgList(this.currentConv)
+        }
+      })
+
+      // 消息被云端编辑的回调
+      this.imInstance.TIMSetMsgUpdateCallback({
+        user_data: this.userData,
+        callback: async (data: any) => {
+          console.log('消息被云端编辑', data)
           await this.getConvMsgList(this.currentConv)
         }
       })

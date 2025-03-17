@@ -21,6 +21,7 @@ const props = defineProps<Props>()
 
 interface Emits {
   (e: 'forwardMsg', msg: any): void
+  (e: 'quoteMsg', msg: any): void
 }
 const emit = defineEmits<Emits>()
 
@@ -56,9 +57,21 @@ const {
   handleContextMenu,
   handleDropdown,
   hideDropdown
-} = useMsgDropdown(props.msg, { forwardMsg })
+} = useMsgDropdown(props.msg, { forwardMsg, quoteMsg })
 
 function forwardMsg() {
   emit('forwardMsg', props.msg)
+}
+
+function quoteMsg() {
+  const { msg } = props
+  emit('quoteMsg', {
+    messageId: msg.message_msg_id,
+    sender: msg.message_sender,
+    type: 'location',
+    timestamp: msg.message_server_time || msg.message_client_time,
+    sequence: msg.message_seq,
+    nickname: msg.message_sender_profile.user_profile_friend_remark || msg.message_sender_profile.user_profile_nick_name
+  })
 }
 </script>

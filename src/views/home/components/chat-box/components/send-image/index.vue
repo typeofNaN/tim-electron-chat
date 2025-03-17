@@ -3,7 +3,7 @@
     <n-tooltip trigger="hover">
       <template #trigger>
         <n-upload :show-file-list="false" :accept="AcceptImageFileType.join(',')" class="select-media flex-center"
-          @change="uploadFileChange">
+          :disabled="props.disabled" @change="uploadFileChange">
           <icon-material-symbols:imagesmode-outline />
         </n-upload>
       </template>
@@ -19,6 +19,11 @@ import { AcceptImageFileType } from '@/constants/acceptFileType'
 import { MsgTypeEnum } from '@/constants/msg'
 import { $t } from '@/locales'
 import { useChatStore } from '@/store'
+
+interface Props {
+  disabled: boolean
+}
+const props = defineProps<Props>()
 
 const chatStore = useChatStore()
 
