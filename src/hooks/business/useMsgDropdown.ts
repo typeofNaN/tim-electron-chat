@@ -134,7 +134,7 @@ export default function useMsgDropdown(msg: any, cbOptions?: any) {
       ].includes(msgType.value) ||
         (
           msgType.value === MsgTypeEnum.CUSTOM &&
-          ['personal_card', 'note', 'post'].includes(msg.message_elem_array[0].custom_elem_data.subtype)
+          ['personal_card'].includes(msg.message_elem_array[0].custom_elem_data.subtype)
         )
     },
     {

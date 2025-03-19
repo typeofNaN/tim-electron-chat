@@ -20,12 +20,6 @@
       <div v-else-if="props.msg.type === 'file'">
         {{ props.msg.nickname }}：{{ $t('msgPlaceholders.file') }}
       </div>
-      <div v-else-if="props.msg.type === 'note'">
-        {{ props.msg.nickname }}：[note]
-      </div>
-      <div v-else-if="props.msg.type === 'post'">
-        {{ props.msg.nickname }}：[post]
-      </div>
       <div v-else-if="props.msg.type === 'merger'"
         class="flex-y-center max-w-258px overflow-hidden ellipsis-text whitespace-nowrap">
         {{ props.msg.nickname }}：{{ props.msg.abstract }}
