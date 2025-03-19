@@ -3,8 +3,7 @@
     :class="[props.isMyMsg ? 'bg-#95ec69' : 'bg-gray-100 dark:bg-gray-800']" @click="openPersonalCardModal">
     <div class="flex items-center">
       <custom-avatar :src="props.msg.content.imageUrl" :size="40" />
-      <n-ellipsis class="pl-10px w-[calc(100%-40px)] text-14px"
-        :class="[props.isMyMsg ? 'text-gray-900' : 'text-gray-100']">
+      <n-ellipsis class="pl-10px w-[calc(100%-40px)] text-14px text-gray-900 dark:text-gray-100">
         {{ props.msg.content.nickname }}
       </n-ellipsis>
     </div>

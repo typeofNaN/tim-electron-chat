@@ -55,26 +55,27 @@ function maximizeApp() {
 }
 
 function exitApp() {
-  window.$dialog?.destroyAll()
-  window.$dialog?.create({
-    type: 'info',
-    title: $t('app.exit.title'),
-    content: $t('app.exit.content'),
-    positiveText: $t('app.exit.confirm'),
-    negativeText: $t('app.exit.miniSize'),
-    closeOnEsc: false,
-    maskClosable: false,
-    onPositiveClick: () => {
-      setTimeout(() => {
-        ipcRenderer.send('closeApp', 'exit')
-      }, 400)
-    },
-    onNegativeClick: () => {
-      setTimeout(() => {
-        ipcRenderer.send('closeApp', 'mini')
-      }, 400)
-    }
-  })
+  // window.$dialog?.destroyAll()
+  // window.$dialog?.create({
+  //   type: 'info',
+  //   title: $t('app.exit.title'),
+  //   content: $t('app.exit.content'),
+  //   positiveText: $t('app.exit.confirm'),
+  //   negativeText: $t('app.exit.miniSize'),
+  //   closeOnEsc: false,
+  //   maskClosable: false,
+  //   onPositiveClick: () => {
+  //     setTimeout(() => {
+  //       ipcRenderer.send('closeApp', 'exit')
+  //     }, 400)
+  //   },
+  //   onNegativeClick: () => {
+  //     setTimeout(() => {
+  //       ipcRenderer.send('closeApp', 'mini')
+  //     }, 400)
+  //   }
+  // })
+  ipcRenderer.send('closeApp', 'exit')
 }
 
 ipcRenderer.on('maximize', () => {

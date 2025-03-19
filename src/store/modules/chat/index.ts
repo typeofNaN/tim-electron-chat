@@ -840,7 +840,7 @@ export const useChatStore = defineStore('chat-store', {
               }
 
               // 忽略信令消息
-              if (msgData[0].message_elem_array[0].custom_elem_data.actionType === void 0) {
+              if (msgData[0].message_elem_array[0].custom_elem_data.actionType !== void 0) {
                 return
               }
             }
@@ -856,6 +856,10 @@ export const useChatStore = defineStore('chat-store', {
 
             // 如果消息属于当前会话
             if (msgData[0].message_conv_id === this.currentConvID) {
+              if (msgData[0].message_cloud_custom_str) {
+                msgData[0].message_cloud_custom_str = JSON.parse(msgData[0].message_cloud_custom_str)
+              }
+
               // 将新消息添加到会话消息列表
               this.msgList.push(msgData[0])
 
