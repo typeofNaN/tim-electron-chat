@@ -2,7 +2,7 @@ import { useClipboard } from '@vueuse/core'
 
 import { $t } from '@/locales'
 
-const { copy, isSupported } = useClipboard()
+const { copy, isSupported } = useClipboard({ legacy: true })
 
 export default function useCopy() {
   function copyText(text: string) {
