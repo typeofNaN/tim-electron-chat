@@ -456,7 +456,7 @@ const locale: I18nType.Schema = {
         createSuccess: 'Create success',
         createFailed: 'Create failed'
       },
-      wording: 'Wording',
+      wording: 'Wording:',
       agree: 'Agree',
       reject: 'Reject',
       waitAgree: 'Your application is waiting for the other party to agree',

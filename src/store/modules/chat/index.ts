@@ -734,6 +734,22 @@ export const useChatStore = defineStore('chat-store', {
       return []
     },
     /**
+     * @description 处理好友申请
+     * @param { any } [data] - 处理好友申请的相关参数
+     * @returns { Promise<boolean> } - 是否成功
+     */
+    async handleFriendAdd(data?: any) {
+      const { code } = await this.imInstance.TIMFriendshipHandleFriendAddRequest({
+        params: { ...data },
+        user_data: this.userData
+      })
+      console.log(code)
+      if (code === 0) {
+        return true
+      }
+      return false
+    },
+    /**
      * @description 获取黑名单列表
      * @returns { Promise<any[]> } - 黑名单用户列表数组
      */

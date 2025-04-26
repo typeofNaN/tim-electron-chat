@@ -9,7 +9,8 @@
       </div>
     </div>
     <n-scrollbar v-if="applyList.length > 0" class="h-[calc(100%-80px)] bg-#fafafa dark:bg-#1a1a1a">
-      <div v-for="apply in applyList" :key="apply.friend_add_pendency_info_identifier" class="mb-10px p-10px bg-#fff">
+      <div v-for="apply in applyList" :key="apply.friend_add_pendency_info_identifier"
+        class="mb-10px p-10px bg-#fff dark:bg-#000">
         <n-thing>
           <template #avatar>
             <custom-avatar :src="apply.friend_add_pendency_info_face_url" :size="50" />
@@ -26,17 +27,19 @@
             {{ $t('page.contacts.friendApplySource.from') }}
             {{ $t(FriendApplyFromMap[apply.friend_add_pendency_info_add_source as FriendApplyFromEnum]) }}
           </template>
-          <div class="text-14px text-#777 bg-gray-100 p-10px b-rd-4px">
-            {{ $t('page.contacts.wording') }} : {{ apply.friend_add_pendency_info_add_wording }}
+          <div class="text-14px text-#777 bg-gray-100 dark:bg-gray-900 p-10px b-rd-4px">
+            {{ $t('page.contacts.wording') }}
+            {{ apply.friend_add_pendency_info_add_wording }}
           </div>
           <template #action>
             <!-- 别人发给我的申请 -->
             <div v-if="apply.friend_add_pendency_info_type === ApplyType.RECEIVE" class="flex justify-end">
               <n-space>
-                <n-button type="success" tertiary round>
+                <n-button type="success" tertiary round
+                  @click="handleAgree(apply, ApplyAgreeType.ResponseActionAgreeAndAdd)">
                   {{ $t('page.contacts.agree') }}
                 </n-button>
-                <n-button type="error" tertiary round>
+                <n-button type="error" tertiary round @click="handleAgree(apply, ApplyAgreeType.ResponseActionReject)">
                   {{ $t('page.contacts.reject') }}
                 </n-button>
               </n-space>
@@ -78,6 +81,12 @@ enum ApplyType {
   BOTH
 }
 
+enum ApplyAgreeType {
+  ResponseActionAgree,
+  ResponseActionAgreeAndAdd,
+  ResponseActionReject
+}
+
 const chatStore = useChatStore()
 
 const applyList = ref<any[]>([])
@@ -89,5 +98,16 @@ onMounted(async () => {
 async function getFriendShipPendencyList() {
   const res = await chatStore.getFriendShipPendencyList()
   applyList.value = [...res]
+}
+
+async function handleAgree(apply: any, type: ApplyAgreeType) {
+  const res = await chatStore.handleFriendAdd({
+    friend_respone_identifier: apply.friend_add_pendency_info_identifier,
+    friend_respone_action: type
+  })
+  if (res) {
+    window.$message?.success($t('common.success'))
+    await getFriendShipPendencyList()
+  }
 }
 </script>

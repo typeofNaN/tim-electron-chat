@@ -456,7 +456,7 @@ const locale: I18nType.Schema = {
         createSuccess: '创建成功',
         createFailed: '创建失败'
       },
-      wording: '附言',
+      wording: '附言：',
       agree: '同意',
       reject: '拒绝',
       waitAgree: '您的申请正在等待对方同意',
