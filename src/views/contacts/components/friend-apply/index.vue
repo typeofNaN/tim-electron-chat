@@ -102,8 +102,8 @@ async function getFriendShipPendencyList() {
 
 async function handleAgree(apply: any, type: ApplyAgreeType) {
   const res = await chatStore.handleFriendAdd({
-    friend_respone_identifier: apply.friend_add_pendency_info_identifier,
-    friend_respone_action: type
+    friend_response_identifier: apply.friend_add_pendency_info_identifier,
+    friend_response_action: type
   })
   if (res) {
     window.$message?.success($t('common.success'))
