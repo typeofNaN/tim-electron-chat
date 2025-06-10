@@ -1,9 +1,10 @@
 import fs from 'fs'
 import path from 'path'
 
-import { app, dialog, ipcMain, shell } from 'electron'
+import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron'
 import { v4 as uuidV4 } from 'uuid'
 
+import checkForUpdates from './updater'
 import {
   extractFirstFrame,
   getFileByteSize,
@@ -15,17 +16,14 @@ import { copyFile } from './utils/copyFile'
 import { downloadFile } from './utils/downloadFile'
 import packageJson from '../package.json'
 
+let callWindow: BrowserWindow | null = null
+
 // 窗口事件处理
 export const windowEventHandle = (win: Electron.BrowserWindow) => {
-  // 启动IM
-  ipcMain.once('setupIM', (event, sdkappid) => {
-    const TimMain = require('im_electron_sdk/dist/main')
-    new TimMain({ sdkappid })
-  })
-
   // 窗口准备好时显示
   win.on('ready-to-show', () => {
     win.show()
+    checkForUpdates(win)
   })
 
   // 窗口最大化时发送消息
@@ -48,6 +46,12 @@ export const windowEventHandle = (win: Electron.BrowserWindow) => {
 
 // IPC事件处理
 export const ipcEventHandle = (win: Electron.BrowserWindow) => {
+  // 启动IM
+  ipcMain.once('setupIM', (event, sdkappid) => {
+    const TimMain = require('im_electron_sdk/dist/main')
+    new TimMain({ sdkappid })
+  })
+
   // 打开文件所在目录
   ipcMain.on('openDir', (event, filePath) => {
     shell.showItemInFolder(filePath)
@@ -165,12 +169,66 @@ export const ipcEventHandle = (win: Electron.BrowserWindow) => {
     })
   })
 
+  // 创建音视频通话
+  ipcMain.on('createCallWindow', (event, data) => {
+    if (callWindow) {
+      return
+    }
+
+    callWindow = new BrowserWindow({
+      show: false,
+      width: 360,
+      height: 600,
+      minWidth: 360,
+      minHeight: 600,
+      frame: false,
+      autoHideMenuBar: true,
+      webPreferences: {
+        // 允许渲染进程使用node
+        contextIsolation: false,
+        nodeIntegration: true,
+        webSecurity: false
+      },
+      icon: path.join(__dirname, '../src/assets/images/logo.png')
+    })
+
+    require('@electron/remote/main').enable(callWindow.webContents)
+
+    callWindow.webContents.setWindowOpenHandler((details) => {
+      shell.openExternal(details.url)
+      return { action: 'deny' }
+    })
+
+    // app.isPackaged 字段存在bug，即使正常打包后，仍然为false，所以不能用来判断项目是否经过打包
+    if (process.env.NODE_ENV === 'development') {
+      // 开发环境
+      // process.env.VITE_DEV_SERVER_URL获取开发服务器的url
+      // vite版本不同，VITE_DEV_SERVER_URL字段也有所变化，打印process.env查找具体的名称
+      callWindow.loadURL(process.env.VITE_DEV_SERVER_URL as string + '#/call-chat')
+    } else {
+      // 生产环境
+      callWindow.loadFile(path.join(__dirname, '../dist/index.html'), {
+        hash: 'call-chat'
+      })
+      callWindow.removeMenu()
+    }
+
+    callWindow.on('ready-to-show', () => {
+      callWindow?.show()
+    })
+  })
+
   // 闪烁窗口
   ipcMain.on('toggleFlashFrame', (event, isFlashFrame) => {
     win.flashFrame(isFlashFrame)
     win.once('focus', () => {
       win.flashFrame(false)
     })
+  })
+
+  // 显示窗口
+  ipcMain.on('showWindow', () => {
+    win.show()
   })
 
   // 置顶窗口
@@ -204,5 +262,54 @@ export const ipcEventHandle = (win: Electron.BrowserWindow) => {
         break
       }
     }
+  })
+
+  // 检查更新
+  ipcMain.on('checkUpdate', () => {
+    checkForUpdates(win)
+  })
+
+  // 置顶音视频窗口
+  ipcMain.on('toggleCallChatTopUp', (event, isTopUp) => {
+    callWindow?.setAlwaysOnTop(isTopUp)
+  })
+
+  // 最小化音视频窗口
+  ipcMain.on('minimizeCallChat', () => {
+    callWindow?.minimize()
+  })
+
+  // 最大化/还原音视频窗口
+  ipcMain.on('maximizeCallChat', () => {
+    if (callWindow?.isMaximized()) {
+      callWindow?.unmaximize()
+    } else {
+      callWindow?.maximize()
+    }
+  })
+
+  // 关闭音视频窗口
+  ipcMain.on('closeCallChat', (event, type) => {
+    switch (type) {
+      case 'mini': {
+        callWindow?.minimize() // 最小化
+        break
+      }
+      case 'exit': {
+        callWindow?.close() // 关闭
+        callWindow = null
+        break
+      }
+    }
+  })
+
+  // 请求关闭音视频通话
+  ipcMain.on('requestExitCallRoom', () => {
+    callWindow?.webContents.send('requestExitCallRoom')
+  })
+
+  // 退出音视频通话
+  ipcMain.on('exitCallRoom', (event, data) => {
+    win.webContents.send('exitCallRoom', data)
   })
 }

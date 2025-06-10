@@ -1,6 +1,6 @@
 <template>
   <div class="flex-col-stretch gap-16px overflow-hidden lt-sm:overflow-auto">
-    <n-split direction="horizontal" :default-size="0.28" :max="0.4" :min="0.2" :resize-trigger-size="2">
+    <n-split direction="horizontal" default-size="280px" max="400px" min="200px" :resize-trigger-size="2">
       <template #1>
         <div class="h-full bg-#fff dark:bg-#000">
           <global-search />
@@ -24,7 +24,7 @@
       <template #2>
         <ChatBox v-if="chatStore.currentConv" @click="handleChatBoxClick" />
         <div v-else class="h-full flex-center">
-          <n-image :src="logo" :preview-disabled="true" object-fit="fill" class="w-180px filter-grayscale opacity-10" />
+          <n-image :src="logo" :preview-disabled="true" class="w-180px filter-grayscale opacity-10" />
         </div>
       </template>
     </n-split>

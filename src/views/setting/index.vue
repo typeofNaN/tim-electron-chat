@@ -6,22 +6,18 @@
           <global-search />
           <div v-for="item in tabList" :key="item.type" class="flex items-center px-10px h-60px cursor-pointer"
             :class="[{ '!bg-primary_active': currentTab.type === item.type }]" @click="setCurrentTab(item)">
-            <div class="flex-center w-40px h-40px b-rd-50%" :class="[item.bgColor]">
-              <svg-icon :icon="item.icon" class="text-20px color-#fff" />
+            <div class="flex-center w-40px h-40px b-rd-50% text-20px color-#fff" :class="[item.bgColor]">
+              <svg-icon :icon="item.icon" />
             </div>
             <div class="pl-10px text-16px select-none">{{ $t(item.i18nName) }}</div>
           </div>
         </div>
       </template>
       <template #2>
-        <div v-if="currentTab.type === TabTypeEnum.ACCOUNT_SETTING" class="h-full bg-#fff dark:bg-#000">
-          <AccountSetting />
-        </div>
-        <div v-else-if="currentTab.type === TabTypeEnum.SYSTEM_SETTING" class="h-full bg-#fff dark:bg-#000">
-          <SystemSetting />
-        </div>
-        <div v-else-if="currentTab.type === TabTypeEnum.ABOUT" class="h-full bg-#fff dark:bg-#000">
-          <About />
+        <div class="h-full bg-#fff dark:bg-#000">
+          <AccountSetting v-if="currentTab.type === TabTypeEnum.ACCOUNT_SETTING" />
+          <SystemSetting v-else-if="currentTab.type === TabTypeEnum.SYSTEM_SETTING" />
+          <About v-else-if="currentTab.type === TabTypeEnum.ABOUT" />
         </div>
       </template>
     </n-split>

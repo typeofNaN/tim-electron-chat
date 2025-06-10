@@ -29,5 +29,14 @@ declare namespace StorageInterface {
     themeSettings: Theme.Setting
     /** 主题颜色 */
     themeColor: string
+    /** 房间号 */
+    strRoomId: string
+    /** 视频会话类型 */
+    callType: 'video' | 'voice'
+    /** 会话用户 */
+    callUser: { name: string, avatar: string, id: string, inviteId: string }
+    /** 我的ID */
+    myUserId: string
+    applyUser: 'me' | 'other'
   }
 }

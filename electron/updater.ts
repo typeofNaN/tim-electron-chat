@@ -1,3 +1,5 @@
+import path from 'path'
+
 import { dialog } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import Log from 'electron-log'
@@ -6,8 +8,15 @@ autoUpdater.logger = Log
 // @ts-ignore
 autoUpdater.logger.transports.file.level = 'info'
 
+const isDevelopment = process.env.NODE_ENV === 'development'
+
+// 防止报错no such file or directory dev-app-update.yml
+if (isDevelopment) {
+  autoUpdater.updateConfigPath = path.join(__dirname, '../dev-app-update.yml')
+}
+
 export default (win: Electron.BrowserWindow) => {
-  //设置自动下载
+  // 设置自动下载
   autoUpdater.autoDownload = false
 
   // 检测是否有新版本
@@ -19,6 +28,7 @@ export default (win: Electron.BrowserWindow) => {
 
   autoUpdater.on('update-not-available', () => {
     Log.info('没有可更新版本')
+    win.webContents.send('notNeedUpdate')
   })
 
   autoUpdater.on('update-available', () => {
@@ -45,6 +55,7 @@ export default (win: Electron.BrowserWindow) => {
       message: '最新版本已下载完成, 退出程序进行安装！'
     }).then(() => {
       autoUpdater.quitAndInstall()
+      win.destroy()
     })
   })
 }

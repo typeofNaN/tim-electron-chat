@@ -2,8 +2,8 @@
   <div class="h-full">
     <div class="flex justify-between items-center px-10px h-80px b-b-2 b-b-solid b-b-#eee dark:b-b-#111">
       <div class="flex items-center">
-        <div class="flex-center w-40px h-40px b-rd-50% bg-gray">
-          <svg-icon icon="ic:sharp-person-off" class="text-20px color-#fff" />
+        <div class="flex-center w-40px h-40px b-rd-50% bg-gray text-20px color-#fff">
+          <svg-icon icon="ic:sharp-person-off" />
         </div>
         <div class="pl-10px text-16px select-none">{{ $t('page.contacts.blacklist') }}</div>
       </div>

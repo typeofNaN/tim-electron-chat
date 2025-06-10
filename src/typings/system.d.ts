@@ -309,6 +309,8 @@ declare namespace I18nType {
   type Schema = {
     system: {
       title: string
+      updateApplication: string
+      notNeedUpdate: string
     }
     common: {
       success: string
@@ -327,6 +329,9 @@ declare namespace I18nType {
       operationFail: string
       confirm: string
       cancel: string
+      close: string
+      reject: string
+      accept: string
       pleaseCheckValue: string
       action: string
       search: string
@@ -336,7 +341,7 @@ declare namespace I18nType {
         browserNotSupportedCopy: string
         copySuccess: string
         copyFail: string
-      },
+      }
       yes: string
       no: string
       placeholder: {
@@ -367,6 +372,7 @@ declare namespace I18nType {
         message: string
       }
       edited: string
+      systemNotification: string
     }
     msgPlaceholders: {
       image: string
@@ -379,6 +385,8 @@ declare namespace I18nType {
       friendApply: string
       chatHistory: string
       personalCenter: string
+      photoGroup: string
+      friendOnlineNotification: string
     }
     msgNotification: {
       sendAMessageToYou: string
@@ -387,6 +395,8 @@ declare namespace I18nType {
       customMessage: string
       file: string
       video: string
+      inviteVideoChat: string
+      inviteVoiceChat: string
     }
     app: {
       ctrl: {
@@ -410,6 +420,7 @@ declare namespace I18nType {
     }
     tip: {
       tokenExpire: string
+      toAppLook: string
     }
     tab: {
       contentMenu: {
@@ -498,6 +509,9 @@ declare namespace I18nType {
         _value: string
       }
       setting: {
+        _value: string
+      }
+      callChat: {
         _value: string
       }
       management: {
@@ -629,6 +643,9 @@ declare namespace I18nType {
           imageCodePlaceholder: string
           validFail: string
         }
+        scanLogin: {
+          title: string
+        }
         register: {
           title: string
           agreement: string
@@ -708,6 +725,7 @@ declare namespace I18nType {
         revokeAMessage: string
         saidAGreet: string
         personalCard: string
+        friendIsOnline: string
         chatHistory: string
         callResult: {
           accept: string
@@ -721,6 +739,7 @@ declare namespace I18nType {
           mergeAndForward: string
           forwardByItem: string
         }
+        currentQuoteDoesNotExist: string
       }
       contacts: {
         friendList: string
@@ -763,7 +782,7 @@ declare namespace I18nType {
           groupAnnouncementRequired: string
           createSuccess: string
           createFailed: string
-        },
+        }
         wording: string
         agree: string
         reject: string
@@ -792,6 +811,15 @@ declare namespace I18nType {
         feedback: string
         submitFeedback: string
       }
+    }
+    callChat: {
+      waiting: string
+      microphoneIsOpen: string
+      microphoneIsClose: string
+      speakerIsOpen: string
+      speakerIsClose: string
+      cameraIsOpen: string
+      cameraIsClose: string
     }
   }
 

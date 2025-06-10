@@ -5,7 +5,6 @@ import Log from 'electron-log'
 
 import { ipcEventHandle, windowEventHandle } from './event'
 import { createTray } from './tray'
-import checkForUpdates from './updater'
 
 Log.transports.file.level = 'debug'
 Log.transports.console.level = 'debug'
@@ -56,8 +55,6 @@ const createWindow = () => {
   windowEventHandle(win)
 
   ipcEventHandle(win)
-
-  checkForUpdates(win)
 
   createTray(win, trayIconPath)
 }

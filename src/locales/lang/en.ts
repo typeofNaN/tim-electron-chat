@@ -1,6 +1,8 @@
 const locale: I18nType.Schema = {
   system: {
-    title: 'TIM Electron Chat'
+    title: 'IM Electron Chat',
+    updateApplication: 'Update Application',
+    notNeedUpdate: 'Current Version Is Least Version!'
   },
   common: {
     success: 'Success',
@@ -19,6 +21,9 @@ const locale: I18nType.Schema = {
     operationFail: 'Operation Fail',
     confirm: 'Confirm',
     cancel: 'Cancel',
+    close: 'Close',
+    reject: 'Reject',
+    accept: 'Accept',
     pleaseCheckValue: 'Please check the value is valid',
     action: 'Action',
     search: 'Search',
@@ -58,7 +63,8 @@ const locale: I18nType.Schema = {
       group: 'Group',
       message: 'Message'
     },
-    edited: 'Edited'
+    edited: 'Edited',
+    systemNotification: 'System Notification'
   },
   msgPlaceholders: {
     image: '[Image]',
@@ -70,7 +76,9 @@ const locale: I18nType.Schema = {
     video: '[Video]',
     friendApply: '[Friend Apply]',
     chatHistory: '[Chat History]',
-    personalCenter: '[Personal Center]'
+    personalCenter: '[Personal Center]',
+    photoGroup: '[Photo Group]',
+    friendOnlineNotification: '[Friend Online Notification]'
   },
   msgNotification: {
     sendAMessageToYou: 'Send A Message To You',
@@ -78,7 +86,9 @@ const locale: I18nType.Schema = {
     sound: 'Sound',
     customMessage: 'Custom Message',
     file: 'File',
-    video: 'Video'
+    video: 'Video',
+    inviteVideoChat: '{ userName } Invite You Video Chat',
+    inviteVoiceChat: '{ userName } Invite You Voice Chat'
   },
   app: {
     ctrl: {
@@ -101,7 +111,8 @@ const locale: I18nType.Schema = {
     }
   },
   tip: {
-    tokenExpire: 'Token expire, please login again'
+    tokenExpire: 'Token expire, please login again',
+    toAppLook: 'Please Enter App To Look!'
   },
   tab: {
     contentMenu: {
@@ -191,6 +202,9 @@ const locale: I18nType.Schema = {
     },
     setting: {
       _value: 'Setting'
+    },
+    callChat: {
+      _value: 'Call'
     },
     management: {
       _value: 'System Management',
@@ -321,6 +335,9 @@ const locale: I18nType.Schema = {
         imageCodePlaceholder: 'Please enter image verification code',
         validFail: 'Valid fail, please try again!'
       },
+      scanLogin: {
+        title: 'Scan Login'
+      },
       register: {
         title: 'Register Account',
         agreement: 'I have read and agree to',
@@ -400,6 +417,7 @@ const locale: I18nType.Schema = {
       revokeAMessage: 'Revoke A Message',
       saidAGreet: 'Said A Greet',
       personalCard: 'Personal Card',
+      friendIsOnline: 'Friend Is Online',
       chatHistory: 'Chat History',
       callResult: {
         accept: 'Accept Call',
@@ -412,7 +430,8 @@ const locale: I18nType.Schema = {
       multiSelect: {
         mergeAndForward: 'Merge And Forward',
         forwardByItem: 'Forward By Item'
-      }
+      },
+      currentQuoteDoesNotExist: 'Current Quote Message Does Not Exist In The Message List'
     },
     contacts: {
       friendList: 'Friend List',
@@ -484,6 +503,15 @@ const locale: I18nType.Schema = {
       feedback: 'Feedback',
       submitFeedback: 'Submit Feedback'
     }
+  },
+  callChat: {
+    waiting: 'Waiting for accept the invitation ...',
+    microphoneIsOpen: 'Microphone Is Open',
+    microphoneIsClose: 'Microphone Is Close',
+    speakerIsOpen: 'Speaker Is Open',
+    speakerIsClose: 'Speaker Is Close',
+    cameraIsOpen: 'Camera Is Open',
+    cameraIsClose: 'Camera Is Close'
   }
 }
 

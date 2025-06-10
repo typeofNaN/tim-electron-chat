@@ -1,7 +1,7 @@
 <template>
   <div class="relative b-rd-4px overflow-hidden" :class="[videoLayoutRow ? 'w-400px' : 'w-200px']"
     :style="{ height: `${videoHeight}px` }">
-    <video ref="videoRef" :src="videoPath" controls controlslist="nodownload noremoteplayback noplaybackrate"
+    <video ref="videoRef" :src="videoPath" controls controlslist="noremoteplayback noplaybackrate"
       :disablePictureInPicture="true" class="w-full h-full object-contain" />
   </div>
 </template>

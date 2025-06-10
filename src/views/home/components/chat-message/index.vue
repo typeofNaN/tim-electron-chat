@@ -21,9 +21,10 @@
         <template v-if="chatStore.isOpenMultiSelect">
           <n-checkbox v-if="chatStore.isOpenMultiSelect"
             :checked="chatStore.multiSelectMessageList.findIndex(msg => msg.message_msg_id === item.message_msg_id) > -1" />
-          <div class="absolute inset-0 cursor-pointer" @click="checkMsg(item)"></div>
+          <div class="absolute inset-0 cursor-pointer" @click="checkMsg(item)" />
         </template>
-        <custom-avatar :src="item.message_sender_profile.user_profile_face_url" :size="40" />
+        <custom-avatar v-if="item.message_sender === SystemUserId" :isSystemNotification="true" :size="40" />
+        <custom-avatar v-else :src="item.message_sender_profile.user_profile_face_url" :size="40" />
         <div class="w-70%">
           <div class="flex gap-10px items-center mb-6px lh-[1.5]"
             :class="[{ 'flex-row-reverse': item.message_sender === chatStore.myInfo.user_profile_identifier }]">
@@ -39,10 +40,11 @@
             <div class="text-12px text-gray-400 lh-[1] select-none">
               {{ formatterTime(new Date((item.message_server_time || item.message_client_time) * 1000)) }}
             </div>
-            <svg-icon
+            <span
               v-if="item.message_sender === chatStore.myInfo.user_profile_identifier && item.message_conv_type === ConvTypeEnum.C2C"
-              :icon="item.message_is_peer_read ? 'solar:check-read-linear' : 'solar:unread-outline'"
-              class="color-#999 text-16px" />
+              class="color-#999 text-16px">
+              <svg-icon :icon="item.message_is_peer_read ? 'solar:check-read-linear' : 'solar:unread-outline'" />
+            </span>
             <div v-if="item.message_cloud_custom_str && item.message_cloud_custom_str.editContent"
               class="text-12px text-gray-400 lh-[1] select-none">
               {{ $t('chat.edited') }}
@@ -82,6 +84,7 @@
 <script lang="ts" setup>
 import { computed, nextTick, ref, watch } from 'vue'
 
+import { SystemUserId } from '@/constants/chatConfig'
 import { ConvTypeEnum } from '@/constants/conv'
 import { MsgTypeEnum } from '@/constants/msg'
 import { $t } from '@/locales'
@@ -104,7 +107,7 @@ import {
 interface Emits {
   (e: 'forwardMsg', msg: any): void
   (e: 'editMsg', msg: any): void
-  (e: 'quoteMsg', msg: any): void
+  (e: 'quoteMessage', msg: any): void
 }
 const emit = defineEmits<Emits>()
 
@@ -158,7 +161,7 @@ async function loadMoreMsg() {
   // 获取历史消息
   await chatStore.getConvMsgList(convData, true)
   // 滚动到加载前第一条消息位置
-  scrollbarRef.value.scrollTo({
+  scrollbarRef.value?.scrollTo({
     el: document.getElementById(msgId)
   })
   // 如果没有新消息了,隐藏加载更多按钮
@@ -169,10 +172,14 @@ async function loadMoreMsg() {
 }
 
 function toOriginMsg(msgId: string) {
-  scrollbarRef.value.scrollTo({
-    el: document.getElementById(msgId),
-    behavior: 'smooth'
-  })
+  try {
+    scrollbarRef.value?.scrollTo({
+      el: document.getElementById(msgId),
+      behavior: 'smooth'
+    })
+  } catch (err) {
+    window.$message?.warning($t('page.chat.currentQuoteDoesNotExist'))
+  }
 }
 
 function scrollToBottom() {
@@ -209,7 +216,7 @@ function scrollToBottom() {
   //     behavior?: ScrollBehavior;
   //   }): void;
   // }
-  scrollbarRef.value.scrollTo({
+  scrollbarRef.value?.scrollTo({
     position: 'bottom'
   })
 }
@@ -227,6 +234,6 @@ function editMsg(data: any) {
 }
 
 function quoteMsg(data: any) {
-  emit('quoteMsg', data)
+  emit('quoteMessage', data)
 }
 </script>

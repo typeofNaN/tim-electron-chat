@@ -1,5 +1,6 @@
 <template>
-  <n-form ref="formRef" :model="model" :rules="rules" size="large" :show-label="false">
+  <n-form ref="formRef" :model="model" :rules="rules" size="large" :show-label="false" @keyup.enter="handleSubmit"
+    class="w-full">
     <n-form-item path="userID">
       <n-input v-model:value="model.userID" :placeholder="$t('page.login.signLogin.userIDPlaceholder')" />
     </n-form-item>

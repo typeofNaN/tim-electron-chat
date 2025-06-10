@@ -10,6 +10,7 @@ export const views: Record<
   'constant-page': () => import('./_builtin/constant-page/index.vue'),
   login: () => import('./_builtin/login/index.vue'),
   'not-found': () => import('./_builtin/not-found/index.vue'),
+  'call-chat': () => import('./call-chat/index.vue'),
   contacts: () => import('./contacts/index.vue'),
   home: () => import('./home/index.vue'),
   setting: () => import('./setting/index.vue')

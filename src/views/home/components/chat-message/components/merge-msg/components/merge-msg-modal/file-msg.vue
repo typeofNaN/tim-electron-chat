@@ -13,8 +13,8 @@
         {{ fileSize }}
       </div>
     </div>
-    <div class="flex-center w-40px h-40px">
-      <svg-icon :local-icon="fileIcon" class="text-30px" />
+    <div class="flex-center w-40px h-40px text-30px">
+      <svg-icon :local-icon="fileIcon" />
     </div>
   </div>
 </template>

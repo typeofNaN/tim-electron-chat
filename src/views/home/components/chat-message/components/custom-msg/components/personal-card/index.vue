@@ -7,7 +7,7 @@
         {{ props.msg.content.nickname }}
       </n-ellipsis>
     </div>
-    <div class="my-10px h-1px" :class="[props.isMyMsg ? 'bg-gray-400' : 'bg-gray-300']"></div>
+    <div class="my-10px h-1px" :class="[props.isMyMsg ? 'bg-gray-400' : 'bg-gray-300']" />
     <div class="text-12px" :class="[props.isMyMsg ? 'text-gray-500' : 'text-gray-400']">
       {{ $t('page.chat.personalCard') }}
     </div>
@@ -160,9 +160,10 @@ async function getProfileInfo() {
   const friendType = await chatStore.checkFriendType(props.msg.content.imUserId)
   if (friendType) {
     // 判断是否为好友关系(单向好友或双向好友)
-    const isFriend = [FriendTypeEnum.ONLY_MY_FRIEND, FriendTypeEnum.BOTH_FRIEND].includes(
-      friendType.friendship_check_friendtype_result_relation
-    )
+    const isFriend = [
+      FriendTypeEnum.ONLY_MY_FRIEND,
+      FriendTypeEnum.BOTH_FRIEND
+    ].includes(friendType.friendship_check_friendtype_result_relation)
     isMyFriend.value = isFriend
     if (isFriend) {
       // 获取好友资料
@@ -173,7 +174,6 @@ async function getProfileInfo() {
     } else {
       // 获取用户资料
       const res = await chatStore.getUserInfo(props.msg.content.imUserId)
-      console.log(res)
       if (res) {
         profileInfo.value = res
       }

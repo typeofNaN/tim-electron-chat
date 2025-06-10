@@ -10,10 +10,9 @@
         :x="dropdownX" :y="dropdownY" @clickoutside="hideDropdown" @select="handleDropdown" />
     </div>
     <div v-if="msg.message_cloud_custom_str && msg.message_cloud_custom_str.editContent"
-      class="py-4px px-10px text-gray-900"
-      :class="[isMyMsg ? 'bg-#95ec69' : 'bg-gray-100 dark:text-gray-100 dark:bg-gray-800']">
-      {{ msg.message_cloud_custom_str.editContent.text }}
-    </div>
+      class="flex gap-4px items-center flex-wrap py-4px px-10px text-gray-900"
+      :class="[isMyMsg ? 'bg-#95ec69' : 'bg-gray-100 dark:text-gray-100 dark:bg-gray-800']"
+      v-html="transformEmojiText(msg.message_cloud_custom_str.editContent.text)" />
   </div>
 </template>
 
@@ -21,6 +20,7 @@
 import { computed, ref } from 'vue'
 
 import { useMsgDropdown } from '@/hooks'
+import { transformEmojiText } from '@/utils/common/emoji'
 import loadErrorImage from '@/assets/images/image-load-error.png'
 
 interface Props {

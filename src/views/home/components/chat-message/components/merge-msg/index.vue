@@ -4,15 +4,15 @@
     @contextmenu="handleContextMenu($event)">
     <n-ellipsis class="mt-4px mb-10px text-15px">{{ props.msg.message_elem_array[0].merge_elem_title }}</n-ellipsis>
     <div v-for="(item, index) in props.msg.message_elem_array[0].merge_elem_abstract_array.slice(0, 3)" :key="index"
-      class="flex gap-4px items-center overflow-hidden whitespace-nowrap text-ellipsis text-gray-700 text-13px"
-      :class="[!isMyMsg && 'dark:text-gray-300']" v-html="transformEmojiText(item)"></div>
-    <div class="my-6px h-1px bg-gray-300"></div>
+      class="flex gap-4px items-center ellipsis-text text-gray-700 text-13px"
+      :class="[!isMyMsg && 'dark:text-gray-300']" v-html="transformEmojiText(item)" />
+    <div class="my-6px h-1px bg-gray-300" />
     <div class="text-13px text-gray-700" :class="[!isMyMsg && 'dark:text-gray-300']">
       {{ $t('page.chat.chatHistory') }}
     </div>
     <n-dropdown :show="dropdownVisible" size="small" :options="dropdownOptions" placement="bottom-start" :x="dropdownX"
       :y="dropdownY" @clickoutside="hideDropdown" @select="handleDropdown" />
-    <MergeMsgModal ref="mergeMsgModalRef" />
+    <MergeMsg-modal ref="mergeMsgModalRef" />
   </div>
 </template>
 

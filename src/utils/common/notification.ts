@@ -1,5 +1,9 @@
 import { MsgTypeEnum } from '@/constants/msg'
 import { $t } from '@/locales'
+import { router } from '@/router'
+import { useChatStore } from '@/store'
+
+const { ipcRenderer } = require('electron')
 
 /**
  * 发送系统通知
@@ -39,6 +43,15 @@ export function sendNotification(message: any) {
       case MsgTypeEnum.CUSTOM:
         // 自定义消息,显示[自定义消息]占位符
         msgContent = $t('msgNotification.customMessage')
+        if (msg.custom_elem_data?.data?.subtype === 'call') {
+          if (msg.custom_elem_data?.data?.content?.isVideoCall === 'Y') {
+            msgContent = $t('msgNotification.inviteVideoChat', { userName: '' })
+          } else if (msg.custom_elem_data?.data?.content?.isVideoCall === 'N') {
+            msgContent = $t('msgNotification.inviteVoiceChat', { userName: '' })
+          }
+        } else if (msg.custom_elem_data?.data?.subtype === 'new_friend_online') {
+          msgContent = $t('page.chat.friendIsOnline')
+        }
         break
       case MsgTypeEnum.FILE:
         // 文件消息,显示[文件]占位符
@@ -56,11 +69,25 @@ export function sendNotification(message: any) {
     }
 
     // 发送系统通知,优先显示备注名>昵称>用户ID作为通知标题
-    new Notification(
+    const notification = new Notification(
       `${sender.user_profile_friend_remark || sender.user_profile_nick_name || sender.user_profile_identifier}`,
       {
         body: msgContent // 通知内容为消息内容
       }
     )
+
+    notification.onclick = () => {
+      const chatStore = useChatStore()
+      const conv = chatStore.convChatList.find(i => i.conv_id === message.message_conv_id)
+      if (conv) {
+        chatStore.setCurrentConvID(conv.conv_id)
+        if (router.currentRoute.value.name !== 'home') {
+          router.push({
+            name: 'home'
+          })
+        }
+        ipcRenderer.send('showWindow')
+      }
+    }
   }
 }

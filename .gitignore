@@ -32,9 +32,9 @@ stats.html
 *.sw?
 
 /src/typings/components.d.ts
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
 
 dist-electron
 release

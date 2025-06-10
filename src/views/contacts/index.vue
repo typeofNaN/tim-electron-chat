@@ -7,29 +7,23 @@
           <div v-for="item in tabList" :key="item.type" class="flex items-center px-10px h-60px cursor-pointer"
             :class="[{ '!bg-primary_active': currentTab.type === item.type }]" @click="setCurrentTab(item)">
             <n-badge v-if="item.type === TabTypeEnum.FRIEND_APPLY" :value="newApply" :max="99">
-              <div class="flex-center w-40px h-40px b-rd-50%" :class="[item.bgColor]">
-                <svg-icon :icon="item.icon" class="text-20px color-#fff" />
+              <div class="flex-center w-40px h-40px b-rd-50% text-20px color-#fff" :class="[item.bgColor]">
+                <svg-icon :icon="item.icon" />
               </div>
             </n-badge>
-            <div v-else class="flex-center w-40px h-40px b-rd-50%" :class="[item.bgColor]">
-              <svg-icon :icon="item.icon" class="text-20px color-#fff" />
+            <div v-else class="flex-center w-40px h-40px b-rd-50% text-20px color-#fff" :class="[item.bgColor]">
+              <svg-icon :icon="item.icon" />
             </div>
             <div class="pl-10px text-16p select-none">{{ $t(item.i18nName) }}</div>
           </div>
         </div>
       </template>
       <template #2>
-        <div v-if="currentTab.type === TabTypeEnum.FRIEND_LIST" class="h-full bg-#fff dark:bg-#000">
-          <FriendList />
-        </div>
-        <div v-else-if="currentTab.type === TabTypeEnum.MY_GROUP" class="h-full bg-#fff dark:bg-#000">
-          <MyGroup />
-        </div>
-        <div v-else-if="currentTab.type === TabTypeEnum.FRIEND_APPLY" class="h-full bg-#fff dark:bg-#000">
-          <FriendApply />
-        </div>
-        <div v-else-if="currentTab.type === TabTypeEnum.BLACKLIST" class="h-full bg-#fff dark:bg-#000">
-          <Blacklist />
+        <div class="h-full bg-#fff dark:bg-#000">
+          <FriendList v-if="currentTab.type === TabTypeEnum.FRIEND_LIST" />
+          <MyGroup v-else-if="currentTab.type === TabTypeEnum.MY_GROUP" />
+          <FriendApply v-else-if="currentTab.type === TabTypeEnum.FRIEND_APPLY" />
+          <Blacklist v-else-if="currentTab.type === TabTypeEnum.BLACKLIST" />
         </div>
       </template>
     </n-split>
@@ -40,10 +34,12 @@
 import { ref } from 'vue'
 
 import { $t } from '@/locales'
-import FriendList from './components/friend-list/index.vue'
-import MyGroup from './components/my-group/index.vue'
-import FriendApply from './components/friend-apply/index.vue'
-import Blacklist from './components/blacklist/index.vue'
+import {
+  FriendList,
+  MyGroup,
+  FriendApply,
+  Blacklist
+} from './components'
 
 type TabType = {
   type: TabTypeEnum

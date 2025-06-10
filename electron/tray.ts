@@ -1,4 +1,5 @@
 import {
+  app,
   BrowserWindow,
   Menu,
   MenuItem,
@@ -26,6 +27,7 @@ export function createTray(win: BrowserWindow, trayIconPath: string) {
       label: 'Exit',
       click: () => {
         win.destroy()
+        app.quit()
       }
     }
   ]

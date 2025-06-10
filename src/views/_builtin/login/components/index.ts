@@ -5,6 +5,7 @@ import PwdLogin from './pwd-login/index.vue'
 import Register from './register-user/index.vue'
 import ResetPwd from './reset-pwd/index.vue'
 import SignLogin from './sign-login/index.vue'
+import ScanLogin from './scan-login/index.vue'
 
 export {
   BindWechat,
@@ -13,5 +14,6 @@ export {
   PwdLogin,
   Register,
   ResetPwd,
-  SignLogin
+  SignLogin,
+  ScanLogin
 }

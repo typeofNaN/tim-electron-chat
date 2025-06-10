@@ -2,7 +2,7 @@
   <div @contextmenu="handleContextMenu($event)">
     <div v-html="transformEmojiText(props.msg.message_elem_array[0].text_elem_content)"
       class="flex gap-4px items-center flex-wrap py-4px px-10px b-rd-4px break-all text-gray-900 whitespace-pre-wrap"
-      :class="[isMyMsg ? 'bg-#95ec69' : 'bg-gray-100 dark:text-gray-100 dark:bg-gray-800']"></div>
+      :class="[isMyMsg ? 'bg-#95ec69' : 'bg-gray-100 dark:text-gray-100 dark:bg-gray-800']" />
     <n-dropdown :show="dropdownVisible" size="small" :options="dropdownOptions" placement="bottom-start" :x="dropdownX"
       :y="dropdownY" @clickoutside="hideDropdown" @select="handleDropdown" />
   </div>
@@ -56,17 +56,4 @@ function quoteMsg() {
     nickname: msg.message_sender_profile.user_profile_friend_remark || msg.message_sender_profile.user_profile_nick_name
   })
 }
-// {
-//     "quoteContent": {
-//     "messageId": "消息id",
-//     "abstract": "引用消息摘要",
-//     "sender": "发送者 imUserId",
-//     "type": "消息类型",
-//     "timestamp": "时间戳 秒",
-//     "sequence": "消息序列号",
-//     "imageUrl": "",
-//     "imageWidth": 100,
-//     "imageHeight": 100,
-//     "mimeType": "文件类型，有才传"
-// }
 </script>

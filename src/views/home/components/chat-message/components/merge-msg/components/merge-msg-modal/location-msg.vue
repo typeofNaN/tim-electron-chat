@@ -1,6 +1,6 @@
 <template>
-  <div class="flex items-center w-400px h-240px b-rd-4px cursor-pointer overflow-hidden">
-    <div ref="domRef" class="h-full w-full"></div>
+  <div class="flex items-center w-300px h-180px b-rd-4px cursor-pointer overflow-hidden">
+    <div ref="domRef" class="h-full w-full" />
   </div>
 </template>
 

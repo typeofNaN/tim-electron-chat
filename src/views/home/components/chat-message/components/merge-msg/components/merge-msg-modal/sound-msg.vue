@@ -1,6 +1,6 @@
 <template>
-  <div class="flex items-center px-10px w-400px h-70px b-rd-4px cursor-pointer bg-gray-100 dark:bg-gray-800">
-    <audio :src="audioPath" controls controlslist="nodownload noplaybackrate" class="w-full" />
+  <div class="flex items-center px-10px w-360px h-40px b-rd-4px cursor-pointer bg-gray-100 dark:bg-gray-800">
+    <audio :src="audioPath" controls controlslist="noplaybackrate" class="w-full h-32px" />
   </div>
 </template>
 

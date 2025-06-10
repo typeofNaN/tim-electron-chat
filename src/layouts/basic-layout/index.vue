@@ -19,9 +19,9 @@
     <template #footer>
       <global-footer />
     </template>
+    <n-back-top :key="theme.scrollMode" :listen-to="`#${app.scrollElId}`" class="z-100" />
+    <setting-drawer />
   </admin-layout>
-  <n-back-top :key="theme.scrollMode" :listen-to="`#${app.scrollElId}`" class="z-100" />
-  <setting-drawer />
 </template>
 
 <script setup lang="ts">

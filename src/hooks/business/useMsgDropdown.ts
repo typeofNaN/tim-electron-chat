@@ -106,17 +106,18 @@ export default function useMsgDropdown(msg: any, cbOptions?: any) {
         MsgTypeEnum.TEXT,
         MsgTypeEnum.IMAGE,
         MsgTypeEnum.SOUND,
-        MsgTypeEnum.CUSTOM,
         MsgTypeEnum.FILE,
         MsgTypeEnum.LOCATION,
         MsgTypeEnum.VIDEO,
         MsgTypeEnum.MERGE
-      ].includes(msgType.value),
+      ].includes(msgType.value) ||
+        (msgType.value === MsgTypeEnum.CUSTOM && msg.message_elem_array[0].custom_elem_data.subtype !== 'new_friend_online'),
       icon: iconRender({ icon: 'material-symbols:forward' })
     },
     {
       label: $t('page.chat.msg.multiSelect'),
       key: 'multiSelect',
+      show: !(msgType.value === MsgTypeEnum.CUSTOM && msg.message_elem_array[0].custom_elem_data.subtype === 'new_friend_online'),
       icon: iconRender({ icon: 'ic:outline-checklist' })
     },
     {
@@ -134,7 +135,7 @@ export default function useMsgDropdown(msg: any, cbOptions?: any) {
       ].includes(msgType.value) ||
         (
           msgType.value === MsgTypeEnum.CUSTOM &&
-          ['personal_card'].includes(msg.message_elem_array[0].custom_elem_data.subtype)
+          ['personal_card', 'grouped_photos'].includes(msg.message_elem_array[0].custom_elem_data.subtype)
         )
     },
     {
@@ -142,7 +143,9 @@ export default function useMsgDropdown(msg: any, cbOptions?: any) {
       key: 'edit',
       icon: iconRender({ icon: 'ic-round-edit' }),
       show: isMyMsg.value &&
+        // 超出15分钟后不可编辑
         (dropdownVisibleTime.value - msg.message_server_time) <= 60 * 15 &&
+        // 已编辑过的不可编辑
         !msg.message_cloud_custom_str.editContent &&
         [
           MsgTypeEnum.TEXT,

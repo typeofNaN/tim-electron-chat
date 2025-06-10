@@ -8,7 +8,7 @@ declare namespace UnionKey {
    * - blank 空白布局
    * - chat 聊天布局
    */
-  type LayoutComponentType = 'basic' | 'blank' | 'chat'
+  type LayoutComponentType = 'basic' | 'blank' | 'chat' | 'call'
 
   /**
    * 登录模块

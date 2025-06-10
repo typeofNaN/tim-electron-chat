@@ -1,11 +1,11 @@
 <template>
-  <n-form ref="formRef" :model="model" :rules="rules" size="large" :show-label="false">
-    <n-form-item path="phone">
-      <n-input v-model:value="model.phone" :placeholder="$t('page.login.common.phonePlaceholder')" />
+  <n-form ref="formRef" :model="model" :rules="rules" size="large" :show-label="false" @keyup.enter="handleSubmit">
+    <n-form-item path="userID">
+      <n-input v-model:value="model.userID" :placeholder="$t('page.login.common.phonePlaceholder')" />
     </n-form-item>
-    <n-form-item path="code">
+    <n-form-item path="userSig">
       <div class="flex-y-center w-full">
-        <n-input v-model:value="model.code" :placeholder="$t('page.login.common.codePlaceholder')" />
+        <n-input v-model:value="model.userSig" :placeholder="$t('page.login.common.codePlaceholder')" />
         <div class="w-18px" />
         <n-button size="large" :disabled="isCounting" :loading="smsLoading" @click="handleSmsCode">
           {{ label }}
@@ -17,25 +17,29 @@
         @click="handleSubmit">
         {{ $t('page.login.common.confirm') }}
       </n-button>
-      <n-button size="large" :block="true" :round="true" @click="toLoginModule('pwd-login')">
+      <!-- <n-button size="large" :block="true" :round="true" @click="toLoginModule('pwd-login')">
         {{ $t('page.login.common.back') }}
-      </n-button>
+      </n-button> -->
     </n-space>
   </n-form>
 </template>
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import type { FormInst } from 'naive-ui'
 
-import { useRouterPush } from '@/composables'
+// import { useRouterPush } from '@/composables'
 import { useSmsCode } from '@/hooks'
 import { $t } from '@/locales'
-import { useAuthStore } from '@/store'
-import { formRules } from '@/utils'
+import { useAuthStore, useChatStore } from '@/store'
+import { formRules, localStg } from '@/utils'
+
+const router = useRouter()
+const chatStore = useChatStore()
 
 const auth = useAuthStore()
-const { toLoginModule } = useRouterPush()
+// const { toLoginModule } = useRouterPush()
 const {
   label,
   isCounting,
@@ -47,12 +51,16 @@ const formRef = ref<HTMLElement & FormInst>()
 
 const model = reactive({
   phone: '',
-  code: ''
+  code: '',
+  userID: '',
+  userSig: ''
 })
 
 const rules = {
-  phone: formRules.phone,
-  code: formRules.code
+  // phone: formRules.phone,
+  // code: formRules.code
+  userID: formRules.userID,
+  userSig: formRules.userSig
 }
 
 function handleSmsCode() {
@@ -60,7 +68,18 @@ function handleSmsCode() {
 }
 
 async function handleSubmit() {
-  await formRef.value?.validate()
-  window.$message?.success($t('page.login.common.validateSuccess'))
+  // await formRef.value?.validate()
+  // window.$message?.success($t('page.login.common.validateSuccess'))
+  const { userID, userSig } = model
+
+  const res = await chatStore.loginIM(userID, userSig)
+  if (res) {
+    window.$message?.success($t('page.login.common.loginSuccess'))
+    localStg.set('userID', userID)
+    localStg.set('userSig', userSig)
+    router.replace({ name: 'home' })
+  } else {
+    window.$message?.error($t('page.login.common.loginFail'))
+  }
 }
 </script>

@@ -1,11 +1,15 @@
+import { h } from 'vue'
+import { NButton, NSpace } from 'naive-ui'
 import { defineStore } from 'pinia'
 import { v4 as uuidV4 } from 'uuid'
 
 import { ConvRecvOptEnum, ConvTypeEnum } from '@/constants/conv'
 import { MsgTypeEnum } from '@/constants/msg'
+import { $t } from '@/locales'
 import { router } from '@/router'
 import { formatterBirthday } from '@/utils/common/datetime'
 import { sendNotification } from '@/utils/common/notification'
+import { useRtcStore } from '../rtc'
 
 const { ipcRenderer } = require('electron')
 
@@ -111,7 +115,7 @@ export const useChatStore = defineStore('chat-store', {
      * @description 初始化IM实例
      */
     initIM() {
-      ipcRenderer.send('setupIM', Number(import.meta.env.VITE_IM_SDK_APP_ID))
+      ipcRenderer.send('setupIM', Number(import.meta.env.VITE_TENCENT_CLOUD_SDK_APP_ID))
       this.imInstance = new TimRender()
       this.imInstance.TIMInit()
     },
@@ -394,7 +398,7 @@ export const useChatStore = defineStore('chat-store', {
      * @param { boolean } - 是否加载历史消息
      */
     async getConvMsgList(data: any, loadHistoryMsg = false) {
-      if (!data.conv_last_msg) {
+      if (!data || !data.conv_last_msg) {
         this.msgList = []
         return
       }
@@ -416,7 +420,7 @@ export const useChatStore = defineStore('chat-store', {
         .map((item: any) => {
           if (item.message_elem_array[0]?.elem_type === MsgTypeEnum.CUSTOM) {
             item.message_elem_array[0].custom_elem_data = JSON.parse(item.message_elem_array[0].custom_elem_data)
-            if (item.message_elem_array[0].custom_elem_data.data) {
+            if (item.message_elem_array[0].custom_elem_data.data && typeof item.message_elem_array[0].custom_elem_data.data === 'string') {
               item.message_elem_array[0].custom_elem_data.data = JSON.parse(item.message_elem_array[0].custom_elem_data.data)
             }
           }
@@ -508,6 +512,12 @@ export const useChatStore = defineStore('chat-store', {
                 msg.message_cloud_custom_str = msg.message_cloud_custom_str
                   ? JSON.parse(msg.message_cloud_custom_str)
                   : ''
+                if (msg.message_elem_array[0]?.elem_type === MsgTypeEnum.CUSTOM) {
+                  msg.message_elem_array[0].custom_elem_data = JSON.parse(msg.message_elem_array[0].custom_elem_data)
+                  if (msg.message_elem_array[0].custom_elem_data.data && typeof msg.message_elem_array[0].custom_elem_data.data === 'string') {
+                    msg.message_elem_array[0].custom_elem_data.data = JSON.parse(msg.message_elem_array[0].custom_elem_data.data)
+                  }
+                }
                 this.msgList.push(msg)
               }
             } else {
@@ -532,6 +542,27 @@ export const useChatStore = defineStore('chat-store', {
         },
         user_data: this.userData
       })
+    },
+    /**
+     * @description 保存消息
+     */
+    async saveMsg(convId: string, convType: ConvTypeEnum, msgData: any) {
+      const { code, json_params } = await this.imInstance.TIMMsgSaveMsg({
+        conv_id: convId,
+        conv_type: convType,
+        user_data: this.userData,
+        params: msgData
+      })
+      console.log('TIMMsgSaveMsg', code)
+      if (code === 0 && this.currentConvID === convId) {
+        if (json_params.message_elem_array[0]?.elem_type === MsgTypeEnum.CUSTOM) {
+          json_params.message_elem_array[0].custom_elem_data = JSON.parse(json_params.message_elem_array[0].custom_elem_data)
+          if (json_params.message_elem_array[0].custom_elem_data.data && typeof json_params.message_elem_array[0].custom_elem_data.data === 'string') {
+            json_params.message_elem_array[0].custom_elem_data.data = JSON.parse(json_params.message_elem_array[0].custom_elem_data.data)
+          }
+        }
+        this.pushLocalMsg(json_params)
+      }
     },
     /**
      * @description 发送本地消息
@@ -815,6 +846,76 @@ export const useChatStore = defineStore('chat-store', {
       return false
     },
     /**
+     * @description 邀请
+     * @param { any } data - 数据
+     */
+    async inviteChat(data: any) {
+      const { code, json_params } = await this.imInstance.TIMInvite({
+        user_data: this.userData,
+        invitee: this.currentConvID,
+        online_user_only: true,
+        timeout: 60,
+        data: JSON.stringify(data)
+      })
+      console.log('TIMInvite', code, json_params)
+      if (code === 0) {
+        return json_params
+      }
+
+      return ''
+    },
+    /**
+     * @description 取消邀请
+     * @param { string } inviteId - 邀请ID
+     * @param { any } data - 数据
+     */
+    async cancelInvite(inviteId: string, data: any) {
+      const { code } = await this.imInstance.TIMCancelInvite({
+        user_data: this.userData,
+        invite_id: inviteId,
+        data: JSON.stringify(data)
+      })
+      console.log('TIMCancelInvite', code)
+    },
+    /**
+     * @description 接受邀请
+     * @param { string } inviteId - 邀请ID
+     * @param { any } data - 数据
+     */
+    async acceptInvite(inviteId: string, data: any) {
+      const { code } = await this.imInstance.TIMAcceptInvite({
+        user_data: this.userData,
+        invite_id: inviteId,
+        data: JSON.stringify(data)
+      })
+      console.log('TIMAcceptInvite --- invite_id:', inviteId)
+      console.log('TIMAcceptInvite --- Code:', code)
+      if (code === 0) {
+        return true
+      }
+
+      return false
+    },
+    /**
+     * @description 拒绝邀请
+     * @param { string } inviteId - 邀请ID
+     * @param { any } data - 数据
+     */
+    async rejectInvite(inviteId: string, data: any) {
+      const { code } = await this.imInstance.TIMRejectInvite({
+        user_data: this.userData,
+        invite_id: inviteId,
+        data: JSON.stringify(data)
+      })
+      console.log('TIMRejectInvite --- invite_id:', inviteId)
+      console.log('TIMRejectInvite --- Code:', code)
+      if (code === 0) {
+        return true
+      }
+
+      return false
+    },
+    /**
      * @description 设置IM相关事件的回调函数
      * - 会话更新事件
      * - 未读消息总数变化事件
@@ -824,8 +925,8 @@ export const useChatStore = defineStore('chat-store', {
       // 会话事件回调
       this.imInstance.TIMSetConvEventCallback({
         user_data: this.userData,
-        callback: async () => {
-          console.log('会话事件回调')
+        callback: async (e: any) => {
+          console.log('会话事件回调', e)
           await this.getConvList()
         }
       })
@@ -836,6 +937,11 @@ export const useChatStore = defineStore('chat-store', {
         callback: async () => {
           await this.getTotalUnreadMsgCount()
         }
+      })
+
+      this.imInstance.TIMOnInvited({
+        user_data: this.userData,
+        callback: () => { }
       })
 
       // 接收消息的回调
@@ -856,7 +962,114 @@ export const useChatStore = defineStore('chat-store', {
               }
 
               // 忽略信令消息
-              if (msgData[0].message_elem_array[0].custom_elem_data.actionType !== void 0) {
+              if (
+                msgData[0].message_elem_array[0].custom_elem_data.actionType !== void 0 ||
+                msgData[0].message_elem_array[0].custom_elem_data.subtype === 'typing'
+              ) {
+                if (msgData[0].message_elem_array[0].custom_elem_data.actionType === 1) {
+                  sendNotification(msgData[0])
+                  const msg = msgData[0].message_elem_array[0]
+                  if (msg.elem_type === MsgTypeEnum.CUSTOM && msg.custom_elem_data?.data?.subtype === 'call') {
+                    const sender = msgData[0].message_sender_profile
+                    let msgContent = ''
+                    if (msg.custom_elem_data?.data?.subtype === 'call') {
+                      if (msg.custom_elem_data?.data?.content?.isVideoCall === 'Y') {
+                        msgContent = $t('msgNotification.inviteVideoChat', { userName: '' })
+                      } else if (msg.custom_elem_data?.data?.content?.isVideoCall === 'N') {
+                        msgContent = $t('msgNotification.inviteVoiceChat', { userName: '' })
+                      }
+                    }
+                    const notification = window.$notification?.info({
+                      title: sender.user_profile_friend_remark || sender.user_profile_nick_name || sender.user_profile_identifier,
+                      content: msgContent,
+                      duration: 60000,
+                      closable: false,
+                      meta: ' ',
+                      action: () => {
+                        return h(
+                          NSpace,
+                          {
+                            class: 'w-full',
+                            justify: 'end'
+                          },
+                          {
+                            default: () => [
+                              h(
+                                NButton,
+                                {
+                                  type: 'error',
+                                  onClick: async () => {
+                                    await this.rejectInvite(
+                                      msg.custom_elem_data.inviteID,
+                                      {
+                                        type: 'signal',
+                                        subtype: 'call',
+                                        excludeFromHistoryMessage: msg.custom_elem_data?.data?.excludeFromHistoryMessage,
+                                        content: {
+                                          callerId: msg.custom_elem_data?.data?.content?.callerId,
+                                          roomId: msg.custom_elem_data?.data?.content?.roomId,
+                                          isVideoCall: msg.custom_elem_data?.data?.content?.isVideoCall,
+                                          rejectReason: 'reject'
+                                        }
+                                      }
+                                    )
+                                    notification?.destroy()
+                                  }
+                                },
+                                {
+                                  default: () => $t('common.reject')
+                                }
+                              ),
+                              h(
+                                NButton,
+                                {
+                                  type: 'success',
+                                  onClick: async () => {
+                                    const isSuccess = await this.acceptInvite(
+                                      msg.custom_elem_data.inviteID,
+                                      {
+                                        type: 'signal',
+                                        subtype: 'call',
+                                        excludeFromHistoryMessage: msg.custom_elem_data?.data?.excludeFromHistoryMessage,
+                                        content: {
+                                          callerId: msg.custom_elem_data?.data?.content?.callerId,
+                                          roomId: msg.custom_elem_data?.data?.content?.roomId,
+                                          isVideoCall: msg.custom_elem_data?.data?.content?.isVideoCall,
+                                        }
+                                      }
+                                    )
+                                    if (isSuccess) {
+                                      const rtcStore = useRtcStore()
+                                      rtcStore.setStrRoomId(msg.custom_elem_data?.data?.content?.roomId)
+                                      rtcStore.setCallUser({
+                                        name: msgData[0].message_sender_profile.user_profile_nick_name,
+                                        avatar: msgData[0].message_sender_profile.user_profile_face_url,
+                                        id: msgData[0].message_sender_profile.user_profile_identifier,
+                                        inviteId: msg.custom_elem_data.inviteID
+                                      })
+                                      rtcStore.setApplyUser('other')
+                                      rtcStore.setMyUserId(this.myUserID)
+                                      if (msg.custom_elem_data?.data?.content?.isVideoCall === 'Y') {
+                                        rtcStore.setCallType('video')
+                                      } else if (msg.custom_elem_data?.data?.content?.isVideoCall === 'N') {
+                                        rtcStore.setCallType('voice')
+                                      }
+                                      ipcRenderer.send('createCallWindow')
+                                    }
+                                    notification?.destroy()
+                                  }
+                                },
+                                {
+                                  default: () => $t('common.accept')
+                                }
+                              )
+                            ]
+                          }
+                        )
+                      }
+                    })
+                  }
+                }
                 return
               }
             }

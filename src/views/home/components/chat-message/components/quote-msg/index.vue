@@ -8,17 +8,28 @@
       </div>
       <div v-else-if="props.msg.type === 'image'" class="flex-y-center">
         {{ props.msg.nickname }}：
-        <img :src="props.msg.imageUrl" alt="" class="h-30px" />
+        <img v-if="props.msg.imageUrl" :src="props.msg.imageUrl" alt="" class="h-30px" />
+        <template v-else>{{ $t('msgPlaceholders.image') }}</template>
       </div>
       <div v-else-if="props.msg.type === 'video'" class="flex-y-center">
         {{ props.msg.nickname }}：
-        <img :src="props.msg.imageUrl" alt="" class="h-30px" />
+        <img v-if="props.msg.imageUrl" :src="props.msg.imageUrl" alt="" class="h-30px" />
+        <template v-else>{{ $t('msgPlaceholders.video') }}</template>
       </div>
       <div v-else-if="props.msg.type === 'audio'">
         {{ props.msg.nickname }}：{{ $t('msgPlaceholders.sound') }}
       </div>
       <div v-else-if="props.msg.type === 'file'">
         {{ props.msg.nickname }}：{{ $t('msgPlaceholders.file') }}
+      </div>
+      <div v-else-if="props.msg.type === 'post'">
+        {{ props.msg.nickname }}：[Post]
+      </div>
+      <div v-else-if="props.msg.type === 'note'">
+        {{ props.msg.nickname }}：[Note]
+      </div>
+      <div v-else-if="props.msg.type === 'story'">
+        {{ props.msg.nickname }}：[Story]
       </div>
       <div v-else-if="props.msg.type === 'merger'"
         class="flex-y-center max-w-258px overflow-hidden ellipsis-text whitespace-nowrap">
@@ -32,6 +43,9 @@
       </div>
       <div v-else-if="props.msg.type === 'personal_other_card'">
         {{ props.msg.nickname }}：{{ $t('msgPlaceholders.personalCard') }}
+      </div>
+      <div v-else-if="props.msg.type === 'grouped_photos'">
+        {{ props.msg.nickname }}：{{ $t('msgPlaceholders.photoGroup') }}
       </div>
       <div v-else>
         {{ props.msg.nickname }}：

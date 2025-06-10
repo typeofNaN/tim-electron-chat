@@ -1,6 +1,8 @@
 const locale: I18nType.Schema = {
   system: {
-    title: 'TIM Electron Chat'
+    title: 'IM Electron Chat',
+    updateApplication: '更新应用',
+    notNeedUpdate: '当前版本已是最新版本，不需要更新！'
   },
   common: {
     success: '成功',
@@ -19,6 +21,9 @@ const locale: I18nType.Schema = {
     operationFail: '操作失败',
     confirm: '确认',
     cancel: '取消',
+    close: '关闭',
+    reject: '拒绝',
+    accept: '接收',
     pleaseCheckValue: '请检查输入的值是否合法',
     action: '操作',
     search: '搜索',
@@ -58,7 +63,8 @@ const locale: I18nType.Schema = {
       group: '群组',
       message: '消息'
     },
-    edited: '已编辑'
+    edited: '已编辑',
+    systemNotification: '系统通知'
   },
   msgPlaceholders: {
     image: '[图片]',
@@ -70,7 +76,9 @@ const locale: I18nType.Schema = {
     video: '[视频]',
     friendApply: '[好友申请]',
     chatHistory: '[聊天记录]',
-    personalCenter: '[个人中心]'
+    personalCenter: '[个人中心]',
+    photoGroup: '[图组]',
+    friendOnlineNotification: '[好友上线通知]'
   },
   msgNotification: {
     sendAMessageToYou: '给你发了一条消息',
@@ -78,7 +86,9 @@ const locale: I18nType.Schema = {
     sound: '语音',
     customMessage: '自定义消息',
     file: '文件',
-    video: '视频'
+    video: '视频',
+    inviteVideoChat: '{ userName }邀请你视频聊天',
+    inviteVoiceChat: '{ userName }邀请你语音聊天'
   },
   app: {
     ctrl: {
@@ -101,7 +111,8 @@ const locale: I18nType.Schema = {
     }
   },
   tip: {
-    tokenExpire: 'Token已失效，请重新登录'
+    tokenExpire: 'Token已失效，请重新登录',
+    toAppLook: '当前功能未实现，请到APP中打开查看！'
   },
   tab: {
     contentMenu: {
@@ -191,6 +202,9 @@ const locale: I18nType.Schema = {
     },
     setting: {
       _value: '设置'
+    },
+    callChat: {
+      _value: '音视频通话'
     },
     management: {
       _value: '系统管理',
@@ -327,6 +341,9 @@ const locale: I18nType.Schema = {
         protocol: '《用户协议》',
         policy: '《隐私权政策》'
       },
+      scanLogin: {
+        title: '扫码登录'
+      },
       resetPwd: {
         title: '重置密码'
       },
@@ -400,6 +417,7 @@ const locale: I18nType.Schema = {
       revokeAMessage: '撤回了一条消息',
       saidAGreet: '打了个招呼',
       personalCard: '个人名片',
+      friendIsOnline: '好友上线了',
       chatHistory: '聊天记录',
       callResult: {
         accept: '接受通话',
@@ -412,7 +430,8 @@ const locale: I18nType.Schema = {
       multiSelect: {
         mergeAndForward: '合并转发',
         forwardByItem: '逐条转发'
-      }
+      },
+      currentQuoteDoesNotExist: '当前引用消息在消息列表中不存在'
     },
     contacts: {
       friendList: '好友列表',
@@ -484,6 +503,15 @@ const locale: I18nType.Schema = {
       feedback: '反馈',
       submitFeedback: '提交反馈'
     }
+  },
+  callChat: {
+    waiting: '等待对方接受邀请...',
+    microphoneIsOpen: '麦克风已开',
+    microphoneIsClose: '麦克风已关',
+    speakerIsOpen: '扬声器已开',
+    speakerIsClose: '扬声器已关',
+    cameraIsOpen: '摄像头已开',
+    cameraIsClose: '摄像头已关'
   }
 }
 

@@ -1,13 +1,13 @@
 <template>
-  <ChatLayout>
+  <chat-layout>
     <template #header>
-      <ChatHeader />
+      <chat-header />
     </template>
     <template #sider>
-      <ChatSider />
+      <chat-sider />
     </template>
     <global-content :show-padding="false" />
-  </ChatLayout>
+  </chat-layout>
 </template>
 
 <script setup lang="ts">

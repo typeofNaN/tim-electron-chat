@@ -1,5 +1,5 @@
 <template>
-  <n-form ref="formRef" :model="model" :rules="rules" size="large" :show-label="false">
+  <n-form ref="formRef" :model="model" :rules="rules" size="large" :show-label="false" @keyup.enter="getOffSet">
     <n-form-item path="account">
       <n-input v-model:value="model.account" :placeholder="$t('page.login.common.userNamePlaceholder')" />
     </n-form-item>
@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, reactive, ref } from 'vue'
+import { reactive, ref } from 'vue'
 import type { FormInst, FormRules } from 'naive-ui'
 
 import { useRouterPush } from '@/composables'
@@ -97,21 +97,6 @@ const imgList = [
   img9,
   img10
 ]
-
-onMounted(() => {
-  document.addEventListener('keydown', keyDown)
-})
-
-onBeforeUnmount(() => {
-  document.removeEventListener('keydown', keyDown)
-})
-
-function keyDown() {
-  const key = (window.event as KeyboardEvent).keyCode
-  if (key === 13) {
-    getOffSet()
-  }
-}
 
 async function handleSubmit() {
   const { account, password } = model

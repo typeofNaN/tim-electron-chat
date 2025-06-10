@@ -21,7 +21,7 @@
             <custom-avatar :src="profileInfo.friend_profile_user_profile.user_profile_face_url" :size="40" />
           </div>
           <div class="flex justify-between items-center flex-grow-1 pl-20px w-[calc(100%-40px)]">
-            <div class="text-16px w-[calc(100%-30px)] overflow-hidden  whitespace-nowrap text-ellipsis">
+            <div class="text-16px w-[calc(100%-30px)] ellipsis-text">
               {{
                 profileInfo.friend_profile_remark ||
                 profileInfo.friend_profile_user_profile.user_profile_nick_name ||
@@ -96,7 +96,7 @@
             <custom-avatar :src="profileInfo.user_profile_face_url" :size="40" />
           </div>
           <div class="flex justify-between items-center flex-grow-1 pl-20px w-[calc(100%-40px)]">
-            <div class="flex-grow-1 text-16px overflow-hidden  whitespace-nowrap text-ellipsis">
+            <div class="flex-grow-1 text-16px ellipsis-text">
               {{
                 profileInfo.user_profile_nick_name ||
                 profileInfo.user_profile_identifier

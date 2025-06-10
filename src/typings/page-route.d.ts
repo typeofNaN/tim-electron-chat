@@ -15,7 +15,17 @@ declare namespace PageRoute {
    * the route key
    * @translate 页面路由
    */
-  type RouteKey = '403' | '404' | '500' | 'constant-page' | 'login' | 'not-found' | 'contacts' | 'home' | 'setting';
+  type RouteKey =
+    | '403'
+    | '404'
+    | '500'
+    | 'constant-page'
+    | 'login'
+    | 'not-found'
+    | 'call-chat'
+    | 'contacts'
+    | 'home'
+    | 'setting';
 
   /**
    * last degree route key, which has the page file
@@ -23,6 +33,6 @@ declare namespace PageRoute {
    */
   type LastDegreeRouteKey = Extract<
     RouteKey,
-    '403' | '404' | '500' | 'constant-page' | 'login' | 'not-found' | 'contacts' | 'home' | 'setting'
+    '403' | '404' | '500' | 'constant-page' | 'login' | 'not-found' | 'call-chat' | 'contacts' | 'home' | 'setting'
   >;
 }

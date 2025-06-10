@@ -21,7 +21,7 @@ export function formatterTime(time: Date, format: string = 'YYYY-MM-DD HH:mm:ss'
  * 格式化聊天最后消息时间的时间戳
  * 如果消息是今天的，返回HH:mm格式的时间
  * 如果消息是其他天的，返回YY/M/D格式的日期
- * @param timestamp 毫秒级时间戳
+ * @param { number } timestamp 毫秒级时间戳
  * @returns 格式化后的时间字符串
  */
 export function formatterChatLastMsgTime(timestamp: number): string {
@@ -41,7 +41,7 @@ export function formatterChatLastMsgTime(timestamp: number): string {
 
 /**
  * 将生日数字格式化为 'YYYY-MM-DD' 格式的字符串
- * @param birthday 8位数字格式的生日，如20230915表示2023年09月15日
+ * @param { number } birthday 8位数字格式的生日，如20230915表示2023年09月15日
  * @returns 格式化后的生日字符串，如'2023-09-15'
  * @example
  * formatterBirthday(20230915) // '2023-09-15'
@@ -60,7 +60,7 @@ export function formatterBirthday(birthday: number): string {
 
 /**
  * 将毫秒级时间戳格式化为 'YYYY/MM/DD' 格式的日期字符串
- * @param timestamp 毫秒级时间戳
+ * @param { number } timestamp 毫秒级时间戳
  * @returns 格式化后的日期字符串，如'2023/09/15'
  * @example
  * formatterTimestamp(1694764800000) // '2023/09/15'
@@ -70,4 +70,20 @@ export function formatterTimestamp(timestamp: number): string {
     return ''
   }
   return dayjs(timestamp).format('YYYY/MM/DD')
+}
+
+/**
+ * @description 获取时间差
+ * @param { number } beginTime 开始时间
+ * @param { number } currentTime 当前时间
+ */
+export function diffTime(beginTime: number, currentTime: number) {
+  const secondDiff = dayjs(currentTime).diff(beginTime, 'second')
+  const hour = Math.floor(secondDiff / (60 * 60))
+  const minute = Math.floor((secondDiff - hour * 60 * 60) / 60)
+  const second = Math.floor((secondDiff - hour * 60 * 60 - minute * 60) % 60)
+  if (hour === 0) {
+    return `${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`
+  }
+  return `${hour}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`
 }

@@ -115,6 +115,7 @@ export function saveBase64File(base64: string, outputPath: string): void {
 
     // 将base64内容写入文件
     const buffer = Buffer.from(base64Data, 'base64')
+    // @ts-ignore
     fs.writeFileSync(outputPath, buffer)
   } catch (error) {
     console.error('Failed to save base64 file:', error)

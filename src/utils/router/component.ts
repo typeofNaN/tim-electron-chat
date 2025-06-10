@@ -1,6 +1,6 @@
 import type { RouteComponent } from 'vue-router'
 
-import { BasicLayout, BlankLayout, ChatLayout } from '@/layouts'
+import { BasicLayout, BlankLayout, ChatLayout, CallLayout } from '@/layouts'
 import { views } from '@/views'
 import { isFunction } from '../common'
 
@@ -20,7 +20,8 @@ export function getLayoutComponent(layoutType: UnionKey.LayoutComponentType) {
   const layoutComponent: LayoutComponent = {
     basic: BasicLayout,
     blank: BlankLayout,
-    chat: ChatLayout
+    chat: ChatLayout,
+    call: CallLayout
   }
   return layoutComponent[layoutType]
 }

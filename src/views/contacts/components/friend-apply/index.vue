@@ -2,8 +2,8 @@
   <div class="h-full">
     <div class="flex justify-between items-center px-10px h-80px b-b-2 b-b-solid b-b-#eee dark:b-b-#111">
       <div class="flex items-center">
-        <div class="flex-center w-40px h-40px b-rd-50% bg-green">
-          <svg-icon icon="ic:round-person-add-alt-1" class="text-20px color-#fff" />
+        <div class="flex-center w-40px h-40px b-rd-50% bg-green text-20px color-#fff">
+          <svg-icon icon="ic:round-person-add-alt-1" />
         </div>
         <div class="pl-10px text-16px">{{ $t('page.contacts.friendApply') }}</div>
       </div>
@@ -35,8 +35,7 @@
             <!-- 别人发给我的申请 -->
             <div v-if="apply.friend_add_pendency_info_type === ApplyType.RECEIVE" class="flex justify-end">
               <n-space>
-                <n-button type="success" tertiary round
-                  @click="handleAgree(apply, ApplyAgreeType.ResponseActionAgreeAndAdd)">
+                <n-button type="success" tertiary round @click="handleAgree(apply, ApplyAgreeType.ResponseActionAgree)">
                   {{ $t('page.contacts.agree') }}
                 </n-button>
                 <n-button type="error" tertiary round @click="handleAgree(apply, ApplyAgreeType.ResponseActionReject)">

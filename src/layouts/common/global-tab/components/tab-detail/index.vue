@@ -1,7 +1,7 @@
 <template>
   <div class="h-full">
     <div ref="tabRef" class="flex h-full pr-18px" :class="[isChromeMode ? 'items-end' : 'items-center gap-12px']">
-      <PageTab v-for="item in tab.tabs" :key="item.fullPath" :mode="theme.tab.mode" :dark-mode="theme.darkMode"
+      <page-tab v-for="item in tab.tabs" :key="item.fullPath" :mode="theme.tab.mode" :dark-mode="theme.darkMode"
         :active="tab.activeTab === item.fullPath" :active-color="theme.themeColor"
         :closable="!(item.name === tab.homeTab.name || item.meta.affix)" @click="tab.handleClickTab(item.fullPath)"
         @close="tab.removeTab(item.fullPath)" @contextmenu="handleContextMenu($event, item.fullPath, item.meta.affix)">
@@ -10,7 +10,7 @@
             class="inline-block align-text-bottom text-16px" />
         </template>
         {{ item.meta.i18nTitle ? $t(item.meta.i18nTitle) : item.meta.title }}
-      </PageTab>
+      </page-tab>
     </div>
     <context-menu :visible="dropdown.visible" :current-path="dropdown.currentPath" :affix="dropdown.affix"
       :x="dropdown.x" :y="dropdown.y" @update:visible="handleDropdownVisible" />

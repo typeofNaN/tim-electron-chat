@@ -44,6 +44,9 @@ export function transformAuthRouteToVueRoute(item: AuthRoute.Route) {
       chat() {
         itemRoute.component = getLayoutComponent('chat')
       },
+      call() {
+        itemRoute.component = getLayoutComponent('call')
+      },
       multi() {
         // 多级路由一定有子路由
         if (hasChildren(item)) {
@@ -92,7 +95,7 @@ export function transformAuthRouteToVueRoute(item: AuthRoute.Route) {
       //     ? getLayoutComponent('blank')
       //     : getLayoutComponent('chat')
 
-      const layout = ['basic', 'blank', 'chat'].includes(item.meta.singleLayout || '')
+      const layout = ['basic', 'blank', 'chat', 'call'].includes(item.meta.singleLayout || '')
         ? getLayoutComponent(item.meta.singleLayout as UnionKey.LayoutComponentType)
         : getLayoutComponent('blank')
 

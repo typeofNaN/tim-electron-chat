@@ -6,19 +6,31 @@
       @contextmenu="handleContextMenu($event)">
       <template v-if="props.chatUser.conv_recv_opt === ConvRecvOptEnum.RECEIVE">
         <n-badge :value="props.chatUser.conv_unread_num" :max="99">
-          <custom-avatar :src="props.chatUser.conv_face_url" :size="50" />
+          <custom-avatar v-if="props.chatUser.conv_show_name === SystemUserId" :isSystemNotification="true"
+            :size="50" />
+          <custom-avatar v-else :src="props.chatUser.conv_face_url" :size="50" />
         </n-badge>
       </template>
       <template v-else>
         <n-badge v-if="props.chatUser.conv_unread_num" dot :offset="[0, 3]">
-          <custom-avatar :src="props.chatUser.conv_face_url" :size="50" />
+          <custom-avatar v-if="props.chatUser.conv_show_name === SystemUserId" :isSystemNotification="true"
+            :size="50" />
+          <custom-avatar v-else :src="props.chatUser.conv_face_url" :size="50" />
         </n-badge>
-        <custom-avatar v-else :src="props.chatUser.conv_face_url" :size="50" />
+        <template v-else>
+          <custom-avatar v-if="props.chatUser.conv_show_name === SystemUserId" :isSystemNotification="true"
+            :size="50" />
+          <custom-avatar v-else :src="props.chatUser.conv_face_url" :size="50" />
+        </template>
       </template>
       <div class="w-[calc(100%-50px)] pl-16px">
         <div class="flex justify-between items-center mb-4px">
           <n-ellipsis :tooltip="false" class="text-15px">
-            {{ props.chatUser.conv_show_name }}
+            {{
+              props.chatUser.conv_show_name === SystemUserId
+                ? $t('chat.systemNotification')
+                : props.chatUser.conv_show_name
+            }}
           </n-ellipsis>
           <div v-if="lastMsg" class="text-gray-300 text-12px">
             {{
@@ -42,7 +54,7 @@
               <template v-else>
                 <div v-if="msgType === MsgTypeEnum.TEXT"
                   v-html="transformEmojiText(lastMsg.message_elem_array[0].text_elem_content)"
-                  class="text-msg overflow-hidden whitespace-nowrap text-ellipsis" />
+                  class="text-msg ellipsis-text" />
                 <template v-else-if="msgType === MsgTypeEnum.IMAGE">
                   {{ $t('msgPlaceholders.image') }}
                 </template>
@@ -80,6 +92,7 @@
 <script lang="ts" setup>
 import { computed, reactive } from 'vue'
 
+import { SystemUserId } from '@/constants/chatConfig'
 import { ConvRecvOptEnum } from '@/constants/conv'
 import { MsgTypeEnum } from '@/constants/msg'
 import { $t } from '@/locales'

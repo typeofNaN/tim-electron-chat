@@ -13,8 +13,24 @@
       </template>
     </div>
   </template>
+  <template v-else-if="customElemData?.subtype === 'post'">[Post]</template>
+  <template v-else-if="customElemData?.subtype === 'note'">[Note]</template>
+  <template v-else-if="customElemData?.subtype === 'story'">[Story]</template>
+  <template v-else-if="customElemData?.subtype === 'grouped_photos'">
+    {{
+      // 图组只有一个元素时，将其看为单图片或单视频
+      customElemData?.content.medias.length === 1
+        ? customElemData?.content.medias[0].type === 'IMAGE'
+          ? $t('msgPlaceholders.image')
+          : $t('msgPlaceholders.video')
+        : $t('msgPlaceholders.photoGroup')
+    }}
+  </template>
   <template v-else-if="customElemData?.subtype === 'friend_application'">
     {{ $t('msgPlaceholders.friendApply') }}
+  </template>
+  <template v-else-if="customElemData?.subtype === 'new_friend_online'">
+    {{ $t('msgPlaceholders.friendOnlineNotification') }}
   </template>
   <template v-else>{{ $t('msgPlaceholders.customMessage') }}</template>
 </template>
