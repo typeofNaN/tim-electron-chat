@@ -2,7 +2,7 @@
   <div class="b-rd-4px box-border overflow-hidden" :style="{ width: `${imageBaseWidth}px` }">
     <div @contextmenu="handleContextMenu($event)" :style="{ height: `${imageHeight}px` }">
       <n-image :src="imagePath" :width="imageBaseWidth" @error="loadImageError"
-        class="b-rd-4px b-1 b-color-gray-200 cursor-pointer" :preview-disabled="true" @click="previewImage">
+        class="b-rd-4px b-1 b-color-gray-200 cursor-pointer" :preview-disabled="true" @click="previewMedia">
         <template #error>
           <n-image :src="loadErrorImage" :width="imageBaseWidth" />
         </template>
@@ -97,11 +97,14 @@ function loadImageError() {
   isLoadError.value = true
 }
 
-function previewImage() {
+function previewMedia() {
   const { ipcRenderer } = require('electron')
-  ipcRenderer.send('createImagePreviewWindow', {
-    imageList: cloneDeep(chatStore.currentMsgListImage),
-    currentImage: props.msg.message_elem_array[0].image_elem_orig_url
+  ipcRenderer.send('createMediaPreviewWindow', {
+    mediaList: cloneDeep(chatStore.currentMsgListMedia),
+    currentMedia: {
+      url: props.msg.message_elem_array[0].image_elem_orig_url,
+      type: 'IMAGE'
+    }
   })
 }
 </script>

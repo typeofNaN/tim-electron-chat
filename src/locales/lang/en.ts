@@ -206,8 +206,8 @@ const locale: I18nType.Schema = {
     callChat: {
       _value: 'Call'
     },
-    imagePreview: {
-      _value: 'Image Preview'
+    mediaPreview: {
+      _value: 'Media Preview'
     },
     management: {
       _value: 'System Management',
@@ -516,8 +516,8 @@ const locale: I18nType.Schema = {
     cameraIsOpen: 'Camera Is Open',
     cameraIsClose: 'Camera Is Close'
   },
-  imagePreview: {
-    noMoreImage: 'No More Images',
+  mediaPreview: {
+    noMoreMedia: 'No More Media Assets',
     prev: 'Prev',
     next: 'Next',
     rotateLeft: 'Rotate To The Left',
@@ -525,7 +525,7 @@ const locale: I18nType.Schema = {
     zoomIn: 'Zoom In',
     zoomOut: 'Zoom Out',
     resetOrigin: 'Original Image Size',
-    downloadImage: 'Download Image'
+    download: 'Download'
   }
 }
 

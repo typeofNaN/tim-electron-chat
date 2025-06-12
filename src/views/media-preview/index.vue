@@ -7,7 +7,7 @@
             <icon-ooui:previous-ltr />
           </div>
         </template>
-        {{ $t('imagePreview.prev') }}
+        {{ $t('mediaPreview.prev') }}
       </n-tooltip>
       <n-tooltip trigger="hover">
         <template #trigger>
@@ -15,47 +15,47 @@
             <icon-ooui:previous-rtl />
           </div>
         </template>
-        {{ $t('imagePreview.next') }}
+        {{ $t('mediaPreview.next') }}
       </n-tooltip>
-      <n-tooltip trigger="hover">
+      <n-tooltip v-if="currentMedia.type === 'IMAGE'" trigger="hover">
         <template #trigger>
           <div class="tool-item" @click="rotate(-90)">
             <icon-fa6-solid:arrow-rotate-left />
           </div>
         </template>
-        {{ $t('imagePreview.rotateLeft') }}
+        {{ $t('mediaPreview.rotateLeft') }}
       </n-tooltip>
-      <n-tooltip trigger="hover">
+      <n-tooltip v-if="currentMedia.type === 'IMAGE'" trigger="hover">
         <template #trigger>
           <div class="tool-item" @click="rotate(90)">
             <icon-fa6-solid:arrow-rotate-right />
           </div>
         </template>
-        {{ $t('imagePreview.rotateRight') }}
+        {{ $t('mediaPreview.rotateRight') }}
       </n-tooltip>
-      <n-tooltip trigger="hover">
+      <n-tooltip v-if="currentMedia.type === 'IMAGE'" trigger="hover">
         <template #trigger>
           <div class="tool-item" @click="zoom(0.2)">
             <icon-zondicons:zoom-in />
           </div>
         </template>
-        {{ $t('imagePreview.zoomIn') }}
+        {{ $t('mediaPreview.zoomIn') }}
       </n-tooltip>
-      <n-tooltip trigger="hover">
+      <n-tooltip v-if="currentMedia.type === 'IMAGE'" trigger="hover">
         <template #trigger>
           <div class="tool-item" @click="zoom(-0.2)">
             <icon-zondicons:zoom-out />
           </div>
         </template>
-        {{ $t('imagePreview.zoomOut') }}
+        {{ $t('mediaPreview.zoomOut') }}
       </n-tooltip>
-      <n-tooltip trigger="hover">
+      <n-tooltip v-if="currentMedia.type === 'IMAGE'" trigger="hover">
         <template #trigger>
           <div class="tool-item" @click="resetStyle">
             <svg-icon icon="garden:original-size-stroke-12" />
           </div>
         </template>
-        {{ $t('imagePreview.resetOrigin') }}
+        {{ $t('mediaPreview.resetOrigin') }}
       </n-tooltip>
       <n-tooltip trigger="hover">
         <template #trigger>
@@ -63,15 +63,29 @@
             <icon-bxs:download />
           </div>
         </template>
-        {{ $t('imagePreview.downloadImage') }}
+        {{ $t('mediaPreview.download') }}
       </n-tooltip>
       <div class="h-full flex-grow-1" style="-webkit-app-region: drag;" />
     </div>
-    <div class="w-full h-[calc(100%-30px)] overflow-hidden bg-#f9f9f9">
-      <img :src="currentImgUrl" alt=""
+    <div class="relative w-full h-[calc(100%-30px)] overflow-hidden bg-#f9f9f9">
+      <img v-if="currentMedia.type === 'IMAGE'" :src="currentMedia.url" alt=""
         class="relative w-full h-full object-contain select-none cursor-move transition-duration-100 ease-in-out transition-property-transform"
         :draggable="false" :style="imageStyle" @mousedown="mousedown" @mousemove="mousemove($event)" @mouseup="mouseup"
         @mouseleave="mouseup" @wheel="wheel($event)">
+      <div v-else class="px-80px w-full h-full">
+        <video :src="currentMedia.url" controls controlslist="noremoteplayback noplaybackrate" muted autoplay
+          :disablePictureInPicture="true" class="w-full h-full object-contain select-none" />
+      </div>
+      <div
+        class="flex-center absolute top-0px left-0px w-80px h-full opacity-0 hover:opacity-100 cursor-pointer text-36px text-#666"
+        @click="prev">
+        <icon-mdi:arrow-left-circle />
+      </div>
+      <div
+        class="flex-center absolute top-0px right-0px w-80px h-full opacity-0 hover:opacity-100 cursor-pointer text-36px text-#666"
+        @click="next">
+        <icon-mdi:arrow-right-circle />
+      </div>
     </div>
   </div>
 </template>
@@ -82,8 +96,11 @@ import { throttle } from 'lodash-es'
 
 import { $t } from '@/locales'
 
-const imgList = ref<string[]>([])
-const currentImgUrl = ref('')
+const mediaList = ref<{ url: string, type: 'IMAGE' | 'VIDEO' }[]>([])
+const currentMedia = ref({
+  url: '',
+  type: ''
+})
 
 const currentIndex = ref(0)
 const currentRotate = ref(0)
@@ -96,10 +113,10 @@ const isDragging = ref(false)
 
 const { ipcRenderer } = require('electron')
 
-ipcRenderer.on('showPreview', (event, data: { imageList: string[], currentImage: string }) => {
-  imgList.value = data.imageList
-  currentImgUrl.value = data.currentImage
-  currentIndex.value = data.imageList.findIndex(item => item === data.currentImage)
+ipcRenderer.on('showPreview', (event, data: { mediaList: { url: string, type: 'IMAGE' | 'VIDEO' }[], currentMedia: { url: string, type: 'IMAGE' | 'VIDEO' } }) => {
+  mediaList.value = data.mediaList
+  currentMedia.value = data.currentMedia
+  currentIndex.value = data.mediaList.findIndex(item => item.url === data.currentMedia.url)
   currentRotate.value = 0
   currentZoom.value = 1
 })
@@ -121,21 +138,21 @@ function resetStyle() {
 
 function prev() {
   if (currentIndex.value === 0) {
-    window.$message?.info($t('imagePreview.noMoreImage'))
+    window.$message?.info($t('mediaPreview.noMoreMedia'))
     return
   }
   currentIndex.value--
-  currentImgUrl.value = imgList.value[currentIndex.value]
+  currentMedia.value = mediaList.value[currentIndex.value]
   resetStyle()
 }
 
 function next() {
-  if (currentIndex.value === imgList.value.length - 1) {
-    window.$message?.info($t('imagePreview.noMoreImage'))
+  if (currentIndex.value === mediaList.value.length - 1) {
+    window.$message?.info($t('mediaPreview.noMoreMedia'))
     return
   }
   currentIndex.value++
-  currentImgUrl.value = imgList.value[currentIndex.value]
+  currentMedia.value = mediaList.value[currentIndex.value]
   resetStyle()
 }
 
@@ -155,7 +172,7 @@ function zoom(num: number) {
 }
 
 function download() {
-  const src = currentImgUrl.value
+  const src = currentMedia.value.url
   const a = document.createElement('a')
   const getFilename = (url: string): string => {
     const lastSlashIndex = url.lastIndexOf('/')

@@ -2,8 +2,12 @@
   <div :class="[videoLayoutRow ? 'w-400px' : 'w-200px']" class="b-rd-4px box-border overflow-hidden">
     <div class="relative b-rd-4px overflow-hidden" :style="{ height: `${videoHeight}px` }"
       @contextmenu="handleContextMenu($event)">
-      <video ref="videoRef" :src="videoPath" controls controlslist="noremoteplayback noplaybackrate"
-        :disablePictureInPicture="true" class="w-full h-full object-contain" />
+      <div class="relative w-full h-full cursor-pointer" @click="previewVideo">
+        <video ref="videoRef" :src="videoPath" class="w-full h-full object-contain" />
+        <div class="absolute inset-0 flex-center text-36px text-#fff">
+          <icon-material-symbols:play-circle-outline />
+        </div>
+      </div>
       <n-dropdown :show="dropdownVisible" :options="dropdownOptions" placement="bottom-start" :x="dropdownX"
         :y="dropdownY" @clickoutside="hideDropdown" @select="handleDropdown" />
     </div>
@@ -16,8 +20,10 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
+import { cloneDeep } from 'lodash-es'
 
 import { useMsgDropdown } from '@/hooks'
+import { useChatStore } from '@/store'
 import { transformEmojiText } from '@/utils/common/emoji'
 
 interface Props {
@@ -33,6 +39,8 @@ interface Emits {
 }
 
 const emit = defineEmits<Emits>()
+
+const chatStore = useChatStore()
 
 const {
   dropdownVisible,
@@ -84,6 +92,17 @@ function quoteMsg() {
     timestamp: msg.message_server_time || msg.message_client_time,
     sequence: msg.message_seq,
     nickname: msg.message_sender_profile.user_profile_friend_remark || msg.message_sender_profile.user_profile_nick_name
+  })
+}
+
+function previewVideo() {
+  const { ipcRenderer } = require('electron')
+  ipcRenderer.send('createMediaPreviewWindow', {
+    mediaList: cloneDeep(chatStore.currentMsgListMedia),
+    currentMedia: {
+      url: props.msg.message_elem_array[0].video_elem_video_url,
+      type: 'VIDEO'
+    }
   })
 }
 </script>

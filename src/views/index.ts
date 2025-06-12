@@ -13,6 +13,6 @@ export const views: Record<
   'call-chat': () => import('./call-chat/index.vue'),
   contacts: () => import('./contacts/index.vue'),
   home: () => import('./home/index.vue'),
-  'image-preview': () => import('./image-preview/index.vue'),
+  'media-preview': () => import('./media-preview/index.vue'),
   setting: () => import('./setting/index.vue')
 };

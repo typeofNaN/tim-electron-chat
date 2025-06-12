@@ -2,14 +2,19 @@
   <div class="b-1 b-#ccc b-solid" :style="{ width: `${mediaBaseWidth}px`, height: `${mediaHeight}px` }">
     <n-image v-if="props.media.type === 'IMAGE'" :src="props.media.imageUrl" :width="mediaBaseWidth - 2"
       :height="mediaHeight - 2" object-fit="cover" class="mb-0 cursor-pointer"
-      :style="{ height: `${mediaHeight - 2}px` }" :preview-disabled="true" @click="previewImage">
+      :style="{ height: `${mediaHeight - 2}px` }" :preview-disabled="true" @click="previewMedia(props.media.imageUrl)">
       <template #error>
         <n-image :src="loadErrorImage" :width="mediaBaseWidth - 2" />
       </template>
     </n-image>
-    <video v-else :src="props.media.videoUrl" controls controlslist="noremoteplayback noplaybackrate"
-      :disablePictureInPicture="true" class="w-full h-full object-contain"
-      :style="{ width: `${mediaBaseWidth - 2}px`, height: `${mediaHeight - 2}px` }" />
+    <div v-else class="relative w-full h-full cursor-pointer"
+      :style="{ width: `${mediaBaseWidth - 2}px`, height: `${mediaHeight - 2}px` }"
+      @click="previewMedia(props.media.videoUrl)">
+      <video :src="props.media.videoUrl" class="w-full h-full object-contain" />
+      <div class="absolute inset-0 flex-center text-36px text-#fff">
+        <icon-material-symbols:play-circle-outline />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -18,7 +23,6 @@ import { computed, ref } from 'vue'
 import { cloneDeep } from 'lodash-es'
 
 import { useChatStore } from '@/store'
-
 import loadErrorImage from '@/assets/images/image-load-error.png'
 
 interface Props {
@@ -48,11 +52,14 @@ const mediaHeight = computed(() => {
   }
 })
 
-function previewImage() {
+function previewMedia(url: string) {
   const { ipcRenderer } = require('electron')
-  ipcRenderer.send('createImagePreviewWindow', {
-    imageList: cloneDeep(chatStore.currentMsgListImage),
-    currentImage: props.media.imageUrl
+  ipcRenderer.send('createMediaPreviewWindow', {
+    mediaList: cloneDeep(chatStore.currentMsgListMedia),
+    currentMedia: {
+      url,
+      type: props.media.type
+    }
   })
 }
 </script>

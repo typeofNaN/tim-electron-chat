@@ -25,7 +25,7 @@ declare namespace PageRoute {
     | 'call-chat'
     | 'contacts'
     | 'home'
-    | 'image-preview'
+    | 'media-preview'
     | 'setting';
 
   /**
@@ -43,7 +43,7 @@ declare namespace PageRoute {
     | 'call-chat'
     | 'contacts'
     | 'home'
-    | 'image-preview'
+    | 'media-preview'
     | 'setting'
   >;
 }

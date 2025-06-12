@@ -17,7 +17,7 @@ import { downloadFile } from './utils/downloadFile'
 import packageJson from '../package.json'
 
 let callWindow: BrowserWindow | null = null
-let imagePreviewWindow: BrowserWindow | null = null
+let mediaPreviewWindow: BrowserWindow | null = null
 
 // 窗口事件处理
 export const windowEventHandle = (win: BrowserWindow) => {
@@ -55,7 +55,7 @@ const callWindowEventHandle = (win: BrowserWindow) => {
   })
 }
 
-const imagePreviewWindowEventHandle = (win: BrowserWindow, data: any) => {
+const mediaPreviewWindowEventHandle = (win: BrowserWindow, data: any) => {
   win.on('ready-to-show', () => {
     win.show()
     setTimeout(() => {
@@ -64,7 +64,7 @@ const imagePreviewWindowEventHandle = (win: BrowserWindow, data: any) => {
   })
 
   win.on('close', (event) => {
-    imagePreviewWindow = null
+    mediaPreviewWindow = null
   })
 }
 
@@ -241,9 +241,9 @@ export const ipcEventHandle = (win: BrowserWindow) => {
   })
 
   // 创建图片预览窗口
-  ipcMain.on('createImagePreviewWindow', (event, data) => {
-    if (!imagePreviewWindow) {
-      imagePreviewWindow = new BrowserWindow({
+  ipcMain.on('createMediaPreviewWindow', (event, data) => {
+    if (!mediaPreviewWindow) {
+      mediaPreviewWindow = new BrowserWindow({
         show: false,
         width: 900,
         height: 600,
@@ -265,9 +265,9 @@ export const ipcEventHandle = (win: BrowserWindow) => {
         icon: path.join(__dirname, '../src/assets/images/logo.png')
       })
 
-      require('@electron/remote/main').enable(imagePreviewWindow.webContents)
+      require('@electron/remote/main').enable(mediaPreviewWindow.webContents)
 
-      imagePreviewWindow.webContents.setWindowOpenHandler((details) => {
+      mediaPreviewWindow.webContents.setWindowOpenHandler((details) => {
         shell.openExternal(details.url)
         return { action: 'deny' }
       })
@@ -277,19 +277,19 @@ export const ipcEventHandle = (win: BrowserWindow) => {
         // 开发环境
         // process.env.VITE_DEV_SERVER_URL获取开发服务器的url
         // vite版本不同，VITE_DEV_SERVER_URL字段也有所变化，打印process.env查找具体的名称
-        imagePreviewWindow.loadURL(process.env.VITE_DEV_SERVER_URL as string + '#/image-preview')
+        mediaPreviewWindow.loadURL(process.env.VITE_DEV_SERVER_URL as string + '#/media-preview')
       } else {
         // 生产环境
-        imagePreviewWindow.loadFile(path.join(__dirname, '../dist/index.html'), {
-          hash: 'image-preview'
+        mediaPreviewWindow.loadFile(path.join(__dirname, '../dist/index.html'), {
+          hash: 'media-preview'
         })
-        imagePreviewWindow.removeMenu()
+        mediaPreviewWindow.removeMenu()
       }
 
-      imagePreviewWindowEventHandle(imagePreviewWindow, data)
+      mediaPreviewWindowEventHandle(mediaPreviewWindow, data)
     }
 
-    imagePreviewWindow.webContents.send('showPreview', data)
+    mediaPreviewWindow.webContents.send('showPreview', data)
   })
 
   // 闪烁窗口

@@ -206,8 +206,8 @@ const locale: I18nType.Schema = {
     callChat: {
       _value: '音视频通话'
     },
-    imagePreview: {
-      _value: '图片预览'
+    mediaPreview: {
+      _value: '媒体预览'
     },
     management: {
       _value: '系统管理',
@@ -516,16 +516,16 @@ const locale: I18nType.Schema = {
     cameraIsOpen: '摄像头已开',
     cameraIsClose: '摄像头已关'
   },
-  imagePreview: {
-    noMoreImage: '没有更多图片了',
-    prev: '上一张',
-    next: '下一张',
+  mediaPreview: {
+    noMoreMedia: '没有更多媒体资源了',
+    prev: '上一个',
+    next: '下一个',
     rotateLeft: '向左旋转',
     rotateRight: '向右旋转',
     zoomIn: '放大',
     zoomOut: '缩小',
     resetOrigin: '图片原始大小',
-    downloadImage: '下载图片'
+    download: '下载'
   }
 }
 

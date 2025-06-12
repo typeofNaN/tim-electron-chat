@@ -110,22 +110,38 @@ export const useChatStore = defineStore('chat-store', {
       return state.multiSelectMsgList
     },
     /**
-     * @description 当前聊天列表的图片集合
+     * @description 当前聊天列表的媒体集合
      */
-    currentMsgListImage(state) {
-      const imageList: string[] = []
+    currentMsgListMedia(state) {
+      const mediaList: { url: string, type: string }[] = []
       state.msgList.forEach(item => {
         if (item.message_elem_array[0].elem_type === MsgTypeEnum.IMAGE) {
-          imageList.push(item.message_elem_array[0].image_elem_orig_url)
+          mediaList.push({
+            url: item.message_elem_array[0].image_elem_orig_url,
+            type: 'IMAGE'
+          })
+        } else if (item.message_elem_array[0].elem_type === MsgTypeEnum.VIDEO) {
+          mediaList.push({
+            url: item.message_elem_array[0].video_elem_video_url,
+            type: 'VIDEO'
+          })
         } else if (item.message_elem_array[0].elem_type === MsgTypeEnum.CUSTOM && item.message_elem_array[0].custom_elem_data.subtype === 'grouped_photos') {
           item.message_elem_array[0].custom_elem_data.content.medias.forEach((media: any) => {
             if (media.type === 'IMAGE') {
-              imageList.push(media.imageUrl)
+              mediaList.push({
+                url: media.imageUrl,
+                type: 'IMAGE'
+              })
+            } else if (media.type === 'VIDEO') {
+              mediaList.push({
+                url: media.videoUrl,
+                type: 'VIDEO'
+              })
             }
           })
         }
       })
-      return imageList
+      return mediaList
     }
   },
   actions: {

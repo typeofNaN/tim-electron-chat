@@ -514,7 +514,7 @@ declare namespace I18nType {
       callChat: {
         _value: string
       }
-      imagePreview: {
+      mediaPreview: {
         _value: string
       }
       management: {
@@ -824,8 +824,8 @@ declare namespace I18nType {
       cameraIsOpen: string
       cameraIsClose: string
     }
-    imagePreview: {
-      noMoreImage: string
+    mediaPreview: {
+      noMoreMedia: string
       prev: string
       next: string
       rotateLeft: string
@@ -833,7 +833,7 @@ declare namespace I18nType {
       zoomIn: string
       zoomOut: string
       resetOrigin: string
-      downloadImage: string
+      download: string
     }
   }
 
