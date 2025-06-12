@@ -826,6 +826,14 @@ declare namespace I18nType {
     }
     imagePreview: {
       noMoreImage: string
+      prev: string
+      next: string
+      rotateLeft: string
+      rotateRight: string
+      zoomIn: string
+      zoomOut: string
+      resetOrigin: string
+      downloadImage: string
     }
   }
 

@@ -517,7 +517,15 @@ const locale: I18nType.Schema = {
     cameraIsClose: 'Camera Is Close'
   },
   imagePreview: {
-    noMoreImage: 'No More Images'
+    noMoreImage: 'No More Images',
+    prev: 'Prev',
+    next: 'Next',
+    rotateLeft: 'Rotate To The Left',
+    rotateRight: 'Rotate To The Right',
+    zoomIn: 'Zoom In',
+    zoomOut: 'Zoom Out',
+    resetOrigin: 'Original Image Size',
+    downloadImage: 'Download Image'
   }
 }
 

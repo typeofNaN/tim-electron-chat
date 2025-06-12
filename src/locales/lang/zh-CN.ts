@@ -517,7 +517,15 @@ const locale: I18nType.Schema = {
     cameraIsClose: '摄像头已关'
   },
   imagePreview: {
-    noMoreImage: '没有更多图片了'
+    noMoreImage: '没有更多图片了',
+    prev: '上一张',
+    next: '下一张',
+    rotateLeft: '向左旋转',
+    rotateRight: '向右旋转',
+    zoomIn: '放大',
+    zoomOut: '缩小',
+    resetOrigin: '图片原始大小',
+    downloadImage: '下载图片'
   }
 }
 

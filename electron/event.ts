@@ -245,9 +245,9 @@ export const ipcEventHandle = (win: BrowserWindow) => {
     if (!imagePreviewWindow) {
       imagePreviewWindow = new BrowserWindow({
         show: false,
-        width: 1000,
+        width: 900,
         height: 600,
-        minWidth: 1000,
+        minWidth: 900,
         minHeight: 600,
         frame: false,
         autoHideMenuBar: true,
