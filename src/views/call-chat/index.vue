@@ -103,7 +103,7 @@ let rafId: any
 onMounted(() => {
   callUserInfo.value = rtcStore.currentCallUser
   if (callUserInfo.value.avatar) {
-    chatBg.value = import.meta.env.VITE_BASE_FILE_URL + callUserInfo.value.avatar
+    chatBg.value = callUserInfo.value.avatar.startsWith('http') ? callUserInfo.value.avatar : (import.meta.env.VITE_BASE_FILE_URL + callUserInfo.value.avatar)
   }
   initRtc()
   enterRoom({
