@@ -11,7 +11,7 @@
       :style="{ width: `${mediaBaseWidth - 2}px`, height: `${mediaHeight - 2}px` }"
       @click="previewMedia(props.media.videoUrl)">
       <video :src="props.media.videoUrl" class="w-full h-full object-contain" />
-      <div class="absolute inset-0 flex-center text-36px text-#fff">
+      <div class="absolute inset-0 flex-center text-36px text-#fff bg-[rgba(0,0,0,.2)]">
         <icon-material-symbols:play-circle-outline />
       </div>
     </div>

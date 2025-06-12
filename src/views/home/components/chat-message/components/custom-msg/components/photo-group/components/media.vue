@@ -10,7 +10,7 @@
     <div v-else class="relative w-full h-full cursor-pointer"
       :style="{ width: `${props.wh - 2}px`, height: `${props.wh - 2}px` }">
       <video :src="props.media.videoUrl" class="w-full h-full object-contain" />
-      <div class="absolute inset-0 flex-center text-36px text-#fff">
+      <div class="absolute inset-0 flex-center text-36px text-#fff bg-[rgba(0,0,0,.2)]">
         <icon-material-symbols:play-circle-outline />
       </div>
     </div>

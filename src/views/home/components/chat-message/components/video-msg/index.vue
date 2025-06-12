@@ -4,7 +4,7 @@
       @contextmenu="handleContextMenu($event)">
       <div class="relative w-full h-full cursor-pointer" @click="previewVideo">
         <video ref="videoRef" :src="videoPath" class="w-full h-full object-contain" />
-        <div class="absolute inset-0 flex-center text-36px text-#fff">
+        <div class="absolute inset-0 flex-center text-36px text-#fff bg-[rgba(0,0,0,.2)]">
           <icon-material-symbols:play-circle-outline />
         </div>
       </div>
