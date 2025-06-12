@@ -206,6 +206,9 @@ const locale: I18nType.Schema = {
     callChat: {
       _value: 'Call'
     },
+    imagePreview: {
+      _value: 'Image Preview'
+    },
     management: {
       _value: 'System Management',
       auth: 'Auth',
@@ -512,6 +515,9 @@ const locale: I18nType.Schema = {
     speakerIsClose: 'Speaker Is Close',
     cameraIsOpen: 'Camera Is Open',
     cameraIsClose: 'Camera Is Close'
+  },
+  imagePreview: {
+    noMoreImage: 'No More Images'
   }
 }
 

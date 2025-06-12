@@ -108,6 +108,24 @@ export const useChatStore = defineStore('chat-store', {
      */
     multiSelectMessageList(state) {
       return state.multiSelectMsgList
+    },
+    /**
+     * @description 当前聊天列表的图片集合
+     */
+    currentMsgListImage(state) {
+      const imageList: string[] = []
+      state.msgList.forEach(item => {
+        if (item.message_elem_array[0].elem_type === MsgTypeEnum.IMAGE) {
+          imageList.push(item.message_elem_array[0].image_elem_orig_url)
+        } else if (item.message_elem_array[0].elem_type === MsgTypeEnum.CUSTOM && item.message_elem_array[0].custom_elem_data.subtype === 'grouped_photos') {
+          item.message_elem_array[0].custom_elem_data.content.medias.forEach((media: any) => {
+            if (media.type === 'IMAGE') {
+              imageList.push(media.imageUrl)
+            }
+          })
+        }
+      })
+      return imageList
     }
   },
   actions: {

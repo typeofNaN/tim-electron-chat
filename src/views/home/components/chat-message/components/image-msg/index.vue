@@ -1,7 +1,8 @@
 <template>
   <div class="b-rd-4px box-border overflow-hidden" :style="{ width: `${imageBaseWidth}px` }">
     <div @contextmenu="handleContextMenu($event)" :style="{ height: `${imageHeight}px` }">
-      <n-image :src="imagePath" :width="imageBaseWidth" @error="loadImageError" class="b-rd-4px b-1 b-color-gray-200">
+      <n-image :src="imagePath" :width="imageBaseWidth" @error="loadImageError"
+        class="b-rd-4px b-1 b-color-gray-200 cursor-pointer" :preview-disabled="true" @click="previewImage">
         <template #error>
           <n-image :src="loadErrorImage" :width="imageBaseWidth" />
         </template>
@@ -18,8 +19,10 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
+import { cloneDeep } from 'lodash-es'
 
 import { useMsgDropdown } from '@/hooks'
+import { useChatStore } from '@/store'
 import { transformEmojiText } from '@/utils/common/emoji'
 import loadErrorImage from '@/assets/images/image-load-error.png'
 
@@ -35,6 +38,8 @@ interface Emits {
   (e: 'quoteMsg', msg: any): void
 }
 const emit = defineEmits<Emits>()
+
+const chatStore = useChatStore()
 
 const imageBaseWidth = 260
 
@@ -90,5 +95,13 @@ function quoteMsg() {
 
 function loadImageError() {
   isLoadError.value = true
+}
+
+function previewImage() {
+  const { ipcRenderer } = require('electron')
+  ipcRenderer.send('createImagePreviewWindow', {
+    imageList: cloneDeep(chatStore.currentMsgListImage),
+    currentImage: props.msg.message_elem_array[0].image_elem_orig_url
+  })
 }
 </script>

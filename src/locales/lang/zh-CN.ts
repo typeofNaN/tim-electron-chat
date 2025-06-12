@@ -206,6 +206,9 @@ const locale: I18nType.Schema = {
     callChat: {
       _value: '音视频通话'
     },
+    imagePreview: {
+      _value: '图片预览'
+    },
     management: {
       _value: '系统管理',
       auth: '权限管理',
@@ -512,6 +515,9 @@ const locale: I18nType.Schema = {
     speakerIsClose: '扬声器已关',
     cameraIsOpen: '摄像头已开',
     cameraIsClose: '摄像头已关'
+  },
+  imagePreview: {
+    noMoreImage: '没有更多图片了'
   }
 }
 

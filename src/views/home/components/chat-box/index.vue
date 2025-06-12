@@ -16,9 +16,9 @@
         @quoteMessage="quoteMsg" />
       <n-split v-else direction="vertical" :default-size="0.72" :max="0.8" :min="0.3" :resize-trigger-size="2">
         <template #1>
-          <n-image-group :render-toolbar="renderToolbar">
-            <ChatMessage @forwardMsg="handleForwardMsg" @editMsg="editMsg" @quoteMessage="quoteMsg" />
-          </n-image-group>
+          <!-- <n-image-group :render-toolbar="renderToolbar"> -->
+          <ChatMessage @forwardMsg="handleForwardMsg" @editMsg="editMsg" @quoteMessage="quoteMsg" />
+          <!-- </n-image-group> -->
         </template>
         <template #2>
           <div class="relative h-full">
@@ -85,8 +85,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, h, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
-import { ImageRenderToolbarProps } from 'naive-ui'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+// import { ImageRenderToolbarProps } from 'naive-ui'
 import { cloneDeep } from 'lodash-es'
 
 import { SystemUserId } from '@/constants/chatConfig'
@@ -487,48 +487,48 @@ function handleDropdown(optionKey: string) {
   hideDropdown()
 }
 
-function renderToolbar({ nodes }: ImageRenderToolbarProps) {
-  return [
-    nodes.prev,
-    nodes.next,
-    nodes.rotateClockwise,
-    nodes.rotateCounterclockwise,
-    nodes.zoomIn,
-    nodes.zoomOut,
-    nodes.resizeToOriginalSize,
-    // rewrite download
-    h(
-      'div',
-      {
-        style: {
-          marginTop: '5px'
-        },
-        onClickCapture: (e: any) => {
-          e.stopPropagation()
-          // 获取当前预览图片，由于naive未提供查看图片url的方法，所以通过dom查找
-          const img = document.querySelector('.n-image-preview') as HTMLImageElement
-          if (img && img.src) {
-            const src = img.src
-            const a = document.createElement('a')
-            const getFilename = (url: string): string => {
-              const lastSlashIndex = url.lastIndexOf('/')
-              if (lastSlashIndex !== -1) {
-                return url.substring(lastSlashIndex + 1)
-              }
-              return url
-            }
-            a.href = src
-            a.download = getFilename(src)
-            a.click()
-            a.remove()
-          }
-        }
-      },
-      nodes.download
-    ),
-    nodes.close
-  ]
-}
+// function renderToolbar({ nodes }: ImageRenderToolbarProps) {
+//   return [
+//     nodes.prev,
+//     nodes.next,
+//     nodes.rotateClockwise,
+//     nodes.rotateCounterclockwise,
+//     nodes.zoomIn,
+//     nodes.zoomOut,
+//     nodes.resizeToOriginalSize,
+//     // rewrite download
+//     h(
+//       'div',
+//       {
+//         style: {
+//           marginTop: '5px'
+//         },
+//         onClickCapture: (e: any) => {
+//           e.stopPropagation()
+//           // 获取当前预览图片，由于naive未提供查看图片url的方法，所以通过dom查找
+//           const img = document.querySelector('.n-image-preview') as HTMLImageElement
+//           if (img && img.src) {
+//             const src = img.src
+//             const a = document.createElement('a')
+//             const getFilename = (url: string): string => {
+//               const lastSlashIndex = url.lastIndexOf('/')
+//               if (lastSlashIndex !== -1) {
+//                 return url.substring(lastSlashIndex + 1)
+//               }
+//               return url
+//             }
+//             a.href = src
+//             a.download = getFilename(src)
+//             a.click()
+//             a.remove()
+//           }
+//         }
+//       },
+//       nodes.download
+//     ),
+//     nodes.close
+//   ]
+// }
 </script>
 
 <style lang="scss">

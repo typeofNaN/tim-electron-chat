@@ -1,6 +1,7 @@
 <template>
   <div :style="{ height: `${imageHeight}px` }">
-    <n-image :src="imagePath" :width="imageBaseWidth" @error="loadImageError" class="b-rd-4px b-1 b-color-gray-200">
+    <n-image :src="imagePath" :width="imageBaseWidth" @error="loadImageError" class="b-rd-4px b-1 b-color-gray-200"
+      :preview-disabled="true">
       <template #error>
         <n-image :src="loadErrorImage" :width="imageBaseWidth" />
       </template>

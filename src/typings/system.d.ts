@@ -514,6 +514,9 @@ declare namespace I18nType {
       callChat: {
         _value: string
       }
+      imagePreview: {
+        _value: string
+      }
       management: {
         _value: string
         auth: string
@@ -820,6 +823,9 @@ declare namespace I18nType {
       speakerIsClose: string
       cameraIsOpen: string
       cameraIsClose: string
+    }
+    imagePreview: {
+      noMoreImage: string
     }
   }
 

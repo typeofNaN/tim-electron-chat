@@ -25,6 +25,7 @@ declare namespace PageRoute {
     | 'call-chat'
     | 'contacts'
     | 'home'
+    | 'image-preview'
     | 'setting';
 
   /**
@@ -33,6 +34,16 @@ declare namespace PageRoute {
    */
   type LastDegreeRouteKey = Extract<
     RouteKey,
-    '403' | '404' | '500' | 'constant-page' | 'login' | 'not-found' | 'call-chat' | 'contacts' | 'home' | 'setting'
+    | '403'
+    | '404'
+    | '500'
+    | 'constant-page'
+    | 'login'
+    | 'not-found'
+    | 'call-chat'
+    | 'contacts'
+    | 'home'
+    | 'image-preview'
+    | 'setting'
   >;
 }

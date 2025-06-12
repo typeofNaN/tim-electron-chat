@@ -17,9 +17,10 @@ import { downloadFile } from './utils/downloadFile'
 import packageJson from '../package.json'
 
 let callWindow: BrowserWindow | null = null
+let imagePreviewWindow: BrowserWindow | null = null
 
 // 窗口事件处理
-export const windowEventHandle = (win: Electron.BrowserWindow) => {
+export const windowEventHandle = (win: BrowserWindow) => {
   // 窗口准备好时显示
   win.on('ready-to-show', () => {
     win.show()
@@ -44,8 +45,31 @@ export const windowEventHandle = (win: Electron.BrowserWindow) => {
   })
 }
 
+const callWindowEventHandle = (win: BrowserWindow) => {
+  win.on('ready-to-show', () => {
+    win.show()
+  })
+
+  win.on('close', (event) => {
+    callWindow = null
+  })
+}
+
+const imagePreviewWindowEventHandle = (win: BrowserWindow, data: any) => {
+  win.on('ready-to-show', () => {
+    win.show()
+    setTimeout(() => {
+      win.webContents.send('showPreview', data)
+    }, 150)
+  })
+
+  win.on('close', (event) => {
+    imagePreviewWindow = null
+  })
+}
+
 // IPC事件处理
-export const ipcEventHandle = (win: Electron.BrowserWindow) => {
+export const ipcEventHandle = (win: BrowserWindow) => {
   // 启动IM
   ipcMain.once('setupIM', (event, sdkappid) => {
     const TimMain = require('im_electron_sdk/dist/main')
@@ -213,9 +237,59 @@ export const ipcEventHandle = (win: Electron.BrowserWindow) => {
       callWindow.removeMenu()
     }
 
-    callWindow.on('ready-to-show', () => {
-      callWindow?.show()
-    })
+    callWindowEventHandle(callWindow)
+  })
+
+  // 创建图片预览窗口
+  ipcMain.on('createImagePreviewWindow', (event, data) => {
+    if (!imagePreviewWindow) {
+      imagePreviewWindow = new BrowserWindow({
+        show: false,
+        width: 1000,
+        height: 600,
+        minWidth: 1000,
+        minHeight: 600,
+        frame: false,
+        autoHideMenuBar: true,
+        titleBarStyle: 'hidden',
+        titleBarOverlay: {
+          height: 30,
+          color: '#fff'
+        },
+        webPreferences: {
+          // 允许渲染进程使用node
+          contextIsolation: false,
+          nodeIntegration: true,
+          webSecurity: false
+        },
+        icon: path.join(__dirname, '../src/assets/images/logo.png')
+      })
+
+      require('@electron/remote/main').enable(imagePreviewWindow.webContents)
+
+      imagePreviewWindow.webContents.setWindowOpenHandler((details) => {
+        shell.openExternal(details.url)
+        return { action: 'deny' }
+      })
+
+      // app.isPackaged 字段存在bug，即使正常打包后，仍然为false，所以不能用来判断项目是否经过打包
+      if (process.env.NODE_ENV === 'development') {
+        // 开发环境
+        // process.env.VITE_DEV_SERVER_URL获取开发服务器的url
+        // vite版本不同，VITE_DEV_SERVER_URL字段也有所变化，打印process.env查找具体的名称
+        imagePreviewWindow.loadURL(process.env.VITE_DEV_SERVER_URL as string + '#/image-preview')
+      } else {
+        // 生产环境
+        imagePreviewWindow.loadFile(path.join(__dirname, '../dist/index.html'), {
+          hash: 'image-preview'
+        })
+        imagePreviewWindow.removeMenu()
+      }
+
+      imagePreviewWindowEventHandle(imagePreviewWindow, data)
+    }
+
+    imagePreviewWindow.webContents.send('showPreview', data)
   })
 
   // 闪烁窗口

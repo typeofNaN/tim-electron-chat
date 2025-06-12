@@ -1,7 +1,8 @@
 <template>
   <div class="b-1 b-#ccc b-solid" :style="{ width: `${mediaBaseWidth}px`, height: `${mediaHeight}px` }">
     <n-image v-if="props.media.type === 'IMAGE'" :src="props.media.imageUrl" :width="mediaBaseWidth - 2"
-      :height="mediaHeight - 2" object-fit="cover" class="mb-0" :style="{ height: `${mediaHeight - 2}px` }">
+      :height="mediaHeight - 2" object-fit="cover" class="mb-0 cursor-pointer"
+      :style="{ height: `${mediaHeight - 2}px` }" :preview-disabled="true" @click="previewImage">
       <template #error>
         <n-image :src="loadErrorImage" :width="mediaBaseWidth - 2" />
       </template>
@@ -14,6 +15,9 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
+import { cloneDeep } from 'lodash-es'
+
+import { useChatStore } from '@/store'
 
 import loadErrorImage from '@/assets/images/image-load-error.png'
 
@@ -21,6 +25,8 @@ interface Props {
   media: any
 }
 const props = defineProps<Props>()
+
+const chatStore = useChatStore()
 
 const mediaBaseWidth = 240
 
@@ -41,4 +47,12 @@ const mediaHeight = computed(() => {
     return height
   }
 })
+
+function previewImage() {
+  const { ipcRenderer } = require('electron')
+  ipcRenderer.send('createImagePreviewWindow', {
+    imageList: cloneDeep(chatStore.currentMsgListImage),
+    currentImage: props.media.imageUrl
+  })
+}
 </script>
