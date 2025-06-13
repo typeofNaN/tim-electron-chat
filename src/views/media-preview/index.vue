@@ -1,9 +1,9 @@
 <template>
   <div class="w-full h-full bg-#fff">
-    <div class="w-full h-30px flex-y-center gap-4px px-4px">
+    <div class="w-full h-30px flex-y-center gap-4px px-4px text-#333">
       <n-tooltip trigger="hover">
         <template #trigger>
-          <div class="tool-item" @click="prev">
+          <div class="tool-item" :class="[currentIndex === 0 && 'text-#bbb']" @click="prev">
             <icon-ooui:previous-ltr />
           </div>
         </template>
@@ -11,7 +11,7 @@
       </n-tooltip>
       <n-tooltip trigger="hover">
         <template #trigger>
-          <div class="tool-item" @click="next">
+          <div class="tool-item" :class="[currentIndex === (mediaList.length - 1) && 'text-#bbb']" @click="next">
             <icon-ooui:previous-rtl />
           </div>
         </template>
@@ -76,14 +76,12 @@
         <video :src="currentMedia.url" controls controlslist="noremoteplayback noplaybackrate" muted autoplay
           :disablePictureInPicture="true" class="w-full h-full object-contain select-none" />
       </div>
-      <div
-        class="flex-center absolute top-0px left-0px w-80px h-full opacity-0 hover:opacity-100 cursor-pointer text-36px text-#666"
-        @click="prev">
+      <div class="flex-center absolute top-0px left-0px w-80px h-full opacity-0 text-36px text-#666"
+        :class="[currentIndex !== 0 && 'cursor-pointer hover:opacity-100']" @click="prev">
         <icon-mdi:arrow-left-circle />
       </div>
-      <div
-        class="flex-center absolute top-0px right-0px w-80px h-full opacity-0 hover:opacity-100 cursor-pointer text-36px text-#666"
-        @click="next">
+      <div class="flex-center absolute top-0px right-0px w-80px h-full opacity-0 text-36px text-#666"
+        :class="[currentIndex !== (mediaList.length - 1) && 'cursor-pointer hover:opacity-100']" @click="next">
         <icon-mdi:arrow-right-circle />
       </div>
     </div>
