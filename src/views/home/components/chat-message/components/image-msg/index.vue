@@ -56,7 +56,7 @@ const imageHeight = computed(() => {
 })
 
 const imagePath = computed(() => {
-  return props.msg.message_elem_array[0].image_elem_orig_path || props.msg.message_elem_array[0].image_elem_orig_url
+  return props.msg.message_elem_array[0].image_elem_orig_url
 })
 
 const {

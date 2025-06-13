@@ -44,7 +44,7 @@ const {
 } = useMsgDropdown(props.msg, { forwardMsg, editMsg, quoteMsg })
 
 const audioPath = computed(() => {
-  return props.msg.message_elem_array[0].sound_elem_file_path || props.msg.message_elem_array[0].sound_elem_url
+  return props.msg.message_elem_array[0].sound_elem_url
 })
 
 function forwardMsg() {

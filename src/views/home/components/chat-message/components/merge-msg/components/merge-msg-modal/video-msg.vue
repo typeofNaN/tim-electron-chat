@@ -26,6 +26,6 @@ const videoHeight = computed(() => {
 })
 
 const videoPath = computed(() => {
-  return props.msg.message_elem_array[0].video_elem_video_path || props.msg.message_elem_array[0].video_elem_video_url
+  return props.msg.message_elem_array[0].video_elem_video_url
 })
 </script>
