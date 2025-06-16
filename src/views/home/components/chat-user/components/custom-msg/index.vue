@@ -13,9 +13,6 @@
       </template>
     </div>
   </template>
-  <template v-else-if="customElemData?.subtype === 'post'">[Post]</template>
-  <template v-else-if="customElemData?.subtype === 'note'">[Note]</template>
-  <template v-else-if="customElemData?.subtype === 'story'">[Story]</template>
   <template v-else-if="customElemData?.subtype === 'grouped_photos'">
     {{
       // 图组只有一个元素时，将其看为单图片或单视频

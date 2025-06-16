@@ -3,9 +3,6 @@
     <div @contextmenu="handleContextMenu($event)">
       <PersonalCard v-if="msgData.subtype === 'personal_card'" :msg="msgData" :isMyMsg="isMyMsg" />
       <Call v-else-if="msgData.subtype === 'call'" :msg="msgData" :isMyMsg="isMyMsg" />
-      <Post v-else-if="msgData.subtype === 'post'" :msg="msgData" />
-      <Note v-else-if="msgData.subtype === 'note'" :msg="msgData" />
-      <Story v-else-if="msgData.subtype === 'story'" :msg="msgData" />
       <FriendApply v-else-if="msgData.subtype === 'friend_application'" :msg="msgData" :isMyMsg="isMyMsg" />
       <PhotoGroup v-else-if="msgData.subtype === 'grouped_photos'" :msg="msgData" :isMyMsg="isMyMsg" />
       <FriendOnline v-else-if="msgData.subtype === 'new_friend_online'" :msg="msgData" :isMyMsg="isMyMsg" />
@@ -33,9 +30,6 @@ import { transformEmojiText } from '@/utils/common/emoji'
 import {
   PersonalCard,
   Call,
-  Post,
-  Note,
-  Story,
   FriendApply,
   PhotoGroup,
   FriendOnline
