@@ -3,7 +3,7 @@
     :class="[props.isMyMsg ? 'bg-#95ec69' : 'bg-gray-100 dark:text-gray-100 dark:bg-gray-800']" @click="createCall">
     <svg-icon :icon="props.msg.content.isVideoCall === 'Y' ? 'ic:round-videocam' : 'ic:round-call'" />
     <template v-if="props.msg.content.result === CallResultEnum.ACCEPT">
-      {{ props.msg.content.duration }} "
+      {{ duration }}
     </template>
     <template v-else>
       {{ $t(CallResultMap[props.msg.content.result as CallResultEnum]) }}
@@ -12,6 +12,8 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
+
 import { CallResultEnum, CallResultMap } from '@/constants/callResult'
 import { $t } from '@/locales'
 import { useChatStore, useRtcStore } from '@/store'
@@ -24,6 +26,24 @@ const props = defineProps<Props>()
 
 const chatStore = useChatStore()
 const rtcStore = useRtcStore()
+
+const duration = computed(() => {
+  let seconds = props.msg.content.duration
+
+  if (typeof seconds === 'string') {
+    seconds = ~~Number(seconds)
+  }
+  seconds = ~~seconds
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.floor((seconds % 3600) / 60)
+  const remainingSeconds = seconds % 60
+
+  if (hours) {
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
+  } else {
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
+  }
+})
 
 async function createCall() {
   const roomId = `C2C_${chatStore.currentConvID}_${new Date().getTime()}`

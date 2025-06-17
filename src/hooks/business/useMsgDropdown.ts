@@ -146,7 +146,7 @@ export default function useMsgDropdown(msg: any, cbOptions?: any) {
         // 超出15分钟后不可编辑
         (dropdownVisibleTime.value - msg.message_server_time) <= 60 * 15 &&
         // 已编辑过的不可编辑
-        !msg.message_cloud_custom_str.editContent &&
+        (msg.message_cloud_custom_str && !msg.message_cloud_custom_str.editContent) &&
         [
           MsgTypeEnum.TEXT,
           MsgTypeEnum.IMAGE,

@@ -23,7 +23,7 @@ const locale: I18nType.Schema = {
     cancel: '取消',
     close: '关闭',
     reject: '拒绝',
-    accept: '接收',
+    accept: '接受',
     pleaseCheckValue: '请检查输入的值是否合法',
     action: '操作',
     search: '搜索',

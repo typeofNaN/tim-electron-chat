@@ -293,6 +293,9 @@ function eventListener() {
 
   rtcInstance?.on('onUserVideoAvailable', (userId: string, available: number) => {
     hasRemoteVideoStream.value = available === 1
+    if (available === 1) {
+      startRemoteView()
+    }
   })
 }
 
