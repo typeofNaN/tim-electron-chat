@@ -5,7 +5,14 @@
 本项目基于 Electron + Vue3 + TypeScript + Vite + NaiveUI + UnoCSS 开发，对腾讯云的TIM进行集成开发。由于腾讯云的TIM Electron demo项目仓库已被删除，此项目可作为参考。
 
 ## Download Experience（下载体验）
+
 [Release](https://github.com/typeofNaN/tim-electron-chat/releases)
+
+注：此安装包未配置`imSdkAppId`，只做展示使用，建议下载源码填入`imSdkAppId`后自行构建使用！！！
+
+## TIM API Document（腾讯云TIM开发接口文档）
+
+[接口文档](https://comm.qq.com/im/doc/electron/zh/)
 
 ## Usage（快速上手）
 
