@@ -87,3 +87,19 @@ export function diffTime(beginTime: number, currentTime: number) {
   }
   return `${hour}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`
 }
+
+/**
+ * @description 将秒数转换为时间
+ * @param { number } seconds 描述
+ */
+export function convertSecondsToHMS(seconds: number) {
+  seconds = ~~seconds
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.floor((seconds % 3600) / 60)
+  const remainingSeconds = seconds % 60
+
+  if (hours) {
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
+  }
+  return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
+}

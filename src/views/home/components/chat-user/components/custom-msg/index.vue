@@ -6,7 +6,7 @@
     <div v-if="customElemData?.type !== 'signal'" class="flex items-center gap-4px">
       <svg-icon :icon="customElemData?.content.isVideoCall === 'Y' ? 'ic:round-videocam' : 'ic:round-call'" />
       <template v-if="customElemData?.content.result === CallResultEnum.ACCEPT">
-        {{ customElemData?.content.duration }} "
+        {{ convertSecondsToHMS(customElemData?.content.duration) }}
       </template>
       <template v-else>
         {{ $t(CallResultMap[customElemData?.content.result as CallResultEnum]) }}
@@ -36,6 +36,7 @@
 import { computed } from 'vue'
 
 import { CallResultEnum, CallResultMap } from '@/constants/callResult'
+import { convertSecondsToHMS } from '@/utils/common/datetime'
 
 interface Props {
   lastMsg: any
