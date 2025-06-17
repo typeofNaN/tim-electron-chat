@@ -16,7 +16,7 @@
 
 ## Usage（快速上手）
 
-先去腾讯云官网，注册申请TIM，将imSdkAppId复制，填入 `.env.xxx` 文件的 VITE_IM_SDK_APP_ID 配置项中。
+先去[腾讯云TIM官网](https://cloud.tencent.com/product/im)，注册申请TIM，将imSdkAppId复制，填入 `.env.xxx` 文件的 VITE_IM_SDK_APP_ID 配置项中。
 
 开发环境：
 
@@ -37,7 +37,7 @@ cd node_modules/electron && node install.js
 pnpm run build
 ```
 
-启动项目后，将UserID和UserSig填入登录页的输入框内。（如何获取UserID和UserSig参考腾讯云官网）
+启动项目后，将`UserID`和`UserSig`填入登录页的输入框内。（如何获取`UserID`和`UserSig`参考腾讯云官网）
 
 由于此项目暂未涉及服务端相关，可根据自身需要将账户登录改为服务端授权模式。
 
@@ -138,5 +138,13 @@ pnpm run build
 ### Dark Mode（暗黑模式）
 
 ![暗黑模式](./screenshots/dark-mode.jpg)
+
+## TRTC音视频通话
+
+项目已接入TRTC音视频通话，开发文档详见下方地址：
+
+[TRTC开发文档](https://cloud.tencent.com/document/product/647/38551)
+
+注：TRTC的签名函数可参考腾讯云官网自行生成。[签名方法](https://cloud.tencent.com/document/product/647/17275)
 
 ## License MIT
