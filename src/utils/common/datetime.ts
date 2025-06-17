@@ -90,7 +90,7 @@ export function diffTime(beginTime: number, currentTime: number) {
 
 /**
  * @description 将秒数转换为时间
- * @param { number } seconds 描述
+ * @param { number } seconds 秒数
  */
 export function convertSecondsToHMS(seconds: number) {
   seconds = ~~seconds
