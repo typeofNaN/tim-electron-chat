@@ -79,13 +79,7 @@ export function formatterTimestamp(timestamp: number): string {
  */
 export function diffTime(beginTime: number, currentTime: number) {
   const secondDiff = dayjs(currentTime).diff(beginTime, 'second')
-  const hour = Math.floor(secondDiff / (60 * 60))
-  const minute = Math.floor((secondDiff - hour * 60 * 60) / 60)
-  const second = Math.floor((secondDiff - hour * 60 * 60 - minute * 60) % 60)
-  if (hour === 0) {
-    return `${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`
-  }
-  return `${hour}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`
+  return convertSecondsToHMS(secondDiff)
 }
 
 /**
@@ -93,13 +87,12 @@ export function diffTime(beginTime: number, currentTime: number) {
  * @param { number } seconds 秒数
  */
 export function convertSecondsToHMS(seconds: number) {
-  seconds = ~~seconds
   const hours = Math.floor(seconds / 3600)
   const minutes = Math.floor((seconds % 3600) / 60)
   const remainingSeconds = seconds % 60
 
   if (hours) {
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
+    return `${hours}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
   }
   return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
 }
