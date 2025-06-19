@@ -19,11 +19,11 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { cloneDeep } from 'lodash-es'
 
 import { useMsgDropdown } from '@/hooks'
 import { useChatStore } from '@/store'
 import { transformEmojiText } from '@/utils/common/emoji'
+import { previewMediaAssets } from '@/utils/common/previewMedia'
 import loadErrorImage from '@/assets/images/image-load-error.png'
 
 interface Props {
@@ -98,13 +98,9 @@ function loadImageError() {
 }
 
 function previewMedia() {
-  const { ipcRenderer } = require('electron')
-  ipcRenderer.send('createMediaPreviewWindow', {
-    mediaList: cloneDeep(chatStore.currentMsgListMedia),
-    currentMedia: {
-      url: props.msg.message_elem_array[0].image_elem_orig_url,
-      type: 'IMAGE'
-    }
+  previewMediaAssets(chatStore.currentMsgListMedia, {
+    url: props.msg.message_elem_array[0].image_elem_orig_url,
+    type: 'IMAGE'
   })
 }
 </script>

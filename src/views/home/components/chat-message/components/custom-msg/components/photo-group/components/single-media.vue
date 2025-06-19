@@ -20,9 +20,9 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { cloneDeep } from 'lodash-es'
 
 import { useChatStore } from '@/store'
+import { previewMediaAssets } from '@/utils/common/previewMedia'
 import loadErrorImage from '@/assets/images/image-load-error.png'
 
 interface Props {
@@ -53,13 +53,9 @@ const mediaHeight = computed(() => {
 })
 
 function previewMedia(url: string) {
-  const { ipcRenderer } = require('electron')
-  ipcRenderer.send('createMediaPreviewWindow', {
-    mediaList: cloneDeep(chatStore.currentMsgListMedia),
-    currentMedia: {
-      url,
-      type: props.media.type
-    }
+  previewMediaAssets(chatStore.currentMsgListMedia, {
+    url,
+    type: props.media.type
   })
 }
 </script>

@@ -15,6 +15,11 @@ const { ipcRenderer } = require('electron')
 
 const TimRender = require('im_electron_sdk/dist/renderer')
 
+export interface MediaType {
+  url: string
+  type: 'IMAGE' | 'VIDEO'
+}
+
 /**
  * @description 聊天模块状态接口
  */
@@ -113,7 +118,7 @@ export const useChatStore = defineStore('chat-store', {
      * @description 当前聊天列表的媒体集合
      */
     currentMsgListMedia(state) {
-      const mediaList: { url: string, type: string }[] = []
+      const mediaList: MediaType[] = []
       state.msgList.forEach(item => {
         if (item.message_elem_array[0].elem_type === MsgTypeEnum.IMAGE) {
           mediaList.push({

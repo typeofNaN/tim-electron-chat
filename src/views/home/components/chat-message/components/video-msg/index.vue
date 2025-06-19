@@ -20,11 +20,11 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { cloneDeep } from 'lodash-es'
 
 import { useMsgDropdown } from '@/hooks'
 import { useChatStore } from '@/store'
 import { transformEmojiText } from '@/utils/common/emoji'
+import { previewMediaAssets } from '@/utils/common/previewMedia'
 
 interface Props {
   msg: any
@@ -96,13 +96,9 @@ function quoteMsg() {
 }
 
 function previewVideo() {
-  const { ipcRenderer } = require('electron')
-  ipcRenderer.send('createMediaPreviewWindow', {
-    mediaList: cloneDeep(chatStore.currentMsgListMedia),
-    currentMedia: {
-      url: props.msg.message_elem_array[0].video_elem_video_url,
-      type: 'VIDEO'
-    }
+  previewMediaAssets(chatStore.currentMsgListMedia, {
+    url: props.msg.message_elem_array[0].video_elem_video_url,
+    type: 'VIDEO'
   })
 }
 </script>

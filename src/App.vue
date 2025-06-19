@@ -57,8 +57,10 @@ onMounted(async () => {
   checkUpdate()
   ipcListener()
   chatStore.initIM()
-  if (localStg.get('userID') && localStg.get('userSig')) {
-    const res = await chatStore.loginIM(localStg.get('userID') as string, localStg.get('userSig') as string)
+  const userId = localStg.get('userID')
+  const userSig = localStg.get('userSig')
+  if (userId && userSig) {
+    const res = await chatStore.loginIM(userId, userSig)
     if (!res) {
       localStg.remove('userID')
       localStg.remove('userSig')
