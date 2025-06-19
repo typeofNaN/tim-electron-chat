@@ -1,8 +1,8 @@
-# TIM Electron Chat
+# TIM Electron Chat 🌿
 
 ## Project Info（项目简介）
 
-本项目基于 Electron + Vue3 + TypeScript + Vite + NaiveUI + UnoCSS 开发，对腾讯云的TIM进行集成开发。由于腾讯云的TIM Electron demo项目仓库已被删除，此项目可作为参考。
+本项目基于 Electron + Vue3 + TypeScript + Vite + NaiveUI + UnoCSS + soybean-admin 开发，对腾讯云的TIM进行集成开发。由于腾讯云的TIM Electron demo项目仓库已被删除，此项目可作为参考。
 
 ## Download Experience（下载体验）
 
@@ -18,6 +18,22 @@
 
 先去[腾讯云TIM官网](https://cloud.tencent.com/product/im)，注册申请TIM，将imSdkAppId复制，填入 `.env.xxx` 文件的 VITE_IM_SDK_APP_ID 配置项中。
 
+``` sh
+# .env.xxx
+
+VITE_HTTP_PROXY=N
+VITE_APP_ROUTE_PLUGIN=Y
+
+# API URL 后端服务接口地址
+VITE_API_URL=http://xxx.com
+
+# BASE FILE URL 文件存储地址
+VITE_BASE_FILE_URL=http://xxx.com
+
+# TIM SDK APP ID 腾讯云imSdkAppId，替换这个
+VITE_IM_SDK_APP_ID=1234567890
+```
+
 开发环境：
 
 ``` sh
@@ -28,7 +44,7 @@ pnpm run dev
 # 如果出现 throw new Error('Electron failed to install correctly, please delete node_modules/electron and try installing again'); 此类报错。则先执行：
 cd node_modules/electron && node install.js
 
-# 再到项目根目录重新运行
+# 再到项目根目录重新运行 pnpm run dev
 ```
 
 编译成可执行文件：
@@ -107,6 +123,9 @@ pnpm run build
   - [x] 黑名单
 
 ## Project Preview（项目预览）
+
+<details>
+  <summary>查看项目预览图</summary>
 
 ### Login Page（登录页面）
 
@@ -203,6 +222,8 @@ pnpm run build
 ### Dark Mode（暗黑模式）
 
 ![暗黑模式](./screenshots/dark-mode.jpg)
+
+</details>
 
 ## TRTC音视频通话
 
