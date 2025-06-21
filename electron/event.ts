@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import { exec } from 'child_process'
 
 import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron'
 import { v4 as uuidV4 } from 'uuid'
@@ -191,6 +192,14 @@ export const ipcEventHandle = (win: BrowserWindow) => {
     event.reply('saveBase64ImageFileRes', {
       path: outputPath
     })
+  })
+
+  // 截图
+  ipcMain.on('captureScreen', async (event, data) => {
+    if (process.platform === 'win32') {
+      // exec('snippingtool.exe')
+      exec('powershell -Command "Start-Process snippingtool"')
+    }
   })
 
   // 创建音视频通话

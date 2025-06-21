@@ -5,6 +5,7 @@ import MultiSelect from './multi-select/index.vue'
 import SendImage from './send-image/index.vue'
 import SendVideo from './send-video/index.vue'
 import SendFile from './send-file/index.vue'
+import Screenshot from './screenshot/index.vue'
 import UserProfile from './user-profile/index.vue'
 import VideoCall from './video-call/index.vue'
 import VoiceCall from './voice-call/index.vue'
@@ -17,6 +18,7 @@ export {
   SendImage,
   SendVideo,
   SendFile,
+  Screenshot,
   UserProfile,
   VideoCall,
   VoiceCall

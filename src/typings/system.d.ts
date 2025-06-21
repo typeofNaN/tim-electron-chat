@@ -361,6 +361,7 @@ declare namespace I18nType {
       sendImage: string
       sendVideo: string
       sendFile: string
+      screenshot: string
       chatHistory: string
       exitEditMode: string
       videoChat: string

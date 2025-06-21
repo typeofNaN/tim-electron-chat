@@ -53,6 +53,7 @@ const locale: I18nType.Schema = {
     sendImage: 'Send Image',
     sendVideo: 'Send Video',
     sendFile: 'Send File',
+    screenshot: 'Screenshot{command}',
     chatHistory: 'Chat History',
     exitEditMode: 'Exit Edit Mode',
     videoChat: 'Video Chat',

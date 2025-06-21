@@ -31,6 +31,7 @@
                   <SendImage :disabled="sendMode !== 'normal'" />
                   <SendVideo :disabled="sendMode !== 'normal'" />
                   <SendFile :disabled="sendMode !== 'normal'" />
+                  <Screenshot :disabled="sendMode !== 'normal'" />
                   <div
                     class="flex-center mr-10px w-30px h-30px text-20px text-gray-500 dark:text-gray-300 cursor-pointer">
                     <n-tooltip trigger="hover">
@@ -103,6 +104,7 @@ import {
   SendImage,
   SendVideo,
   SendFile,
+  Screenshot,
   VideoCall,
   VoiceCall
 } from './components'
