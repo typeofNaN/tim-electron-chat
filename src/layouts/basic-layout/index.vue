@@ -24,7 +24,7 @@
   </admin-layout>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { AdminLayout } from '@soybeanjs/vue-materials'
 
 import { useBasicLayout } from '@/composables'

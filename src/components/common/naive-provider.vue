@@ -11,7 +11,7 @@
   </n-loading-bar-provider>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { defineComponent, h } from 'vue'
 import {
   useDialog,

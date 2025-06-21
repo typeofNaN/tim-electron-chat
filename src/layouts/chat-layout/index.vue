@@ -10,7 +10,7 @@
   </chat-layout>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ChatLayout, ChatHeader, ChatSider } from './components'
 import { GlobalContent } from '../common'
 

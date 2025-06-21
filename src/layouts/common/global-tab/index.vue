@@ -9,7 +9,7 @@
   </dark-mode-container>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useElementBounding } from '@vueuse/core'

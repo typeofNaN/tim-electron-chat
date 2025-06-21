@@ -13,7 +13,7 @@
   </dark-mode-container>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 

@@ -5,7 +5,7 @@
   </hover-container>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useAppStore, useThemeStore } from '@/store'
 
 defineOptions({ name: 'SettingButton' })

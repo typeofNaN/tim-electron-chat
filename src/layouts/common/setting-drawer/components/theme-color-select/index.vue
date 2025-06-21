@@ -14,7 +14,7 @@
   <color-modal :visible="visible" @close="closeModal" />
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed } from 'vue'
 
 import { useBoolean } from '@/hooks'

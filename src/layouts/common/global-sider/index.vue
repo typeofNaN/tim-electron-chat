@@ -3,7 +3,7 @@
   <vertical-sider v-else class="global-sider" />
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed } from 'vue'
 
 import { useThemeStore } from '@/store'

@@ -2,7 +2,13 @@ import fs from 'fs'
 import path from 'path'
 import { exec } from 'child_process'
 
-import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron'
+import {
+  app,
+  BrowserWindow,
+  dialog,
+  ipcMain,
+  shell
+} from 'electron'
 import { v4 as uuidV4 } from 'uuid'
 
 import checkForUpdates from './updater'

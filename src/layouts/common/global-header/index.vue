@@ -20,7 +20,7 @@
   </dark-mode-container>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useBasicLayout } from '@/composables'
 import { useThemeStore } from '@/store'
 import {

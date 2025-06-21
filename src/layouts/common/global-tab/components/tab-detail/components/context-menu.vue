@@ -3,7 +3,7 @@
     @select="handleDropdown" />
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed } from 'vue'
 import type { DropdownOption } from 'naive-ui'
 

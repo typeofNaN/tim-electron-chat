@@ -86,7 +86,14 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import {
+  computed,
+  nextTick,
+  onMounted,
+  onUnmounted,
+  ref,
+  watch
+} from 'vue'
 // import { ImageRenderToolbarProps } from 'naive-ui'
 import { cloneDeep } from 'lodash-es'
 

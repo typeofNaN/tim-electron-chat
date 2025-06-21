@@ -1,6 +1,11 @@
 import type { RouteComponent } from 'vue-router'
 
-import { BasicLayout, BlankLayout, ChatLayout, CallLayout } from '@/layouts'
+import {
+  BasicLayout,
+  BlankLayout,
+  ChatLayout,
+  CallLayout
+} from '@/layouts'
 import { views } from '@/views'
 import { isFunction } from '../common'
 

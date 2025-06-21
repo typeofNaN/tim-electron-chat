@@ -35,7 +35,7 @@
   </n-space>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { $t } from '@/locales'
 import { useThemeStore } from '@/store'
 import { LayoutCard } from './components'

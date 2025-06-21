@@ -3,7 +3,7 @@
     @clickoutside="hide" @select="handleDropdown" />
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed } from 'vue'
 import type { DropdownDividerOption, DropdownOption } from 'naive-ui'
 

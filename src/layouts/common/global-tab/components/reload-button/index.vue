@@ -4,7 +4,7 @@
   </hover-container>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useRoute } from 'vue-router'
 
 import { useLoading } from '@/hooks'

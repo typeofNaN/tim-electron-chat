@@ -8,7 +8,7 @@
   </router-link>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { $t } from '@/locales'
 import { routePath } from '@/router'
 import logoImg from '@/assets/images/logo.png'

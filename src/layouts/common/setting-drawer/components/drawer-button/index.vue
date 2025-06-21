@@ -8,7 +8,7 @@
   </n-button>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useAppStore } from '@/store'
 
 defineOptions({ name: 'DrawerButton' })

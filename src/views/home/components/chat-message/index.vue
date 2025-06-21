@@ -82,7 +82,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, ref, watch } from 'vue'
+import {
+  computed,
+  nextTick,
+  ref,
+  watch
+} from 'vue'
 
 import { SystemUserId } from '@/constants/chatConfig'
 import { ConvTypeEnum } from '@/constants/conv'

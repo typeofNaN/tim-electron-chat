@@ -12,7 +12,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { $t } from '@/locales'
 import { getRgbOfColor, localStg } from '@/utils'
 import logoImg from '@/assets/images/logo.png'

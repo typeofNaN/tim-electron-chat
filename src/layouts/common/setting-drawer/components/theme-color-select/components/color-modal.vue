@@ -17,7 +17,7 @@
   </n-modal>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { traditionColors } from '@/settings'
 import { useThemeStore } from '@/store'
 import ColorCheckbox from './color-checkbox.vue'

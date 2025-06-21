@@ -12,7 +12,7 @@
   <drawer-button v-if="showButton" />
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { $t } from '@/locales'
 import { useAppStore } from '@/store'
 import {

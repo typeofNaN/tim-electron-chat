@@ -5,7 +5,7 @@
   </dark-mode-container>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed } from 'vue'
 
 import { GlobalLogo } from '@/layouts/common'

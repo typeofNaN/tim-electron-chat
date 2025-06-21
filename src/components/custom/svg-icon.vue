@@ -9,7 +9,7 @@
   </template>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { computed, useAttrs } from 'vue'
 import { Icon } from '@iconify/vue'
 
