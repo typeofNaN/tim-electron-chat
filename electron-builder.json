@@ -36,15 +36,6 @@
     "installerHeader": "./electron-build/logo.ico",
     "installerHeaderIcon": "./electron-build/favicon.ico"
   },
-  "publish": [
-    {
-      "provider": "github",
-      "owner": "typeofNaN",
-      "repo": "typeofNaN/tim-electron-chat",
-      "token": "${secrets.GITHUB_TOKEN}",
-      "releaseType": "release"
-    }
-  ],
   "releaseInfo": {
     "releaseNotes": "版本更新"
   },
