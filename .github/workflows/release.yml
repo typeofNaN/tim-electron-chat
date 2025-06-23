@@ -14,13 +14,14 @@ jobs:
 
     strategy:
       matrix:
-        os: [windows-latest, macOS-latest, ubuntu-latest]
+        # os: [windows-latest, macOS-latest, ubuntu-latest]
+        os: [windows-latest]
 
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v1
 
-      - name: Install Node.js, NPM and Pnpm
+      - name: Install Node.js, NPM
         uses: actions/setup-node@v1
         with:
           node-version: 20
@@ -28,5 +29,5 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pnpm install
-          pnpm run build --publish always
+          npm install
+          npm run build --publish always
