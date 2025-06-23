@@ -10,16 +10,23 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [windows-latest, macOS-latest, ubuntu-latest]
+
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+      - name: Check out Git repository
+        uses: actions/checkout@v1
 
-      - uses: actions/setup-node@v3
+      - name: Install Node.js, NPM and Pnpm
+        uses: actions/setup-node@v1
         with:
-          node-version: 16.x
-
-      - run: npx githublogen
+          node-version: 14
+      - name: Build/release Electron app
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pnpm install
+          pnpm run build --publish always

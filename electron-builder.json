@@ -38,8 +38,11 @@
   },
   "publish": [
     {
-      "provider": "generic",
-      "url": "http://127.0.0.1:8080"
+      "provider": "github",
+      "owner": "typeofNaN",
+      "repo": "typeofNaN/tim-electron-chat",
+      "token": "${secrets.GITHUB_TOKEN}",
+      "releaseType": "release"
     }
   ],
   "releaseInfo": {
