@@ -23,7 +23,7 @@ jobs:
       - name: Install Node.js, NPM and Pnpm
         uses: actions/setup-node@v1
         with:
-          node-version: 14
+          node-version: 20
       - name: Build/release Electron app
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
