@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 
 import { $t } from '@/locales'
 
@@ -19,6 +19,8 @@ interface Props {
   disabled: boolean
 }
 const props = defineProps<Props>()
+
+const { ipcRenderer } = require('electron')
 
 const command = computed(() => {
   if (process.platform === 'win32') {
@@ -33,7 +35,14 @@ async function captureScreen() {
     return
   }
 
-  const { ipcRenderer } = require('electron')
   ipcRenderer.send('captureScreen')
 }
+
+onMounted(() => {
+  ipcRenderer.on('download-snippingtool', () => {
+    window.$message?.warning($t('chat.installSnippingtool'), {
+      duration: 5000
+    })
+  })
+})
 </script>

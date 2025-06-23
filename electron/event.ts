@@ -204,7 +204,12 @@ export const ipcEventHandle = (win: BrowserWindow) => {
   ipcMain.on('captureScreen', async (event, data) => {
     if (process.platform === 'win32') {
       // exec('snippingtool.exe')
-      exec('powershell -Command "Start-Process snippingtool"')
+      exec('powershell -Command "Start-Process snippingtool"', (err) => {
+        if (err) {
+          event.reply('download-snippingtool')
+          shell.openExternal('https://apps.microsoft.com/detail/9mz95kl8mr0l?hl=zh-CN&gl=SG')
+        }
+      })
     }
   })
 

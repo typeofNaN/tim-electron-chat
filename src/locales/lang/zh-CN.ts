@@ -54,6 +54,7 @@ const locale: I18nType.Schema = {
     sendVideo: '发送视频',
     sendFile: '发送文件',
     screenshot: '截图{command}',
+    installSnippingtool: '您的电脑上未安装截屏工具，请先下载安装！',
     chatHistory: '聊天记录',
     exitEditMode: '退出编辑模式',
     videoChat: '视频聊天',

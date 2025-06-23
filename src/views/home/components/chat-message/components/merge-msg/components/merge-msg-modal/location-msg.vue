@@ -33,7 +33,7 @@ async function renderMap() {
     scrollwheel: false,
     zoom: 12,
     viewMode: '3D'
-  });
+  })
 }
 
 onMounted(() => {

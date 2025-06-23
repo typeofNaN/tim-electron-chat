@@ -54,6 +54,7 @@ const locale: I18nType.Schema = {
     sendVideo: 'Send Video',
     sendFile: 'Send File',
     screenshot: 'Screenshot{command}',
+    installSnippingtool: 'The screenshot tool is not installed on your computer, please download and install it first!',
     chatHistory: 'Chat History',
     exitEditMode: 'Exit Edit Mode',
     videoChat: 'Video Chat',
