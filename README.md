@@ -6,7 +6,7 @@
 
 ## Download Experience（下载体验）
 
-[Release](https://github.com/typeofNaN/tim-electron-chat/releases)
+[Github Release](https://github.com/typeofNaN/tim-electron-chat/releases)
 
 注：此安装包未配置`imSdkAppId`，只做展示使用，建议下载源码填入`imSdkAppId`后自行构建使用！！！
 
