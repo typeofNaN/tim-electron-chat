@@ -12,7 +12,10 @@
       <div class="p-10px">
         <n-descriptions label-placement="left" :column="1" bordered>
           <n-descriptions-item :label="$t('page.setting.applicationName')">
-            {{ packageJson.name }}
+            <div class="flex justify-between items-center gap-30px h-full">
+              {{ packageJson.name }}
+              <icon-ri:github-fill class="text-18px cursor-pointer" @click="toGithub(packageJson.homepage)" />
+            </div>
           </n-descriptions-item>
           <n-descriptions-item :label="$t('page.setting.version')">
             <div class="flex justify-between items-center gap-30px h-full">
@@ -21,17 +24,24 @@
             </div>
           </n-descriptions-item>
           <n-descriptions-item :label="$t('page.setting.author')">
-            {{ packageJson.author }}
+            <div class="flex justify-between items-center gap-30px h-full">
+              {{ packageJson.author.name }}
+              <icon-ri:github-fill class="text-18px cursor-pointer" @click="toGithub(packageJson.author.url)" />
+            </div>
           </n-descriptions-item>
           <n-descriptions-item :label="$t('page.setting.help')">
             <div class="flex justify-between items-center gap-30px h-full">
-              <n-button type="primary" text disabled>{{ $t('page.setting.helpDocument') }}</n-button>
+              <n-button type="primary" text @click="toGithub(packageJson.homepage)">
+                {{ $t('page.setting.helpDocument') }}
+              </n-button>
               <span class="color-transparent select-none">{{ $t('page.setting.helpDocument') }}</span>
             </div>
           </n-descriptions-item>
           <n-descriptions-item :label="$t('page.setting.feedback')">
             <div class="flex justify-between items-center gap-30px h-full">
-              <n-button type="warning" text disabled>{{ $t('page.setting.submitFeedback') }}</n-button>
+              <n-button type="warning" text @click="toGithub(packageJson.bugs.url)">
+                {{ $t('page.setting.submitFeedback') }}
+              </n-button>
               <span class="color-transparent select-none">{{ $t('page.setting.submitFeedback') }}</span>
             </div>
           </n-descriptions-item>
@@ -53,5 +63,9 @@ function checkUpdate() {
   ipcRenderer.once('notNeedUpdate', () => {
     window.$message?.info($t('system.notNeedUpdate'))
   })
+}
+
+function toGithub(url: string) {
+  ipcRenderer.send('openBrowser', url)
 }
 </script>

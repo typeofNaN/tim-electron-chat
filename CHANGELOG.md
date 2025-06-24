@@ -1,5 +1,11 @@
 # ChangeLog
 
+## [v-x.x.x]() (WIP)
+
+### 🚀 新功能
+
+* About新增`Author`和`Repository`信息
+
 ## [v1.0.3](https://github.com/typeofNaN/tim-electron-chat/compare/v1.0.2...v1.0.3) (2025-06-23)
 
 ### 🐞 Bug 修复

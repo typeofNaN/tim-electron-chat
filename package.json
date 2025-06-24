@@ -2,7 +2,18 @@
   "name": "tim-electron-chat",
   "version": "1.0.3",
   "description": "TIM Electron Chat",
-  "author": "typeofNaN",
+  "author": {
+    "name": "typeofNaN",
+    "url": "https://github.com/typeofNaN",
+    "email": "dmdefine6@gmail.com"
+  },
+  "homepage": "https://github.com/typeofNaN/tim-electron-chat",
+  "repository": {
+    "url": "https://github.com/typeofNaN/tim-electron-chat.git"
+  },
+  "bugs": {
+    "url": "https://github.com/typeofNaN/tim-electron-chat/issues"
+  },
   "keywords": [
     "Vue",
     "Vue3",
