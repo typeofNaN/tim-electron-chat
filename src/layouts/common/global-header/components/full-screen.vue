@@ -1,6 +1,7 @@
 <template>
-  <hover-container class="w-40px h-full" :tooltip-content="$t('app.ctrl.fullScreen')" :inverted="theme.header.inverted"
-    @click="toggle">
+  <hover-container class="w-40px h-full"
+    :tooltip-content="isFullscreen ? $t('common.exitFullScreen') : $t('common.fullScreen')"
+    :inverted="theme.header.inverted" @click="toggle">
     <icon-gridicons-fullscreen-exit v-if="isFullscreen" class="text-18px" />
     <icon-gridicons-fullscreen v-else class="text-18px" />
   </hover-container>

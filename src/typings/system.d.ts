@@ -349,6 +349,10 @@ declare namespace I18nType {
         pleaseSelect: string
         pleaseUpload: string
       }
+      fullScreen: string
+      exitFullScreen: string
+      themeMode: string
+      themeConfig: string
     }
     gender: {
       unknown: string

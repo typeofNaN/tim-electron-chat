@@ -40,7 +40,11 @@ const locale: I18nType.Schema = {
       pleaseInput: 'Please input',
       pleaseSelect: 'Please select',
       pleaseUpload: 'Please upload'
-    }
+    },
+    fullScreen: 'Full Screen',
+    exitFullScreen: 'Exit Full Screen',
+    themeMode: 'Theme Mode',
+    themeConfig: 'Theme Config'
   },
   gender: {
     unknown: 'Unknown',

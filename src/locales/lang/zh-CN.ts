@@ -40,7 +40,11 @@ const locale: I18nType.Schema = {
       pleaseInput: '请输入',
       pleaseSelect: '请选择',
       pleaseUpload: '请上传'
-    }
+    },
+    fullScreen: '全屏',
+    exitFullScreen: '退出全屏',
+    themeMode: '主题模式',
+    themeConfig: '主题配置'
   },
   gender: {
     unknown: '未知',
