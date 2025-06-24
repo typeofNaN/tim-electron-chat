@@ -15,7 +15,7 @@
 ### 📝 文档
 
 * `README.md` 文件更新描述
-* 添加 `CHANGELOG` 文件
+* 添加 `CHANGELOG.md` 文件
 
 ## [v1.0.2](https://github.com/typeofNaN/tim-electron-chat/compare/v1.0.1...v1.0.2) (2025-06-23)
 

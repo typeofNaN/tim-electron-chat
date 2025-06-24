@@ -2,7 +2,7 @@
 
 ## Project Info（项目简介）
 
-本项目基于 Electron + Vue3 + TypeScript + Vite + NaiveUI + UnoCSS + soybean-admin 开发，对腾讯云的TIM进行集成开发。由于腾讯云的TIM Electron demo项目仓库已被删除，此项目可作为参考。
+本项目基于 Electron + Vue3 + TypeScript + Vite + NaiveUI + UnoCSS + FFmpeg + soybean-admin 开发，对腾讯云的TIM进行集成开发。由于腾讯云的TIM Electron demo项目仓库已被删除，此项目可作为参考。
 
 ## Download Experience（下载体验）
 
