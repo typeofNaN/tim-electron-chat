@@ -6,6 +6,10 @@
 
 * About新增`Author`和`Repository`信息
 
+### 🔨 重构
+
+* 将`emojis`封装成公共包调用
+
 ## [v1.0.3](https://github.com/typeofNaN/tim-electron-chat/compare/v1.0.2...v1.0.3) (2025-06-23)
 
 ### 🐞 Bug 修复

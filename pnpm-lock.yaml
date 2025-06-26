@@ -28,6 +28,9 @@ importers:
       '@vueuse/core':
         specifier: 10.4.1
         version: 10.4.1(vue@3.3.4)
+      awesome-emojis:
+        specifier: ^1.0.0
+        version: 1.0.0
       axios:
         specifier: 1.5.0
         version: 1.5.0
@@ -1593,6 +1596,9 @@ packages:
   available-typed-arrays@1.0.7:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
+
+  awesome-emojis@1.0.0:
+    resolution: {integrity: sha512-WuI74RMx/u5+V0KcpZpIUisRiDU4s4b5IGke8U///XBP2AIP1GjSyF6vgwLhkdh4HO7YldsJT7WFAUn7liJOAw==}
 
   aws-sign2@0.7.0:
     resolution: {integrity: sha512-08kcGqnYf/YmjoRhfxyu+CLxBjUtHLXLXX/vUfx9l2LYzG3c1m61nrpyFUZI6zeS+Li/wWMMidD9KgrqtGq3mA==}
@@ -7700,6 +7706,8 @@ snapshots:
   available-typed-arrays@1.0.7:
     dependencies:
       possible-typed-array-names: 1.0.0
+
+  awesome-emojis@1.0.0: {}
 
   aws-sign2@0.7.0: {}
 

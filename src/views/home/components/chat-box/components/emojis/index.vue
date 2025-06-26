@@ -26,7 +26,7 @@
             </div>
           </n-scrollbar>
         </n-tab-pane>
-        <n-tab-pane v-for="group in emojisGroup" :key="group.slug" :name="group.slug">
+        <n-tab-pane v-for="group in EmojiGroup" :key="group.slug" :name="group.slug">
           <template #tab>
             <div class="flex-center h-20px">{{ group.emojis[0].emoji }}</div>
           </template>
@@ -46,10 +46,10 @@
 </template>
 
 <script lang="ts" setup>
+import { EmojiGroup } from 'awesome-emojis'
+
 import { $t } from '@/locales'
-// import emojis from '@/assets/emojis/emojis.json'
 import { emojiImgList } from '@/constants/emojiMap'
-import emojisGroup from '@/assets/emojis/emoji-group.json'
 
 interface Emits {
   (e: 'chooseEmojis', emojiStr: string): void
