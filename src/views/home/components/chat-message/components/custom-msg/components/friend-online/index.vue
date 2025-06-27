@@ -1,5 +1,5 @@
 <template>
-  <div class="p-10px w-240px b-rd-4px cursor-pointer"
+  <div class="p-10px w-240px b-rd-4px select-none"
     :class="[props.isMyMsg ? 'bg-#95ec69' : 'bg-gray-100 dark:bg-gray-800']">
     <div class="flex items-center">
       <custom-avatar :src="props.msg.content.avatarUrl" :size="40" />

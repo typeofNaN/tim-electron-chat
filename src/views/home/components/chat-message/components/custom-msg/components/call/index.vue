@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center gap-6px py-4px px-10px b-rd-4px text-gray-900 cursor-pointer"
+  <div class="flex items-center gap-6px py-4px px-10px b-rd-4px text-gray-900 cursor-pointer select-none"
     :class="[props.isMyMsg ? 'bg-#95ec69' : 'bg-gray-100 dark:text-gray-100 dark:bg-gray-800']" @click="createCall">
     <svg-icon :icon="props.msg.content.isVideoCall === 'Y' ? 'ic:round-videocam' : 'ic:round-call'" />
     <template v-if="props.msg.content.result === CallResultEnum.ACCEPT">
