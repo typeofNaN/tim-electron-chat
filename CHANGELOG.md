@@ -1,5 +1,11 @@
 # ChangeLog
 
+## [v1.0.5](https://github.com/typeofNaN/tim-electron-chat/compare/v1.0.4...v1.0.5) (2025-07-14)
+
+### 🤖 CI
+
+* 更新系统CI，设置构建内存
+
 ## [v-1.0.4](https://github.com/typeofNaN/tim-electron-chat/compare/v1.0.3...v1.0.4) (2025-07-14)
 
 ### 🚀 新功能
