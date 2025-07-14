@@ -1,6 +1,6 @@
 # ChangeLog
 
-## [v-1.0.4](https://github.com/typeofNaN/tim-electron-chat/compare/v1.0.3...v1.0.4) (2025-07-14)
+## [v1.0.4](https://github.com/typeofNaN/tim-electron-chat/compare/v1.0.3...v1.0.4) (2025-07-14)
 
 ### 🚀 新功能
 
