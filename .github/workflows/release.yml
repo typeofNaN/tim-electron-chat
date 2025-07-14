@@ -25,9 +25,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 20
-      - name: Increase memory limit
-        run: |
-          echo "::set-env name=NODE_OPTIONS=--max-old-space-size=10000" >> $GITHUB_ENV
       - name: Build/release Electron app
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

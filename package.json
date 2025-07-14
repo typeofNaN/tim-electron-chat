@@ -40,7 +40,7 @@
     "dev": "cross-env VITE_SERVICE_ENV=dev vite",
     "dev:test": "cross-env VITE_SERVICE_ENV=test vite",
     "dev:prod": "cross-env VITE_SERVICE_ENV=prod vite",
-    "build": "npm run typecheck && cross-env VITE_SERVICE_ENV=prod vite build && electron-builder --publish always",
+    "build": "npm run typecheck && cross-env NODE_OPTIONS=--max-old-space-size=10000 VITE_SERVICE_ENV=prod vite build && electron-builder --publish always",
     "build:loc": "npm run typecheck && cross-env VITE_SERVICE_ENV=prod vite build && electron-builder",
     "build:dev": "npm run typecheck && cross-env VITE_SERVICE_ENV=dev vite build",
     "build:test": "npm run typecheck && cross-env VITE_SERVICE_ENV=test vite build",
