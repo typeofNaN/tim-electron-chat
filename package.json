@@ -53,7 +53,8 @@
     "cleanup": "soy cleanup",
     "update-pkg": "soy ncu",
     "tsx": "tsx",
-    "logo": "tsx ./scripts/logo.ts"
+    "logo": "tsx ./scripts/logo.ts",
+    "fix-memory-limit": "cross-env LIMIT=10000 increase-memory-limit"
   },
   "dependencies": {
     "@better-scroll/core": "2.5.1",
@@ -61,7 +62,7 @@
     "@ffprobe-installer/ffprobe": "^2.1.2",
     "@soybeanjs/vue-materials": "0.2.0",
     "@vueuse/core": "10.4.1",
-    "awesome-emojis": "^1.0.1",
+    "awesome-emojis": "^1.0.5",
     "axios": "1.5.0",
     "clipboard": "2.0.11",
     "colord": "2.9.3",
@@ -74,6 +75,7 @@
     "im_electron_sdk": "^8.0.5906",
     "image-size": "^1.1.1",
     "lodash-es": "4.17.21",
+    "lottie-web": "^5.13.0",
     "naive-ui": "^2.39.0",
     "pinia": "2.1.6",
     "qs": "6.11.2",
@@ -105,6 +107,7 @@
     "electron-builder": "^24.13.3",
     "eslint": "8.49.0",
     "eslint-config-soybeanjs": "0.5.6",
+    "increase-memory-limit": "^1.0.7",
     "mockjs": "1.1.0",
     "native-ext-loader": "^2.3.0",
     "sass": "1.67.0",

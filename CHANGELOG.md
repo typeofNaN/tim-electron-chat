@@ -1,10 +1,11 @@
 # ChangeLog
 
-## [v-x.x.x]() (WIP)
+## [v-1.0.4](https://github.com/typeofNaN/tim-electron-chat/compare/v1.0.3...v1.0.4) (2025-07-14)
 
 ### 🚀 新功能
 
 * About新增`Author`和`Repository`信息
+* 新增Lottie动画表情
 
 ### 🔨 重构
 

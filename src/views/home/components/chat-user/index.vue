@@ -181,8 +181,9 @@ function handleClickUser() {
     img {
       display: inline-block;
       margin-right: 4px;
-      width: 12px;
-      height: 12px;
+      width: 14px;
+      height: 14px;
+      transform: translateY(2px);
     }
   }
 }

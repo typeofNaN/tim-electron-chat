@@ -1,4 +1,4 @@
-import { emojiMap } from '@/constants/emojiMap'
+import { emojiMap } from '@/constants/emojisMap'
 
 /**
  * 将表情标签转换为表情图片的HTML标签
@@ -11,7 +11,7 @@ export function emojiTagToEmojiImg(emojiTag: string) {
     // 获取表情图片的URL
     const imgSrc = emojiMap[emojiTag as keyof typeof emojiMap]
     // 返回表情图片的HTML标签
-    return `<img src="${imgSrc}" alt="${emojiTag}" class="w-16px h-16px" draggable="false" />`
+    return `<img src="${imgSrc}" alt="${emojiTag}" class="w-18px h-18px" draggable="false" />`
   }
   // 如果没有对应的表情图片，返回原标签
   return emojiTag

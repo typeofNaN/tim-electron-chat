@@ -13,15 +13,15 @@
         <n-tab-pane name="emoji-img">
           <template #tab>
             <div class="flex-center h-20px">
-              <n-image :src="emojiImgList[0].value" :width="14" :preview-disabled="true" />
+              <n-image :src="emojiImageList[0].value" :width="18" :preview-disabled="true" />
             </div>
           </template>
           <n-scrollbar class="h-300px">
             <div class="flex flex-wrap w-400px">
-              <div v-for="emoji in emojiImgList" :key="emoji.label"
+              <div v-for="emoji in emojiImageList" :key="emoji.label"
                 class="flex-center w-40px h-40px cursor-pointer hover-bg-gray-2 b-rd-4px select-none text-16px"
                 @click="handleClick(emoji.label)">
-                <n-image :src="emoji.value" :width="16" :preview-disabled="true" />
+                <n-image :src="emoji.value" :width="20" :preview-disabled="true" />
               </div>
             </div>
           </n-scrollbar>
@@ -49,7 +49,7 @@
 import { EmojiGroup } from 'awesome-emojis'
 
 import { $t } from '@/locales'
-import { emojiImgList } from '@/constants/emojiMap'
+import { emojiImageList } from '@/constants/emojisMap'
 
 interface Emits {
   (e: 'chooseEmojis', emojiStr: string): void

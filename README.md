@@ -16,7 +16,7 @@
 
 ## Usage（快速上手）
 
-先去[腾讯云TIM官网](https://cloud.tencent.com/product/im)，注册申请TIM，将imSdkAppId复制，填入 `.env.xxx` 文件的 VITE_IM_SDK_APP_ID 配置项中。
+先去[腾讯云TIM官网](https://cloud.tencent.com/product/im)，注册申请TIM，将imSdkAppId复制，填入 `.env.xxx` 文件的 VITE_TENCENT_CLOUD_SDK_APP_ID 配置项中。
 
 ``` sh
 # .env.xxx
