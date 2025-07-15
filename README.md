@@ -31,7 +31,7 @@ VITE_API_URL=http://xxx.com
 VITE_BASE_FILE_URL=http://xxx.com
 
 # TIM SDK APP ID 腾讯云imSdkAppId，替换这个
-VITE_IM_SDK_APP_ID=1234567890
+VITE_TENCENT_CLOUD_SDK_APP_ID=1234567890
 ```
 
 开发环境：
@@ -89,6 +89,7 @@ pnpm run build
   - [x] 文件消息
   - [ ] 群提示消息
   - [x] 表情消息
+  - [x] 动态表情
   - [x] 位置消息
   - [ ] 群通知消息
   - [x] 视频消息
